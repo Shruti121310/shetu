@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আহার সেতু — খাবার নষ্ট হওয়ার আগে পৌঁছে দিন | সেতু</title>
+  <meta name="description" content="অতিরিক্ত রান্না করা ও প্যাকেটজাত খাবার অপচয় না করে অভাবী মানুষের কাছে পৌঁছে দিন। আহার সেতু।">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">আহার সেতু</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link active">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-pill">২</span>
+          </a>
+
+          <div class="auth-buttons" style="display: flex; gap: 0.5rem;">
+            <a href="login.html" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+          </div>
+
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero Banner -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div>
+          <span class="badge badge-success" style="margin-bottom: 0.5rem;">🍱 খাদ্য সহায়তা নেটওয়ার্ক</span>
+          <h1 class="page-hero-title">আহার সেতু</h1>
+          <p class="page-hero-desc">
+            “খাবার নষ্ট হওয়ার আগে পৌঁছে দিন প্রয়োজনীয় মানুষের কাছে।” বিয়েবাড়ি, রেস্টুরেন্ট বা পারিবারিক উদ্বৃত্ত খাদ্য শেয়ার করুন।
+          </p>
+        </div>
+        <div class="page-hero-actions">
+          <a href="food-donate.html" class="btn btn-primary btn-lg">
+            ➕ খাবার দান করুন
+          </a>
+          <a href="#foodSearchInput" class="btn btn-outline btn-lg">
+            🔍 খাবার খুঁজুন
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content & Filter Toolbar -->
+  <main class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+
+    <!-- Filter Card -->
+    <div class="filter-card">
+      <div class="filter-grid">
+        <!-- Search Input -->
+        <div class="form-group search-input-group">
+          <label class="form-label" for="foodSearchInput">খাবারের নাম বা এলাকা</label>
+          <div style="position: relative;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-subtle);">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="foodSearchInput" class="form-control" style="padding-left: 2.4rem;" placeholder="উদা: বিরিয়ানি, খিচুড়ি, ধানমন্ডি...">
+          </div>
+        </div>
+
+        <!-- Distance Filter -->
+        <div class="form-group">
+          <label class="form-label" for="foodDistanceFilter">সর্বোচ্চ দূরত্ব</label>
+          <select id="foodDistanceFilter" class="form-select">
+            <option value="999">সব দূরত্ব (সারাদেশ)</option>
+            <option value="1">১ কিলোমিটারের মধ্যে</option>
+            <option value="3">৩ কিলোমিটারের মধ্যে</option>
+            <option value="5">৫ কিলোমিটারের মধ্যে</option>
+            <option value="10">১০ কিলোমিটারের মধ্যে</option>
+          </select>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="form-group">
+          <label class="form-label" for="foodCategoryFilter">খাবারের ধরন</label>
+          <select id="foodCategoryFilter" class="form-select">
+            <option value="">সব ধরন</option>
+            <option value="রান্না করা খাবার">রান্না করা খাবার</option>
+            <option value="প্যাকেটজাত খাবার">প্যাকেটজাত খাবার</option>
+            <option value="কাঁচা খাদ্যদ্রব্য">কাঁচা খাদ্যদ্রব্য / ফলমূল</option>
+          </select>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="form-group">
+          <label class="form-label" for="foodStatusFilter">অবস্থা</label>
+          <select id="foodStatusFilter" class="form-select">
+            <option value="">সব অবস্থা</option>
+            <option value="available" selected>পাওয়া যাচ্ছে</option>
+            <option value="expired">মেয়াদ শেষ</option>
+          </select>
+        </div>
+
+        <!-- Reset Button -->
+        <div style="display:flex; gap:0.5rem; align-items:flex-end;">
+          <button id="resetFiltersBtn" class="btn btn-outline" title="বাছাই রিসেট করুন">
+            🔄 রিসেট
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Delivery Method Pills -->
+      <div style="display:flex; align-items:center; gap:0.75rem; margin-top:1.25rem; padding-top:1rem; border-top:1px dashed var(--border-light); flex-wrap:wrap;">
+        <span style="font-size:0.85rem; color:var(--text-subtle); font-weight:600;">ডেলিভারি সুবিধা:</span>
+        <select id="foodDeliveryFilter" class="form-select" style="width: auto; padding: 0.35rem 0.85rem; font-size: 0.88rem;">
+          <option value="">সব পদ্ধতি</option>
+          <option value="pickup">নিজে সংগ্রহ</option>
+          <option value="volunteer">স্বেচ্ছাসেবকের সাহায্য</option>
+          <option value="paid">পেইড ডেলিভারি</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Food Cards Grid (Dynamic JS Loaded) -->
+    <div class="categories-grid" id="foodCardsContainer">
+      <!-- Skeleton Loaders placeholder (replaced immediately by food.js) -->
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-img"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-text-half"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-img"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-text-half"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-img"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-text-half"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>আহার সেতু — খাবার অপচয়মুক্ত মানবিক বাংলাদেশের প্রত্যয়।</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/countdown.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/food.js"></script>
+</body>
+</html>

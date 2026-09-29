@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>বই যুক্ত করুন — গ্রন্থ সেতু | সেতু</title>
+  <meta name="description" content="বই দান, ধার অথবা বিনিময়ের জন্য লিস্টিং তৈরি করুন।">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">বই যুক্ত করুন</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link active">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-pill">২</span>
+          </a>
+
+          <div class="auth-buttons" style="display: flex; gap: 0.5rem;">
+            <a href="login.html" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+          </div>
+
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div>
+          <span class="badge" style="background:#f5f3ff; color:var(--books-color); margin-bottom:0.5rem;">📚 বই অন্তর্ভুক্তি ফর্ম</span>
+          <h1 class="page-hero-title">বইয়ের তথ্য যুক্ত করুন</h1>
+          <p class="page-hero-desc">
+            বইটি কি দান করতে চান, নির্দিষ্ট মেয়াদে ধার দিতে চান, নাকি পছন্দের অন্য কোনো বইয়ের সঙ্গে বিনিময় করতে চান?
+          </p>
+        </div>
+        <a href="books.html" class="btn btn-outline">← ফিরে যান</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Form -->
+  <main class="container container-narrow" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    <div class="form-card">
+      <form id="bookDonateForm">
+
+        <div class="form-grid">
+          <!-- Book Title -->
+          <div class="form-group form-grid-full">
+            <label class="form-label" for="bookTitle">বইয়ের নাম <span class="required">*</span></label>
+            <input type="text" id="bookTitle" class="form-control" placeholder="উদা: Clean Code / সঞ্চয়িতা / এইচএসসি পদার্থবিজ্ঞান" required>
+          </div>
+
+          <!-- Author -->
+          <div class="form-group">
+            <label class="form-label" for="bookAuthor">লেখকের নাম <span class="required">*</span></label>
+            <input type="text" id="bookAuthor" class="form-control" placeholder="উদা: Robert C. Martin / রবীন্দ্রনাথ ঠাকুর" required>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label class="form-label" for="bookCategory">বিষয় / শ্রেণি <span class="required">*</span></label>
+            <select id="bookCategory" class="form-select" required>
+              <option value="">নির্বাচন করুন</option>
+              <option value="কম্পিউটার সায়েন্স / প্রোগ্রামিং">কম্পিউটার ও প্রোগ্রামিং</option>
+              <option value="উচ্চ মাধ্যমিক গাইড ও বই">উচ্চ মাধ্যমিক গাইড ও বই</option>
+              <option value="বাংলা সাহিত্য ও কবিতা">বাংলা সাহিত্য ও উপন্যাস</option>
+              <option value="অলিম্পিয়াড ও বিজ্ঞান">অলিম্পিয়াড ও বিজ্ঞান</option>
+              <option value="একাডেমিক / টেক্সটবুক">বিশ্ববিদ্যালয় টেক্সটবুক</option>
+              <option value="অন্যান্য">অন্যান্য</option>
+            </select>
+          </div>
+
+          <!-- Mode Selection (দান | ধার | বিনিময়) -->
+          <div class="form-group form-grid-full">
+            <label class="form-label">শেয়ারের পদ্ধতি নির্বাচন করুন <span class="required">*</span></label>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+              <label style="border:2px solid var(--border-light); padding:1rem; border-radius:var(--radius-md); cursor:pointer; text-align:center;">
+                <input type="radio" name="bookMode" value="donate" checked onchange="toggleBookModeFields()">
+                <strong style="display:block; margin-top:0.35rem; color:var(--success);">🎁 সম্পূর্ণ দান</strong>
+                <span style="font-size:0.8rem; color:var(--text-subtle);">বিনামূল্যে স্থায়ী উপহার</span>
+              </label>
+
+              <label style="border:2px solid var(--border-light); padding:1rem; border-radius:var(--radius-md); cursor:pointer; text-align:center;">
+                <input type="radio" name="bookMode" value="borrow" onchange="toggleBookModeFields()">
+                <strong style="display:block; margin-top:0.35rem; color:var(--info);">⏱️ ধার দেওয়া</strong>
+                <span style="font-size:0.8rem; color:var(--text-subtle);">নির্দিষ্ট সময় পর ফেরত</span>
+              </label>
+
+              <label style="border:2px solid var(--border-light); padding:1rem; border-radius:var(--radius-md); cursor:pointer; text-align:center;">
+                <input type="radio" name="bookMode" value="exchange" onchange="toggleBookModeFields()">
+                <strong style="display:block; margin-top:0.35rem; color:var(--warning);">🔄 বই বিনিময়</strong>
+                <span style="font-size:0.8rem; color:var(--text-subtle);">অন্য বইয়ের বিনিময়ে</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Borrow Specific Field (Hidden initially) -->
+          <div class="form-group form-grid-full" id="borrowDurationField" style="display: none; background: var(--bg-subtle); padding: 1.25rem; border-radius: var(--radius-md);">
+            <label class="form-label">ধার দেওয়ার সময়সীমা নির্বাচন করুন</label>
+            <div style="display: flex; gap: 1rem;">
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="radio" name="bookBorrowDays" value="15" checked> ১৫ দিন
+              </label>
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                <input type="radio" name="bookBorrowDays" value="30"> ৩০ দিন
+              </label>
+            </div>
+            <span class="form-hint" style="margin-top:0.35rem; display:block;">পাঠক নির্দিষ্ট তারিখের আগে বইটি আপনার কাছে ফেরত দিতে বাধ্য থাকবেন।</span>
+          </div>
+
+          <!-- Exchange Specific Field (Hidden initially) -->
+          <div class="form-group form-grid-full" id="exchangeWishField" style="display: none; background: #fffbeb; padding: 1.25rem; border-radius: var(--radius-md); border:1px solid #fef3c7;">
+            <label class="form-label" for="exchangeWishInput" style="color: #92400e;">বিনিময়ে আপনি কী বই পেতে চান?</label>
+            <input type="text" id="exchangeWishInput" class="form-control" placeholder="উদা: C++ Programming অথবা Operating Systems Concepts">
+            <span class="form-hint">কাঙ্ক্ষিত বইটির নাম বা বিষয়ের উল্লেখ করুন।</span>
+          </div>
+
+          <!-- Cover Image Upload -->
+          <div class="form-group form-grid-full">
+            <label class="form-label">বইয়ের কভারের ছবি</label>
+            <div class="file-upload-box" onclick="document.getElementById('bookCoverInput').click()">
+              <input type="file" id="bookCoverInput" accept="image/*" style="display: none;">
+              <span style="font-size: 2.25rem; display:block; margin-bottom: 0.5rem;">📖</span>
+              <strong style="color: var(--books-color);">বইয়ের সামনের কভারের ছবি আপলোড করুন</strong>
+              <p style="font-size: 0.85rem; color: var(--text-subtle); margin-top: 0.25rem;">
+                পরিচ্ছন্ন কভার ছবি পাঠকদের আকৃষ্ট করতে সাহায্য করে।
+              </p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group form-grid-full">
+            <label class="form-label" for="bookDesc">বইয়ের সংক্ষিপ্ত বিবরণ / যত্ন সংক্রান্ত বার্তা</label>
+            <textarea id="bookDesc" class="form-textarea" rows="3" placeholder="বইটির সংস্করণ, পাতা বা যত্নের কোনো বিশেষ শর্ত থাকলে লিখুন..."></textarea>
+          </div>
+
+          <!-- Location -->
+          <div class="form-group">
+            <label class="form-label" for="bookLocation">আপনার অবস্থান / এলাকা <span class="required">*</span></label>
+            <input type="text" id="bookLocation" class="form-control" placeholder="উদা: আজিমপুর / নীলক্ষেত, ঢাকা" required>
+          </div>
+
+          <!-- Contact Phone -->
+          <div class="form-group">
+            <label class="form-label" for="bookContact">যোগাযোগের নম্বর <span class="required">*</span></label>
+            <input type="tel" id="bookContact" class="form-control" placeholder="০১৭১১-XXXXXX" required>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 1rem;">
+          <a href="books.html" class="btn btn-outline">বাতিল</a>
+          <button type="submit" class="btn btn-primary btn-lg" style="background-color: var(--books-color); border-color: var(--books-color);">
+            📚 বই লিস্টিং প্রকাশ করুন
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>গ্রন্থ সেতু — একটি বইয়ের বহুমুখী যাত্রা।</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/books.js"></script>
+  <script>
+    function toggleBookModeFields() {
+      const mode = document.querySelector('input[name="bookMode"]:checked')?.value;
+      const borrowField = document.getElementById('borrowDurationField');
+      const exchangeField = document.getElementById('exchangeWishField');
+
+      if (borrowField) borrowField.style.display = mode === 'borrow' ? 'block' : 'none';
+      if (exchangeField) exchangeField.style.display = mode === 'exchange' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>

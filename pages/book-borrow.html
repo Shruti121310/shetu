@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>বই ধার ও সময়সীমা ব্যবস্থাপনা — গ্রন্থ সেতু | সেতু</title>
+  <meta name="description" content="বই ধার নেওয়া, ফেরত দেওয়ার সময়সীমা হিসাব ও ডেডলাইন অনুস্মারক ব্যবস্থাপনা।">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">বই ধার ব্যবস্থাপনা</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link active">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-pill">২</span>
+          </a>
+
+          <div class="auth-buttons" style="display: flex; gap: 0.5rem;">
+            <a href="dashboard.html" class="btn btn-outline-primary btn-sm">ড্যাশবোর্ড</a>
+          </div>
+
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div>
+          <span class="badge badge-info" style="margin-bottom:0.5rem;">📖 লাইব্রেরি নিয়মাবলী ও ট্র্যাকিং</span>
+          <h1 class="page-hero-title">বই ধার ও সময়সীমা ইন্টারফেস</h1>
+          <p class="page-hero-desc">
+            সেতু গ্রন্থ সেতুতে আপনি যেকোনো বই ১৫ বা ৩০ দিনের জন্য সম্পূর্ণ বিনামূল্যে ধার নিতে পারেন। বই পড়া শেষে যথাসময়ে ফেরত দিয়ে জ্ঞান চক্রটি চলমান রাখুন।
+          </p>
+        </div>
+        <a href="books.html" class="btn btn-outline">← বইয়ের তালিকায় ফিরে যান</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start;">
+      
+      <!-- Left: Interactive Borrow Duration Simulator -->
+      <div class="form-card">
+        <h3 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-main);">
+          ⏱️ সময়সীমা ক্যালকুলেটর ও ফেরত অনুস্মারক
+        </h3>
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          বই ধার নেওয়ার আগে সময় নির্বাচন করুন এবং স্বয়ংক্রিয়ভাবে ফেরত দেওয়ার তারিখ দেখুন:
+        </p>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label class="form-label">বই নির্বাচন করুন</label>
+          <select id="borrowBookSelect" class="form-select">
+            <option value="Clean Code">Clean Code — Robert C. Martin</option>
+            <option value="গণিত অলিম্পিয়াড প্রস্তুতি">গণিত অলিম্পিয়াড প্রস্তুতি — মুনির হাসান</option>
+            <option value="এইচএসসি পদার্থবিজ্ঞান">এইচএসসি পদার্থবিজ্ঞান ১ম পত্র</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label">ধার নেওয়ার মেয়াদকাল নির্বাচন করুন</label>
+          <div style="display: flex; gap: 1rem;">
+            <label style="flex:1; border:2px solid var(--primary); padding:1rem; border-radius:var(--radius-md); text-align:center; cursor:pointer; background:var(--primary-surface);">
+              <input type="radio" name="borrowPeriodOption" value="15" checked onchange="updateBorrowPreview()">
+              <strong style="display:block; margin-top:0.25rem; font-size:1.1rem; color:var(--primary-dark);">১৫ দিন</strong>
+              <span style="font-size:0.8rem; color:var(--text-subtle);">দ্রুত পড়ার জন্য</span>
+            </label>
+
+            <label style="flex:1; border:2px solid var(--border-light); padding:1rem; border-radius:var(--radius-md); text-align:center; cursor:pointer; background:#fff;">
+              <input type="radio" name="borrowPeriodOption" value="30" onchange="updateBorrowPreview()">
+              <strong style="display:block; margin-top:0.25rem; font-size:1.1rem; color:var(--primary-dark);">৩০ দিন</strong>
+              <span style="font-size:0.8rem; color:var(--text-subtle);">বিস্তারিত পড়ার জন্য</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Calculated Schedule Box -->
+        <div id="borrowScheduleBox" style="background: var(--bg-subtle); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-light); margin-bottom: 1.5rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
+            <span style="color:var(--text-subtle);">ধার নেওয়ার প্রস্তাবিত তারিখ:</span>
+            <strong id="borrowStartDate">১ অক্টোবর</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
+            <span style="color:var(--text-subtle);">ফেরত দেওয়ার শেষ তারিখ:</span>
+            <strong id="borrowEndDate" style="color:var(--danger); font-size:1.05rem;">১৬ অক্টোবর</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding-top:0.75rem; border-top:1px dashed var(--border-light);">
+            <span style="color:var(--text-subtle);">স্বয়ংক্রিয় নোটিফিকেশন:</span>
+            <span class="badge badge-success">ফেরতের ৩ দিন আগে এসএমএস ও অ্যালার্ট</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" onclick="showToast('ধারের অনুরোধ ও অনুস্মারক ক্যালেন্ডারে যুক্ত হয়েছে!', 'success')">
+          📖 ধার গ্রহণের নিশ্চয়তা দিন
+        </button>
+      </div>
+
+      <!-- Right: Active Borrowed Books List (Demo User) -->
+      <div>
+        <div class="form-card" style="margin-bottom: 2rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.25rem; border-bottom:1px solid var(--border-light); padding-bottom:0.75rem;">
+            <h3 style="font-size: 1.25rem; font-weight: 700;">📚 বর্তমানে আপনার ধার নেওয়া বই</h3>
+            <span class="badge badge-info">মোট ২টি বই</span>
+          </div>
+
+          <!-- Item 1 -->
+          <div class="borrow-item-card" style="border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; background: #fff;">
+            <div style="display:flex; gap: 1rem; align-items: center;">
+              <img src="https://images.unsplash.com/photo-1532012164546-f432f2e3edd4?w=400&auto=format&fit=crop&q=80" alt="Clean Code" style="width: 60px; height: 80px; object-fit: cover; border-radius: var(--radius-sm);">
+              <div style="flex-grow: 1;">
+                <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.25rem;">Clean Code</h4>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">মালিক: আব্দুল্লাহ আল মামুন (আজিমপুর)</div>
+                <div style="display:flex; gap:1rem; font-size:0.82rem;">
+                  <span>📅 ধার: <strong>১ অক্টোবর</strong></span>
+                  <span style="color:var(--danger); font-weight:700;">⚠️ শেষ দিন: <strong>৩১ অক্টোবর (৫ দিন বাকি)</strong></span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed var(--border-light); display: flex; justify-content: space-between; align-items: center;">
+              <span class="badge badge-warning">চলমান পাঠ</span>
+              <button class="btn btn-outline-primary btn-sm" onclick="showToast('ফেরত নিশ্চিতকরণের বার্তা মালিকের নিকট প্রেরিত হয়েছে!', 'success')">
+                বইটি ফেরত দিয়েছি
+              </button>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="borrow-item-card" style="border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; background: #fff;">
+            <div style="display:flex; gap: 1rem; align-items: center;">
+              <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&auto=format&fit=crop&q=80" alt="গণিত অলিম্পিয়াড" style="width: 60px; height: 80px; object-fit: cover; border-radius: var(--radius-sm);">
+              <div style="flex-grow: 1;">
+                <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.25rem;">গণিত অলিম্পিয়াড প্রস্তুতি</h4>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">মালিক: সাকিব আল হাসান (কুমিল্লা)</div>
+                <div style="display:flex; gap:1rem; font-size:0.82rem;">
+                  <span>📅 ধার: <strong>১০ অক্টোবর</strong></span>
+                  <span style="color:var(--primary-dark); font-weight:700;">⚠️ শেষ দিন: <strong>২৫ অক্টোবর (১৫ দিন বাকি)</strong></span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed var(--border-light); display: flex; justify-content: space-between; align-items: center;">
+              <span class="badge badge-success">সময় রয়েছে</span>
+              <button class="btn btn-outline-primary btn-sm" onclick="showToast('ফেরত বার্তা প্রেরিত হয়েছে!', 'success')">
+                বইটি ফেরত দিয়েছি
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>গ্রন্থ সেতু — ধার নিন, যত্ন নিয়ে পড়ুন এবং সময়মতো ফিরিয়ে দিন।</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function updateBorrowPreview() {
+      const days = parseInt(document.querySelector('input[name="borrowPeriodOption"]:checked')?.value || '15', 10);
+      const today = new Date();
+      const returnDate = new Date();
+      returnDate.setDate(today.getDate() + days);
+
+      const banglaMonths = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+      const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+      const toBangla = (n) => n.toString().replace(/[0-9]/g, d => banglaDigits[d]);
+
+      document.getElementById('borrowStartDate').textContent = `${toBangla(today.getDate())} ${banglaMonths[today.getMonth()]}`;
+      document.getElementById('borrowEndDate').textContent = `${toBangla(returnDate.getDate())} ${banglaMonths[returnDate.getMonth()]}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', updateBorrowPreview);
+  </script>
+</body>
+</html>

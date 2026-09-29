@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ড্যাশবোর্ড — সেতু | ব্যবহারকারী প্যানেল</title>
+  <meta name="description" content="আপনার সেতু ড্যাশবোর্ড। দান, অনুরোধ ও প্রোফাইল পরিচালনা করুন।">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 64px);
+    }
+    .dashboard-sidebar {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border-light);
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    .sidebar-user {
+      padding: 0 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 1rem;
+    }
+    .user-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: #fff; font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .user-name { font-weight: 700; font-size: 1rem; color: var(--text-main); }
+    .user-role { font-size: 0.8rem; color: var(--text-subtle); }
+    .user-points { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--primary-subtle); color: var(--primary-dark); padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 0.4rem; }
+    .sidebar-nav { list-style: none; margin: 0; padding: 0; }
+    .sidebar-nav-item { margin: 0; }
+    .sidebar-nav-link {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.7rem 1.25rem;
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    .sidebar-nav-link:hover { color: var(--primary); background: var(--primary-surface); }
+    .sidebar-nav-link.active { color: var(--primary); background: var(--primary-surface); border-left-color: var(--primary); font-weight: 600; }
+    .sidebar-section-label { padding: 0.5rem 1.25rem; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-light); margin-top: 0.5rem; }
+    .dashboard-content { padding: 2rem; background: var(--bg-page); }
+    .dash-panel { display: none; }
+    .dash-panel.active { display: block; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .stat-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--text-main); line-height: 1; margin-bottom: 0.25rem; }
+    .stat-label { font-size: 0.8rem; color: var(--text-subtle); font-weight: 500; }
+    .dash-section-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin: 0 0 1rem; }
+    .activity-list { list-style: none; margin: 0; padding: 0; }
+    .activity-item {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      padding: 0.85rem 1rem;
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      margin-bottom: 0.6rem;
+      transition: box-shadow 0.15s;
+    }
+    .activity-item:hover { box-shadow: var(--shadow-sm); }
+    .activity-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .activity-title { font-weight: 600; font-size: 0.9rem; color: var(--text-main); margin-bottom: 0.1rem; }
+    .activity-meta { font-size: 0.8rem; color: var(--text-subtle); }
+    .activity-status { margin-left: auto; flex-shrink: 0; }
+    .progress-bar-wrap { background: var(--border-light); border-radius: 4px; height: 8px; overflow: hidden; margin-top: 0.35rem; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light)); border-radius: 4px; transition: width 0.6s ease; }
+    .profile-form .form-group { margin-bottom: 1.1rem; }
+    .profile-form .form-label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.35rem; }
+    .profile-form .form-input { width: 100%; padding: 0.65rem 0.9rem; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.925rem; font-family: inherit; color: var(--text-main); box-sizing: border-box; transition: border-color 0.2s; }
+    .profile-form .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+    .profile-form .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .page-header-dash { margin-bottom: 1.75rem; }
+    .page-header-dash h2 { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.25rem; }
+    .page-header-dash p { color: var(--text-subtle); margin: 0; font-size: 0.875rem; }
+    @media (max-width: 768px) {
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .dashboard-sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border-light); }
+      .dashboard-content { padding: 1.25rem; }
+      .profile-form .form-grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">ব্যবহারকারী ড্যাশবোর্ড</span>
+          </div>
+        </a>
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="notification-pill">২</span>
+          </a>
+          <div class="auth-buttons" style="display:flex;gap:0.5rem;">
+            <a href="login.html" class="btn btn-outline btn-sm">লগআউট</a>
+          </div>
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="primaryNav">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar" role="navigation" aria-label="ড্যাশবোর্ড মেনু">
+      <div class="sidebar-user">
+        <div class="user-avatar">ম</div>
+        <div class="user-name">মো. রহিম উদ্দিন</div>
+        <div class="user-role">দাতা ও গ্রহীতা · ঢাকা</div>
+        <div class="user-points">⭐ ১৮৫ পয়েন্ট</div>
+      </div>
+
+      <div class="sidebar-section-label">প্রধান মেনু</div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link active" onclick="showPanel('overview', this)">📊 সারসংক্ষেপ</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link" onclick="showPanel('myDonations', this)">🤝 আমার দান</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link" onclick="showPanel('myRequests', this)">📩 আমার অনুরোধ</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link" onclick="showPanel('myBooks', this)">📚 আমার বই</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link" onclick="showPanel('volunteerTasks', this)">🛵 স্বেচ্ছাসেবক কাজ</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-label">অ্যাকাউন্ট</div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link" onclick="showPanel('profile', this)">👤 প্রোফাইল</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link" onclick="showPanel('points', this)">⭐ পয়েন্ট ও পুরস্কার</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="sidebar-nav-link" onclick="showPanel('settings', this)">⚙️ সেটিংস</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-label">দ্রুত লিঙ্ক</div>
+      <ul class="sidebar-nav">
+        <li><a class="sidebar-nav-link" href="food-donate.html">🍱 খাবার দান</a></li>
+        <li><a class="sidebar-nav-link" href="clothes-donate.html">👕 পোশাক দান</a></li>
+        <li><a class="sidebar-nav-link" href="book-donate.html">📚 বই দান</a></li>
+        <li><a class="sidebar-nav-link" href="volunteers.html">⭐ স্বেচ্ছাসেবক</a></li>
+        <li><a class="sidebar-nav-link" href="admin.html" style="color:var(--danger);">🛡️ অ্যাডমিন প্যানেল</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-content" id="dashboardContent">
+
+      <!-- Overview Panel -->
+      <div class="dash-panel active" id="panel-overview">
+        <div class="page-header-dash">
+          <h2>👋 স্বাগতম, রহিম ভাই!</h2>
+          <p>আজ আপনার কার্যক্রমের সারসংক্ষেপ</p>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon">🍱</div>
+            <div class="stat-value">১২</div>
+            <div class="stat-label">মোট খাবার দান</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👕</div>
+            <div class="stat-value">৮</div>
+            <div class="stat-label">পোশাক দান</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-value">৫</div>
+            <div class="stat-label">বই শেয়ার</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value">১৮৫</div>
+            <div class="stat-label">মোট পয়েন্ট</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🙏</div>
+            <div class="stat-value">৩</div>
+            <div class="stat-label">চলমান অনুরোধ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value">৪৭</div>
+            <div class="stat-label">উপকৃত মানুষ</div>
+          </div>
+        </div>
+
+        <!-- Impact Progress -->
+        <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light); margin-bottom:1.5rem; box-shadow:var(--shadow-xs);">
+          <h3 class="dash-section-title" style="margin-bottom:0.75rem;">📈 মাসিক লক্ষ্যমাত্রা</h3>
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.875rem;">
+              <span>খাবার দান (৫০টি লক্ষ্য)</span>
+              <span style="font-weight:600; color:var(--primary);">১২/৫০</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:24%"></div></div>
+          </div>
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.875rem;">
+              <span>পোশাক দান (২০টি লক্ষ্য)</span>
+              <span style="font-weight:600; color:var(--clothes-color);">৮/২০</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:40%; background:linear-gradient(90deg,var(--clothes-color), #38bdf8)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.875rem;">
+              <span>বই শেয়ার (১০টি লক্ষ্য)</span>
+              <span style="font-weight:600; color:var(--books-color);">৫/১০</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50%; background:linear-gradient(90deg,var(--books-color), #a78bfa)"></div></div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <h3 class="dash-section-title">🕐 সাম্প্রতিক কার্যক্রম</h3>
+        <ul class="activity-list">
+          <li class="activity-item">
+            <span class="activity-icon">🍱</span>
+            <div>
+              <div class="activity-title">বিরিয়ানি ও রুটি — ৫ জনের</div>
+              <div class="activity-meta">আহার সেতু · মিরপুর, ঢাকা · ২ ঘণ্টা আগে</div>
+            </div>
+            <div class="activity-status"><span class="badge badge-success">সক্রিয়</span></div>
+          </li>
+          <li class="activity-item">
+            <span class="activity-icon">👕</span>
+            <div>
+              <div class="activity-title">শীতের জ্যাকেট — ৩টি</div>
+              <div class="activity-meta">বস্ত্র সেতু · মোহাম্মদপুর · ১ দিন আগে</div>
+            </div>
+            <div class="activity-status"><span class="badge badge-warning">অনুরোধ আছে</span></div>
+          </li>
+          <li class="activity-item">
+            <span class="activity-icon">📚</span>
+            <div>
+              <div class="activity-title">বাংলা সাহিত্য সংকলন</div>
+              <div class="activity-meta">গ্রন্থ সেতু · ধার · রফিকুল ইসলামকে দেওয়া হয়েছে</div>
+            </div>
+            <div class="activity-status"><span class="badge badge-info">ধারে আছে</span></div>
+          </li>
+          <li class="activity-item">
+            <span class="activity-icon">⭐</span>
+            <div>
+              <div class="activity-title">+২৫ পয়েন্ট অর্জিত</div>
+              <div class="activity-meta">খাবার দানের জন্য পুরস্কার</div>
+            </div>
+            <div class="activity-status"><span class="badge" style="background:var(--warning-bg);color:var(--warning);">পয়েন্ট</span></div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- My Donations Panel -->
+      <div class="dash-panel" id="panel-myDonations">
+        <div class="page-header-dash">
+          <h2>🤝 আমার দান তালিকা</h2>
+          <p>আপনি যা শেয়ার করেছেন তার সম্পূর্ণ রেকর্ড</p>
+        </div>
+        <div style="display:flex; gap:0.75rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+          <a href="food-donate.html" class="btn btn-primary btn-sm">+ খাবার যোগ করুন</a>
+          <a href="clothes-donate.html" class="btn btn-outline btn-sm">+ পোশাক যোগ করুন</a>
+          <a href="book-donate.html" class="btn btn-outline btn-sm">+ বই যোগ করুন</a>
+        </div>
+        <ul class="activity-list" id="donationsList"></ul>
+      </div>
+
+      <!-- My Requests Panel -->
+      <div class="dash-panel" id="panel-myRequests">
+        <div class="page-header-dash">
+          <h2>📩 আমার অনুরোধ সমূহ</h2>
+          <p>আপনার পাঠানো এবং গৃহীত অনুরোধ</p>
+        </div>
+        <ul class="activity-list" id="requestsList"></ul>
+      </div>
+
+      <!-- My Books Panel -->
+      <div class="dash-panel" id="panel-myBooks">
+        <div class="page-header-dash">
+          <h2>📚 আমার বই ব্যবস্থাপনা</h2>
+          <p>দান করা, ধারে দেওয়া ও বিনিময় করা বই</p>
+        </div>
+        <ul class="activity-list" id="myBooksList"></ul>
+      </div>
+
+      <!-- Volunteer Tasks Panel -->
+      <div class="dash-panel" id="panel-volunteerTasks">
+        <div class="page-header-dash">
+          <h2>🛵 স্বেচ্ছাসেবক কার্যক্রম ও ডেলিভারি</h2>
+          <p>আপনার দায়িত্বপ্রাপ্ত কাজ, কাছাকাছি ডেলিভারি ও পয়েন্ট ট্র্যাকিং</p>
+        </div>
+
+        <div class="stat-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); margin-bottom: 1.5rem;">
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value" id="dashVolPoints">১৮৫</div>
+            <div class="stat-label">স্বেচ্ছাসেবক পয়েন্ট</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-value" id="dashCompletedTasksCount">৬</div>
+            <div class="stat-label">সম্পন্ন ডেলিভারি</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🛵</div>
+            <div class="stat-value" id="dashActiveTasksCount">১</div>
+            <div class="stat-label">চলমান কাজ</div>
+          </div>
+        </div>
+
+        <h3 class="dash-section-title">📍 আপনার দায়িত্বে থাকা চলমান কাজ</h3>
+        <div id="activeVolTasksContainer" style="margin-bottom: 2rem;"></div>
+
+        <h3 class="dash-section-title">🌟 কাছাকাছি নতুন স্বেচ্ছাসেবক কাজ</h3>
+        <div id="nearbyVolTasksContainer"></div>
+      </div>
+
+      <!-- Profile Panel -->
+      <div class="dash-panel" id="panel-profile">
+        <div class="page-header-dash">
+          <h2>👤 আমার প্রোফাইল</h2>
+          <p>আপনার তথ্য আপডেট করুন</p>
+        </div>
+        <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:2rem; border:1px solid var(--border-light); max-width:600px;">
+          <form class="profile-form" onsubmit="saveProfile(event)">
+            <div style="display:flex; align-items:center; gap:1.25rem; margin-bottom:1.5rem;">
+              <div class="user-avatar" style="width:72px; height:72px; font-size:2rem;">ম</div>
+              <div>
+                <div class="user-name" style="font-size:1.1rem;">মো. রহিম উদ্দিন</div>
+                <div class="user-role">ঢাকা · দাতা ও গ্রহীতা</div>
+                <button type="button" class="btn btn-outline btn-sm" style="margin-top:0.5rem;">ছবি পরিবর্তন</button>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label">প্রথম নাম</label>
+                <input type="text" class="form-input" value="মো. রহিম">
+              </div>
+              <div class="form-group">
+                <label class="form-label">পরিবারের নাম</label>
+                <input type="text" class="form-input" value="উদ্দিন">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">মোবাইল নম্বর</label>
+              <input type="tel" class="form-input" value="০১৭১২৩৪৫৬৭৮">
+            </div>
+            <div class="form-group">
+              <label class="form-label">ইমেইল</label>
+              <input type="email" class="form-input" value="rahim@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">বিভাগ</label>
+              <select class="form-input">
+                <option selected>ঢাকা</option>
+                <option>চট্টগ্রাম</option>
+                <option>রাজশাহী</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">এলাকা/থানা</label>
+              <input type="text" class="form-input" value="মিরপুর-১০">
+            </div>
+            <div class="form-group">
+              <label class="form-label">আমার সম্পর্কে</label>
+              <textarea class="form-input" rows="3" placeholder="আপনার কথা বলুন...">আমি সেতুর একজন নিয়মিত দাতা। খাবার ও পোশাক শেয়ার করতে ভালোবাসি।</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">প্রোফাইল সংরক্ষণ</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Points Panel -->
+      <div class="dash-panel" id="panel-points">
+        <div class="page-header-dash">
+          <h2>⭐ পয়েন্ট ও পুরস্কার</h2>
+          <p>আপনার অবদানের পুরস্কার</p>
+        </div>
+        <div style="display:grid; gap:1rem; max-width:700px;">
+          <div style="background:linear-gradient(135deg, var(--primary), var(--primary-dark)); color:#fff; border-radius:var(--radius-xl); padding:2rem; text-align:center;">
+            <div style="font-size:3rem; font-weight:800; margin-bottom:0.3rem;">১৮৫</div>
+            <div style="font-size:1rem; opacity:0.9;">মোট সেতু পয়েন্ট</div>
+            <div style="margin-top:1rem; font-size:0.85rem; opacity:0.75;">পরবর্তী পুরস্কারের জন্য আরও ১৫ পয়েন্ট দরকার</div>
+            <div style="margin-top:0.75rem; background:rgba(255,255,255,0.2); border-radius:4px; height:8px; overflow:hidden;">
+              <div style="width:92%; background:#fff; height:100%; border-radius:4px;"></div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.25rem; border:1px solid var(--border-light); text-align:center;">
+              <div style="font-size:1.5rem; margin-bottom:0.35rem;">🏅</div>
+              <div style="font-weight:700; color:var(--text-main);">সিলভার সদস্য</div>
+              <div style="font-size:0.8rem; color:var(--text-subtle);">আপনার বর্তমান স্তর</div>
+            </div>
+            <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.25rem; border:1px solid var(--border-light); text-align:center;">
+              <div style="font-size:1.5rem; margin-bottom:0.35rem;">🏆</div>
+              <div style="font-weight:700; color:var(--text-main);">গোল্ড সদস্য</div>
+              <div style="font-size:0.8rem; color:var(--text-subtle);">পরবর্তী স্তর (২০০ পয়েন্ট)</div>
+            </div>
+          </div>
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 class="dash-section-title">পয়েন্ট ইতিহাস</h3>
+            <ul class="activity-list" id="pointsHistory"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="dash-panel" id="panel-settings">
+        <div class="page-header-dash">
+          <h2>⚙️ অ্যাকাউন্ট সেটিংস</h2>
+          <p>আপনার পছন্দ ও গোপনীয়তা সেটিং</p>
+        </div>
+        <div style="max-width:600px; display:grid; gap:1rem;">
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 style="font-size:1rem; font-weight:600; margin:0 0 1rem; color:var(--text-main);">🔔 বিজ্ঞপ্তি সেটিংস</h3>
+            <div id="settingsOptions"></div>
+          </div>
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 style="font-size:1rem; font-weight:600; margin:0 0 1rem; color:var(--text-main);">🔒 পাসওয়ার্ড পরিবর্তন</h3>
+            <form onsubmit="changePassword(event)">
+              <div class="profile-form">
+                <div class="form-group"><label class="form-label">বর্তমান পাসওয়ার্ড</label><input type="password" class="form-input" placeholder="বর্তমান পাসওয়ার্ড"></div>
+                <div class="form-group"><label class="form-label">নতুন পাসওয়ার্ড</label><input type="password" class="form-input" placeholder="নতুন পাসওয়ার্ড"></div>
+                <div class="form-group"><label class="form-label">নিশ্চিত করুন</label><input type="password" class="form-input" placeholder="পুনরায় লিখুন"></div>
+                <button type="submit" class="btn btn-primary btn-sm">পাসওয়ার্ড আপডেট</button>
+              </div>
+            </form>
+          </div>
+          <div style="background:var(--danger-bg); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid #fecaca;">
+            <h3 style="font-size:1rem; font-weight:600; margin:0 0 0.5rem; color:var(--danger);">⚠️ বিপজ্জনক এলাকা</h3>
+            <p style="font-size:0.875rem; color:var(--text-muted); margin:0 0 1rem;">অ্যাকাউন্ট মুছলে সব তথ্য স্থায়ীভাবে হারিয়ে যাবে।</p>
+            <button class="btn btn-sm" style="background:var(--danger); color:#fff;" onclick="showToast && showToast('এই ফিচারটি শীঘ্রই আসছে।', \'info\')">অ্যাকাউন্ট মুছুন</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    function showPanel(panelId, linkEl) {
+      document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.sidebar-nav-link').forEach(l => l.classList.remove('active'));
+      const panel = document.getElementById('panel-' + panelId);
+      if (panel) panel.classList.add('active');
+      if (linkEl) linkEl.classList.add('active');
+
+      // Lazy render panels
+      if (panelId === 'myDonations') renderDonations();
+      if (panelId === 'myRequests') renderRequests();
+      if (panelId === 'myBooks') renderMyBooks();
+      if (panelId === 'volunteerTasks') renderVolunteerPanel();
+      if (panelId === 'points') renderPointsHistory();
+      if (panelId === 'settings') renderSettings();
+    }
+
+    function renderDonations() {
+      const list = document.getElementById('donationsList');
+      const items = [
+        { icon:'🍱', title:'বিরিয়ানি ও রুটি', meta:'আহার সেতু · ২ ঘণ্টা আগে', badge:'সক্রিয়', badgeClass:'badge-success' },
+        { icon:'👕', title:'শীতের জ্যাকেট (৩টি)', meta:'বস্ত্র সেতু · ১ দিন আগে', badge:'অনুরোধ', badgeClass:'badge-warning' },
+        { icon:'📚', title:'গণিত বই (SSC)', meta:'গ্রন্থ সেতু · ৩ দিন আগে', badge:'দান করা', badgeClass:'badge-info' },
+        { icon:'🍱', title:'খিচুড়ি — ১০ জনের', meta:'আহার সেতু · ৫ দিন আগে', badge:'সম্পন্ন', badgeClass:'' },
+      ];
+      list.innerHTML = items.map(i => `<li class="activity-item"><span class="activity-icon">${i.icon}</span><div><div class="activity-title">${i.title}</div><div class="activity-meta">${i.meta}</div></div><div class="activity-status"><span class="badge ${i.badgeClass}">${i.badge}</span></div></li>`).join('');
+    }
+
+    function renderRequests() {
+      const list = document.getElementById('requestsList');
+      const items = [
+        { icon:'🍱', title:'খাবার অনুরোধ — রহিম আলীর কাছ থেকে', meta:'আহার সেতু · ১ ঘণ্টা আগে', badge:'অপেক্ষায়', badgeClass:'badge-warning' },
+        { icon:'📚', title:'ইংরেজি বই ধার নেওয়ার অনুরোধ', meta:'গ্রন্থ সেতু · আমি পাঠিয়েছি · ২ দিন আগে', badge:'গৃহীত', badgeClass:'badge-success' },
+        { icon:'👕', title:'শার্ট নেওয়ার অনুরোধ — সিরাজুল', meta:'বস্ত্র সেতু · ৩ দিন আগে', badge:'সম্পন্ন', badgeClass:'' },
+      ];
+      list.innerHTML = items.map(i => `<li class="activity-item"><span class="activity-icon">${i.icon}</span><div><div class="activity-title">${i.title}</div><div class="activity-meta">${i.meta}</div></div><div class="activity-status"><span class="badge ${i.badgeClass}">${i.badge}</span></div></li>`).join('');
+    }
+
+    function renderMyBooks() {
+      const list = document.getElementById('myBooksList');
+      const items = [
+        { icon:'📚', title:'বাংলা সাহিত্য সংকলন', meta:'ধারে দেওয়া · রফিকুল ইসলাম · ফেরত: ১৫ অক্টো', badge:'ধারে আছে', badgeClass:'badge-info' },
+        { icon:'📗', title:'গণিত সমস্যা সমাধান', meta:'বিনামূল্যে দান · ঢাকা', badge:'দান করা', badgeClass:'' },
+        { icon:'📘', title:'ইতিহাস ও সমাজ', meta:'বিনিময়ের জন্য · ইচ্ছুক: ইংরেজি বই', badge:'বিনিময়', badgeClass:'badge-warning' },
+      ];
+      list.innerHTML = items.map(i => `<li class="activity-item"><span class="activity-icon">${i.icon}</span><div><div class="activity-title">${i.title}</div><div class="activity-meta">${i.meta}</div></div><div class="activity-status"><span class="badge ${i.badgeClass}">${i.badge}</span></div></li>`).join('');
+    }
+
+    function renderVolunteerPanel() {
+      const activeContainer = document.getElementById('activeVolTasksContainer');
+      const nearbyContainer = document.getElementById('nearbyVolTasksContainer');
+
+      const activeTasks = [
+        {
+          id: 'VOL-102',
+          title: 'শীতবস্ত্র সংগ্রহ ও কমলাপুর রেল স্টেশনে বিতরণ',
+          type: 'কাপড় ডেলিভারি',
+          pickup: 'লালমাটিয়া ডি ব্লক',
+          drop: 'কমলাপুর রেলওয়ে স্টেশন ভাসমান ছিন্নমূল',
+          items: '২টি উলের ডাবল কম্বল',
+          deadline: 'আজ সন্ধ্যা ৮টা',
+          points: 60,
+          statusText: 'আপনার দায়িত্বে চলমান'
+        }
+      ];
+
+      const nearbyTasks = [
+        {
+          id: 'VOL-101',
+          title: 'সুলতান’স ডাইন হতে খাবার সংগ্রহ',
+          type: 'খাবার সংগ্রহ ও পৌঁছে দেওয়া',
+          pickup: 'ধানমন্ডি ২৭, ঢাকা',
+          drop: 'পথকলি শিশু আশ্রম, রায়েরবাজার',
+          items: '১০ জনের প্যাকেটজাত বিরিয়ানি',
+          deadline: '১ ঘণ্টা ৩০ মিনিট বাকি',
+          points: 40,
+          distance: '১.২ কিমি'
+        },
+        {
+          id: 'VOL-103',
+          title: 'এসএসসি পরীক্ষার বই পৌঁছে দেওয়া',
+          type: 'বই ডেলিভারি',
+          pickup: 'মিরপুর ২, ঢাকা',
+          drop: 'আলোকিত বিদ্যাপীঠ, কাফরুল',
+          items: '৪টি সহায়ক পাঠ্যবই',
+          deadline: 'আগামীকাল দুপুর ১২টা',
+          points: 25,
+          distance: '২.১ কিমি'
+        }
+      ];
+
+      if (activeContainer) {
+        activeContainer.innerHTML = activeTasks.map(t => `
+          <div class="volunteer-task-card" style="background:var(--bg-surface); border:1.5px solid var(--primary-subtle); border-radius:var(--radius-lg); padding:1.25rem 1.5rem; margin-bottom:1rem; box-shadow:var(--shadow-sm);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+              <div>
+                <span class="badge badge-warning" style="font-size:0.75rem; margin-bottom:0.35rem; display:inline-block;">🛵 #${t.id} · ${t.statusText}</span>
+                <h4 style="margin:0; font-size:1.05rem; font-weight:700; color:var(--text-main);">${t.title}</h4>
+              </div>
+              <span style="font-weight:700; color:var(--primary); font-size:1.1rem;">+${t.points} পয়েন্ট</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.6rem; font-size:0.875rem; color:var(--text-muted); margin-bottom:1rem; background:var(--bg-subtle); padding:0.85rem; border-radius:var(--radius-md);">
+              <div>📍 সংগ্রহ: <strong>${t.pickup}</strong></div>
+              <div>🎯 গন্তব্য: <strong>${t.drop}</strong></div>
+              <div>📦 পণ্য: <strong>${t.items}</strong></div>
+              <div>⏱️ সময়সীমা: <strong style="color:var(--danger);">${t.deadline}</strong></div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+              <button class="btn btn-primary btn-sm" onclick="completeDashDelivery(this, '${t.id}', ${t.points})">✅ ডেলিভারি সম্পন্ন হয়েছে</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      if (nearbyContainer) {
+        nearbyContainer.innerHTML = nearbyTasks.map(t => `
+          <div class="volunteer-task-card" style="background:var(--bg-surface); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:1.25rem 1.5rem; margin-bottom:1rem; transition:box-shadow 0.2s;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
+              <div>
+                <span class="badge badge-info" style="font-size:0.75rem; margin-bottom:0.25rem; display:inline-block;">🏷️ ${t.type} · 📍 ${t.distance}</span>
+                <h4 style="margin:0; font-size:1rem; font-weight:700; color:var(--text-main);">${t.title}</h4>
+              </div>
+              <span style="font-weight:700; color:var(--primary); font-size:1.05rem;">+${t.points} পয়েন্ট</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.5rem; font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+              <div>📍 সংগ্রহ: <strong>${t.pickup}</strong></div>
+              <div>🎯 গন্তব্য: <strong>${t.drop}</strong></div>
+              <div>📦 বিবরণ: <strong>${t.items}</strong></div>
+              <div>⏱️ সময়: <strong>${t.deadline}</strong></div>
+            </div>
+            <div style="display:flex; justify-content:flex-end;">
+              <button class="btn btn-outline btn-sm" onclick="acceptDashTask(this, '${t.id}', '${t.title}', ${t.points})">কাজটি গ্রহণ করুন</button>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function completeDashDelivery(btn, id, pts) {
+      btn.disabled = true;
+      btn.textContent = 'ডেলিভারি সম্পন্ন ✅';
+      btn.style.background = 'var(--bg-subtle)';
+      btn.style.color = 'var(--success)';
+      btn.style.borderColor = 'var(--success)';
+      
+      const ptsEl = document.getElementById('dashVolPoints');
+      if (ptsEl) {
+        let current = parseInt(ptsEl.textContent.replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d)), 10) || 185;
+        ptsEl.textContent = (current + pts).toString();
+      }
+      const doneEl = document.getElementById('dashCompletedTasksCount');
+      if (doneEl) doneEl.textContent = '৭';
+      const actEl = document.getElementById('dashActiveTasksCount');
+      if (actEl) actEl.textContent = '০';
+
+      if (typeof showToast === 'function') {
+        showToast(`অভিনন্দন! #${id} ডেলিভারি সম্পন্ন হয়েছে এবং আপনার প্রোফাইলে +${pts} পয়েন্ট যোগ হয়েছে! 🌟`, 'success');
+      }
+    }
+
+    function acceptDashTask(btn, id, title, pts) {
+      btn.disabled = true;
+      btn.textContent = '✅ গ্রহণ করা হয়েছে';
+      btn.className = 'btn btn-primary btn-sm';
+      const actEl = document.getElementById('dashActiveTasksCount');
+      if (actEl) actEl.textContent = '২';
+
+      if (typeof showToast === 'function') {
+        showToast(`"${title}" কাজটি আপনি গ্রহণ করেছেন। দাতার সাথে যোগাযোগের নম্বর উন্মুক্ত হয়েছে।`, 'success');
+      }
+    }
+
+    function renderPointsHistory() {
+      const list = document.getElementById('pointsHistory');
+      const items = [
+        { icon:'🍱', title:'+২৫ পয়েন্ট — খাবার দান', meta:'২ ঘণ্টা আগে' },
+        { icon:'📚', title:'+১৫ পয়েন্ট — বই শেয়ার', meta:'৩ দিন আগে' },
+        { icon:'👕', title:'+২০ পয়েন্ট — পোশাক দান', meta:'১ সপ্তাহ আগে' },
+        { icon:'⭐', title:'+৫০ পয়েন্ট — মাসের সেরা দাতা', meta:'১ মাস আগে' },
+      ];
+      list.innerHTML = items.map(i => `<li class="activity-item"><span class="activity-icon">${i.icon}</span><div><div class="activity-title">${i.title}</div><div class="activity-meta">${i.meta}</div></div></li>`).join('');
+    }
+
+    function renderSettings() {
+      const container = document.getElementById('settingsOptions');
+      const options = [
+        { label: 'নতুন অনুরোধের বিজ্ঞপ্তি', checked: true },
+        { label: 'অনুরোধ গৃহীত/প্রত্যাখ্যাত', checked: true },
+        { label: 'বই ফেরতের অনুস্মারক', checked: true },
+        { label: 'সিস্টেম আপডেট', checked: false },
+        { label: 'সাপ্তাহিক সারসংক্ষেপ', checked: false },
+      ];
+      container.innerHTML = options.map((o,i) => `<label style="display:flex; justify-content:space-between; align-items:center; padding:0.65rem 0; border-bottom:1px solid var(--border-light); font-size:0.9rem; cursor:pointer;"><span style="color:var(--text-muted);">${o.label}</span><input type="checkbox" ${o.checked?'checked':''} id="setting-${i}" style="width:18px; height:18px; accent-color:var(--primary);"></label>`).join('');
+    }
+
+    function saveProfile(e) {
+      e.preventDefault();
+      showToast && showToast('প্রোফাইল সফলভাবে সংরক্ষিত হয়েছে!', 'success');
+    }
+
+    function changePassword(e) {
+      e.preventDefault();
+      showToast && showToast('পাসওয়ার্ড পরিবর্তন সফল হয়েছে!', 'success');
+    }
+  </script>
+</body>
+</html>

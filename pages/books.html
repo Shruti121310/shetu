@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>গ্রন্থ সেতু — বই দান, ধার ও বিনিময় | সেতু</title>
+  <meta name="description" content="বই সম্পূর্ণ বিনামূল্যে দান করুন, ১৫/৩০ দিনের জন্য ধার নিন অথবা পারস্পরিক বিনিময় করুন। গ্রন্থ সেতু।">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">গ্রন্থ সেতু</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link active">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-pill">২</span>
+          </a>
+
+          <div class="auth-buttons" style="display: flex; gap: 0.5rem;">
+            <a href="login.html" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+          </div>
+
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero Banner -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div>
+          <span class="badge" style="background:#f5f3ff; color:var(--books-color); margin-bottom: 0.5rem;">📚 জ্ঞান বিস্তার নেটওয়ার্ক</span>
+          <h1 class="page-hero-title">গ্রন্থ সেতু</h1>
+          <p class="page-hero-desc">
+            “বই দান করুন, ধার নিন অথবা অন্য বইয়ের সঙ্গে বিনিময় করুন।” একটি বই একাধিক পাঠকের জ্ঞান ভাণ্ডার সমৃদ্ধ করুক।
+          </p>
+        </div>
+        <div class="page-hero-actions">
+          <a href="book-donate.html" class="btn btn-primary btn-lg" style="background-color: var(--books-color); border-color: var(--books-color);">
+            ➕ বই যুক্ত করুন
+          </a>
+          <a href="book-exchange.html" class="btn btn-outline btn-lg">
+            🔄 বই বিনিময়
+          </a>
+          <a href="book-borrow.html" class="btn btn-outline btn-lg">
+            📖 ধার ও সময়সীমা
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content & Tabs -->
+  <main class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+
+    <!-- 3 Modes Tabs (Requirement 21: দান | ধার | বিনিময়) -->
+    <div class="tabs-nav" style="justify-content: center; margin-bottom: 2rem;">
+      <button class="tab-btn books-tab-btn active" data-mode="all">
+        <span>📖 সব বই</span>
+      </button>
+      <button class="tab-btn books-tab-btn" data-mode="donate">
+        <span>🎁 দান (সম্পূর্ণ উপহার)</span>
+      </button>
+      <button class="tab-btn books-tab-btn" data-mode="borrow">
+        <span>⏱️ ধার (১৫ বা ৩০ দিন)</span>
+      </button>
+      <button class="tab-btn books-tab-btn" data-mode="exchange">
+        <span>🔄 বিনিময় (Exchange)</span>
+      </button>
+    </div>
+
+    <!-- Filter Card -->
+    <div class="filter-card">
+      <div class="filter-grid" style="grid-template-columns: 2fr 1fr 1fr auto;">
+        <!-- Search Input -->
+        <div class="form-group search-input-group">
+          <label class="form-label" for="booksSearchInput">বইয়ের নাম, লেখক বা বিষয়</label>
+          <div style="position: relative;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-subtle);">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="booksSearchInput" class="form-control" style="padding-left: 2.4rem;" placeholder="উদা: Clean Code, পদার্থবিজ্ঞান, রবীন্দ্রনাথ...">
+          </div>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="form-group">
+          <label class="form-label" for="booksCategoryFilter">বিষয় / শ্রেণি</label>
+          <select id="booksCategoryFilter" class="form-select">
+            <option value="">সব বিষয়</option>
+            <option value="কম্পিউটার সায়েন্স / প্রোগ্রামিং">কম্পিউটার ও প্রোগ্রামিং</option>
+            <option value="উচ্চ মাধ্যমিক গাইড ও বই">উচ্চ মাধ্যমিক গাইড</option>
+            <option value="বাংলা সাহিত্য ও কবিতা">সাহিত্য ও উপন্যাস</option>
+            <option value="অলিম্পিয়াড ও বিজ্ঞান">বিজ্ঞান ও গণিত</option>
+            <option value="একাডেমিক / টেক্সটবুক">বিশ্ববিদ্যালয় টেক্সটবুক</option>
+          </select>
+        </div>
+
+        <!-- Distance Filter -->
+        <div class="form-group">
+          <label class="form-label" for="booksDistanceFilter">সর্বোচ্চ দূরত্ব</label>
+          <select id="booksDistanceFilter" class="form-select">
+            <option value="999">সব দূরত্ব (সারাদেশ)</option>
+            <option value="1">১ কিলোমিটারের মধ্যে</option>
+            <option value="3">৩ কিলোমিটারের মধ্যে</option>
+            <option value="5">৫ কিলোমিটারের মধ্যে</option>
+          </select>
+        </div>
+
+        <!-- Reset Button -->
+        <div style="display:flex; align-items:flex-end;">
+          <a href="books.html" class="btn btn-outline" title="ফিল্টার রিসেট করুন">
+            🔄 রিসেট
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Books Cards Grid -->
+    <div class="categories-grid" id="booksCardsContainer">
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-img" style="height: 220px;"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-img" style="height: 220px;"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton skeleton-img" style="height: 220px;"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>গ্রন্থ সেতু — বই পড়ি, জ্ঞান ছড়াই, সমৃদ্ধ করি সমাজ।</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/books.js"></script>
+</body>
+</html>

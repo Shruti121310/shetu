@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>বই বিনিময় — গ্রন্থ সেতু | সেতু</title>
+  <meta name="description" content="পারস্পরিক বই বিনিময় ইন্টারফেস। একটি বইয়ের বদলে অন্য বই পড়ার চমৎকার সুযোগ।">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">বই বিনিময় কেন্দ্র</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link active">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-pill">২</span>
+          </a>
+
+          <div class="auth-buttons" style="display: flex; gap: 0.5rem;">
+            <a href="dashboard.html" class="btn btn-outline-primary btn-sm">ড্যাশবোর্ড</a>
+          </div>
+
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div>
+          <span class="badge badge-warning" style="margin-bottom:0.5rem;">🔄 পারস্পরিক বই বিনিময়</span>
+          <h1 class="page-hero-title">বই বিনিময় হাব (Book Exchange)</h1>
+          <p class="page-hero-desc">
+            টাকা ছাড়াই নতুন বই পড়ুন! আপনার পড়া হয়ে যাওয়া বইটি দিয়ে অন্য কারও কাছ থেকে আপনার প্রয়োজনীয় বইটি সংগ্রহ করুন।
+          </p>
+        </div>
+        <a href="books.html" class="btn btn-outline">← গ্রন্থ সেতুতে ফিরুন</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main id="bookExchangeContainer" class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start;">
+      
+      <!-- 1. Incoming Exchange Request Card (Interactive Demo) -->
+      <div>
+        <h3 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main);">
+          📥 আপনার জন্য আসা বিনিময় প্রস্তাব
+        </h3>
+
+        <div id="incomingExchangeCard" class="form-card" style="border: 2px solid #fde68a; background: #fffdf5; transition: all 0.3s ease;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <span class="badge badge-warning">🔄 নতুন প্রস্তাব</span>
+            <span style="font-size: 0.85rem; color: var(--text-subtle);">২৫ মিনিট আগে</span>
+          </div>
+
+          <div style="background: #fff; border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-light); margin-bottom: 1.5rem;">
+            <p style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.6;">
+              <strong>মো: রহিম উল্লাহ</strong> (বাড্ডা, ঢাকা • ২.২ কিমি দূরে) আপনার সঙ্গে বই বিনিময় করতে আগ্রহী।
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.75rem; align-items: center; text-align: center; padding: 1rem; background: var(--bg-subtle); border-radius: var(--radius-md);">
+              <div>
+                <span style="font-size: 0.8rem; color: var(--text-subtle); display: block;">রহিম পেতে চান:</span>
+                <strong style="color: var(--primary-dark); font-size: 0.95rem;">C++ Programming</strong>
+              </div>
+              <div style="font-size: 1.5rem; color: var(--warning);">⇄</div>
+              <div>
+                <span style="font-size: 0.8rem; color: var(--text-subtle); display: block;">বিনিময়ে দিতে চান:</span>
+                <strong style="color: var(--books-color); font-size: 0.95rem;">Database System Concepts</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="exchange-action-buttons" style="display: flex; gap: 1rem;">
+            <button id="exchangeAcceptBtn" class="btn btn-primary btn-lg" style="flex: 1;">
+              ✓ গ্রহণ করুন
+            </button>
+            <button id="exchangeRejectBtn" class="btn btn-outline btn-lg" style="flex: 1;">
+              ✕ প্রত্যাখ্যান করুন
+            </button>
+          </div>
+        </div>
+
+        <!-- Past Completed Exchanges -->
+        <div style="margin-top: 2rem;">
+          <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-muted);">
+            ✅ সম্পন্ন হওয়া পূর্ববর্তী বিনিময়
+          </h4>
+          <div style="background: #fff; border-radius: var(--radius-lg); padding: 1rem 1.25rem; border: 1px solid var(--border-light); font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>সঞ্চয়িতা</strong> ⇄ <strong>লালসালু</strong>
+              <span style="display:block; font-size: 0.8rem; color: var(--text-subtle);">পার্টনার: তানজিলা হক • শোলকবহর</span>
+            </div>
+            <span class="badge badge-success">সফল বিনিময়</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Send New Exchange Request Form -->
+      <div>
+        <h3 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-main);">
+          📤 নতুন বই বিনিময়ের অনুরোধ পাঠান
+        </h3>
+
+        <div class="form-card">
+          <form id="newExchangeForm">
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+              <label class="form-label" for="myBookName">আপনার বই (যা আপনি দিতে চান) <span class="required">*</span></label>
+              <input type="text" id="myBookName" class="form-control" value="C++ Programming (Balagurusamy)" required>
+              <span class="form-hint">আপনার কাছে থাকা যে বইটি অন্যকে দিতে চান।</span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+              <label class="form-label" for="desiredBookName">আপনি যে বইটি চান <span class="required">*</span></label>
+              <input type="text" id="desiredBookName" class="form-control" placeholder="উদা: Database System Concepts অথবা অপারেটিং সিস্টেমস" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+              <label class="form-label" for="exchangePartnerSelect">বইয়ের প্রাপক / বর্তমান মালিক নির্বাচন করুন</label>
+              <select id="exchangePartnerSelect" class="form-select">
+                <option value="rahim">মো: রহিম উল্লাহ (Database System Concepts এর মালিক - বাড্ডা)</option>
+                <option value="mamun">আব্দুল্লাহ আল মামুন (Clean Code এর মালিক - আজিমপুর)</option>
+                <option value="other">অন্য কোনো সাধারণ লিস্টিং</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+              <label class="form-label" for="exchangeNote">বার্তা বা সাক্ষাতের স্থান</label>
+              <textarea id="exchangeNote" class="form-textarea" rows="3" placeholder="উদা: ভাই, আমি বইটির খুব ভালো যত্ন রাখব। নীলক্ষেত মোড় বা ক্যাম্পাসে দেখা করে বিনিময় করা যেতে পারে।"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-secondary btn-block btn-lg">
+              🔄 বিনিময়ের অনুরোধ পাঠান
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>গ্রন্থ সেতু — একটি বইয়ের বিনিময়ে অন্য বই, বাড়ুক জ্ঞানের পরিধি।</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/books.js"></script>
+</body>
+</html>

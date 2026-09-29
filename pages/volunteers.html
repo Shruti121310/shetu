@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>স্বেচ্ছাসেবক — সেতু | সামাজিক সেতুবন্ধন</title>
+  <meta name="description" content="সেতুর স্বেচ্ছাসেবক দলে যোগ দিন। খাবার পৌঁছে দিন, মানুষের পাশে দাঁড়ান এবং পয়েন্ট অর্জন করুন।">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    .volunteer-hero {
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #1d4ed8 100%);
+      color: #fff;
+      padding: 4rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .volunteer-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .volunteer-hero-content { position: relative; z-index: 1; }
+    .volunteer-hero h1 { font-size: 2.75rem; font-weight: 800; margin: 0 0 1rem; }
+    .volunteer-hero p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 2rem; }
+    .volunteer-stats { display: flex; justify-content: center; gap: 3rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .vol-stat { text-align: center; }
+    .vol-stat-num { font-size: 2rem; font-weight: 800; display: block; }
+    .vol-stat-label { font-size: 0.85rem; opacity: 0.8; }
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
+    .benefit-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+    .benefit-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .benefit-icon { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+    .benefit-title { font-weight: 700; font-size: 1rem; color: var(--text-main); margin-bottom: 0.5rem; }
+    .benefit-desc { font-size: 0.875rem; color: var(--text-subtle); line-height: 1.6; }
+    .tasks-section { background: var(--bg-page); padding: 3rem 0; }
+    .task-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 0.75rem;
+      transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .task-card:hover { box-shadow: var(--shadow-md); transform: translateX(4px); }
+    .task-icon { font-size: 2rem; flex-shrink: 0; }
+    .task-title { font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
+    .task-meta { font-size: 0.825rem; color: var(--text-subtle); }
+    .task-points { margin-left: auto; flex-shrink: 0; text-align: right; }
+    .task-points-val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .task-points-label { font-size: 0.75rem; color: var(--text-subtle); }
+    .leaderboard-list { list-style: none; margin: 0; padding: 0; }
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      margin-bottom: 0.6rem;
+    }
+    .rank-badge {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+    .rank-1 { background: #fef3c7; color: #d97706; }
+    .rank-2 { background: #f1f5f9; color: #64748b; }
+    .rank-3 { background: #ffedd5; color: #ea580c; }
+    .rank-other { background: var(--bg-subtle); color: var(--text-subtle); }
+    .vol-name { font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
+    .vol-area { font-size: 0.775rem; color: var(--text-subtle); }
+    .vol-score { margin-left: auto; font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+    .join-form-section { background: linear-gradient(135deg, var(--primary-surface), #fff); padding: 4rem 0; }
+    .join-form-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .form-input { width: 100%; padding: 0.7rem 1rem; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.925rem; font-family: inherit; color: var(--text-main); box-sizing: border-box; transition: border-color 0.2s; }
+    .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+    .availability-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.5rem; }
+    .avail-chip { display: flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.7rem; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.825rem; cursor: pointer; }
+    .avail-chip input[type="checkbox"]:checked + span { color: var(--primary); }
+    @media (max-width: 600px) {
+      .volunteer-hero h1 { font-size: 1.75rem; }
+      .volunteer-stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div><span>সেতু</span><span class="brand-tagline">স্বেচ্ছাসেবক কেন্দ্র</span></div>
+        </a>
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link active">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="notification-pill">২</span>
+          </a>
+          <div class="auth-buttons" style="display:flex;gap:0.5rem;">
+            <a href="login.html" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+          </div>
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="primaryNav">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="volunteer-hero">
+    <div class="container">
+      <div class="volunteer-hero-content">
+        <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.15); padding:0.4rem 1rem; border-radius:20px; font-size:0.85rem; margin-bottom:1.25rem; backdrop-filter:blur(8px);">
+          <span>⭐</span>
+          <span>বাংলাদেশের সেরা সামাজিক স্বেচ্ছাসেবক নেটওয়ার্ক</span>
+        </div>
+        <h1>পরিবর্তনের অংশ হন</h1>
+        <p>আপনার একটু সময় এবং উদ্যম হাজারো মানুষের জীবন আলোকিত করতে পারে। সেতু স্বেচ্ছাসেবক দলে যোগ দিন।</p>
+        <a href="#join-form" class="btn" style="background:#fff; color:var(--primary); font-weight:700; padding:0.85rem 2rem; font-size:1rem; border-radius:var(--radius-lg);">
+          এখনই যোগ দিন ⭐
+        </a>
+
+        <div class="volunteer-stats">
+          <div class="vol-stat"><span class="vol-stat-num">৩,২০০+</span><span class="vol-stat-label">সক্রিয় স্বেচ্ছাসেবক</span></div>
+          <div class="vol-stat"><span class="vol-stat-num">৬৪</span><span class="vol-stat-label">জেলায় উপস্থিতি</span></div>
+          <div class="vol-stat"><span class="vol-stat-num">৮৫,০০০+</span><span class="vol-stat-label">উপকৃত পরিবার</span></div>
+          <div class="vol-stat"><span class="vol-stat-num">১.২ লক্ষ</span><span class="vol-stat-label">বিতরণ সম্পন্ন</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section style="padding:4rem 0; background:#fff;">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:2.5rem;">
+        <h2 style="font-size:1.75rem; font-weight:800; color:var(--text-main); margin:0 0 0.5rem;">কেন স্বেচ্ছাসেবক হবেন?</h2>
+        <p style="color:var(--text-subtle); font-size:0.95rem; max-width:500px; margin:0 auto;">সেতুর সাথে স্বেচ্ছাসেবী কাজের মাধ্যমে নিজেকে এবং সমাজকে এগিয়ে নিন</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <span class="benefit-icon">⭐</span>
+          <div class="benefit-title">পয়েন্ট ও পুরস্কার</div>
+          <div class="benefit-desc">প্রতিটি কাজের জন্য পয়েন্ট অর্জন করুন। পুরস্কার রিডিম করুন।</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🏆</span>
+          <div class="benefit-title">সার্টিফিকেট</div>
+          <div class="benefit-desc">স্বেচ্ছাসেবী কাজের অফিসিয়াল সার্টিফিকেট পান যা CV-তে যোগ করা যাবে।</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🤝</span>
+          <div class="benefit-title">নেটওয়ার্ক তৈরি</div>
+          <div class="benefit-desc">হাজারো সমমনা মানুষের সাথে পরিচিত হওয়ার সুযোগ।</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">💚</span>
+          <div class="benefit-title">সামাজিক প্রভাব</div>
+          <div class="benefit-desc">সরাসরি মানুষের জীবনে ইতিবাচক পরিবর্তন আনার অনুভূতি।</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">📱</span>
+          <div class="benefit-title">ডিজিটাল টুল</div>
+          <div class="benefit-desc">অ্যাপ ও ড্যাশবোর্ডের মাধ্যমে কাজ ট্র্যাক করুন সহজে।</div>
+        </div>
+        <div class="benefit-card">
+          <span class="benefit-icon">🎓</span>
+          <div class="benefit-title">দক্ষতা উন্নয়ন</div>
+          <div class="benefit-desc">লজিস্টিক্স, কমিউনিটি ম্যানেজমেন্ট ও নেতৃত্বের প্রশিক্ষণ।</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Available Tasks -->
+  <section class="tasks-section">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-main); margin:0 0 0.25rem;">📋 চলমান কাজ</h2>
+          <p style="color:var(--text-subtle); margin:0; font-size:0.875rem;">আপনার এলাকায় স্বেচ্ছাসেবী কাজের সুযোগ</p>
+        </div>
+        <select class="btn btn-outline btn-sm" style="font-family:inherit; cursor:pointer;">
+          <option>সব এলাকা</option>
+          <option>ঢাকা</option>
+          <option>চট্টগ্রাম</option>
+          <option>রাজশাহী</option>
+        </select>
+      </div>
+
+      <div id="volunteerTasksList"></div>
+    </div>
+  </section>
+
+  <!-- Leaderboard -->
+  <section style="padding:4rem 0; background:#fff;">
+    <div class="container" style="max-width: 700px;">
+      <div style="text-align:center; margin-bottom:2rem;">
+        <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-main); margin:0 0 0.25rem;">🏆 শীর্ষ স্বেচ্ছাসেবকরা</h2>
+        <p style="color:var(--text-subtle); font-size:0.875rem;">এই মাসের সেরা অবদানকারীরা</p>
+      </div>
+      <ul class="leaderboard-list" id="leaderboardList"></ul>
+    </div>
+  </section>
+
+  <!-- Join Form -->
+  <section class="join-form-section" id="join-form">
+    <div class="container">
+      <div class="join-form-card">
+        <div style="text-align:center; margin-bottom:2rem;">
+          <div style="font-size:2.5rem; margin-bottom:0.5rem;">⭐</div>
+          <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-main); margin:0 0 0.25rem;">স্বেচ্ছাসেবক হিসেবে নিবন্ধন করুন</h2>
+          <p style="color:var(--text-subtle); font-size:0.875rem;">আপনার তথ্য দিন, আমরা যোগাযোগ করব।</p>
+        </div>
+        <form id="volunteerForm" onsubmit="handleVolunteerSubmit(event)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label class="form-label">পুরো নাম *</label>
+              <input type="text" class="form-input" placeholder="আপনার নাম" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">মোবাইল নম্বর *</label>
+              <input type="tel" class="form-input" placeholder="০১XXXXXXXXX" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ইমেইল</label>
+            <input type="email" class="form-input" placeholder="example@gmail.com">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+              <label class="form-label">বিভাগ *</label>
+              <select class="form-input" required>
+                <option value="">বিভাগ নির্বাচন</option>
+                <option>ঢাকা</option><option>চট্টগ্রাম</option><option>রাজশাহী</option>
+                <option>খুলনা</option><option>বরিশাল</option><option>সিলেট</option>
+                <option>রংপুর</option><option>ময়মনসিংহ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">এলাকা *</label>
+              <input type="text" class="form-input" placeholder="থানা / উপজেলা" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">কোন ধরনের কাজে আগ্রহী?</label>
+            <div class="availability-grid">
+              <label class="avail-chip"><input type="checkbox"><span>🍱 খাবার বিতরণ</span></label>
+              <label class="avail-chip"><input type="checkbox"><span>👕 পোশাক সংগ্রহ</span></label>
+              <label class="avail-chip"><input type="checkbox"><span>📚 বই ডেলিভারি</span></label>
+              <label class="avail-chip"><input type="checkbox"><span>🚗 পরিবহন সহায়তা</span></label>
+              <label class="avail-chip"><input type="checkbox"><span>📞 ফোন সাপোর্ট</span></label>
+              <label class="avail-chip"><input type="checkbox"><span>📋 ডেটা এন্ট্রি</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">আপনার সপ্তাহিক উপলব্ধ সময়</label>
+            <select class="form-input">
+              <option>২-৫ ঘণ্টা</option>
+              <option>৫-১০ ঘণ্টা</option>
+              <option>১০-২০ ঘণ্টা</option>
+              <option>২০+ ঘণ্টা (ফুলটাইম)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">নিজের সম্পর্কে কিছু বলুন</label>
+            <textarea class="form-input" rows="3" placeholder="কেন স্বেচ্ছাসেবী কাজ করতে চান? কোনো পূর্ব অভিজ্ঞতা আছে?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:0.85rem; font-size:1rem;" id="volunteerSubmitBtn">
+            স্বেচ্ছাসেবী আবেদন জমা দিন 🌉
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:2rem; padding:2.5rem 0; border-bottom:1px solid var(--border-light);">
+        <div>
+          <div style="font-size:1.4rem; font-weight:800; color:var(--text-main); margin-bottom:0.5rem;">🌉 সেতু</div>
+          <p style="font-size:0.85rem; color:var(--text-subtle); line-height:1.7; margin:0;">অপচয়মুক্ত মানবিক বাংলাদেশ গড়ার প্রত্যয়ে।</p>
+        </div>
+        <div>
+          <div style="font-weight:600; color:var(--text-main); margin-bottom:0.75rem; font-size:0.9rem;">প্ল্যাটফর্ম</div>
+          <ul style="list-style:none;margin:0;padding:0;display:grid;gap:0.4rem;">
+            <li><a href="food.html" style="color:var(--text-subtle);font-size:0.875rem;text-decoration:none;">🍱 আহার সেতু</a></li>
+            <li><a href="clothes.html" style="color:var(--text-subtle);font-size:0.875rem;text-decoration:none;">👕 বস্ত্র সেতু</a></li>
+            <li><a href="books.html" style="color:var(--text-subtle);font-size:0.875rem;text-decoration:none;">📚 গ্রন্থ সেতু</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom"><div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div></div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    const volunteerTasks = [
+      { icon: '🍱', title: 'ইফতার বিতরণ সহায়তা', area: 'মিরপুর, ঢাকা', date: 'প্রতিদিন বিকাল ৫টা', points: 30, slots: 5, urgent: true },
+      { icon: '👕', title: 'শীতবস্ত্র সংগ্রহ ও বাছাই', area: 'মোহাম্মদপুর, ঢাকা', date: 'শুক্র ও শনিবার সকাল', points: 20, slots: 8, urgent: false },
+      { icon: '📚', title: 'বই ডেলিভারি — উত্তরা থেকে গুলশান', area: 'উত্তরা, ঢাকা', date: 'যেকোনো দিন', points: 15, slots: 3, urgent: false },
+      { icon: '🚗', title: 'হুইলচেয়ার ব্যবহারকারীদের জন্য বিতরণ', area: 'লালমাটিয়া, ঢাকা', date: 'শনিবার সকাল ১০টা', points: 40, slots: 2, urgent: true },
+      { icon: '📋', title: 'অনলাইন তালিকা যাচাই ও ডেটা এন্ট্রি', area: 'দূরবর্তী (অনলাইন)', date: 'যেকোনো সময়', points: 10, slots: 15, urgent: false },
+    ];
+
+    const leaderboardData = [
+      { rank: 1, name: 'নাফিসা আক্তার', area: 'মিরপুর, ঢাকা', points: 1240, tasks: 48 },
+      { rank: 2, name: 'রাকিবুল হাসান', area: 'চট্টগ্রাম', points: 1085, tasks: 42 },
+      { rank: 3, name: 'সাবিনা পারভীন', area: 'রাজশাহী', points: 950, tasks: 37 },
+      { rank: 4, name: 'মো. জাহাঙ্গীর আলম', area: 'খুলনা', points: 820, tasks: 31 },
+      { rank: 5, name: 'তানজিলা ইসলাম', area: 'মোহাম্মদপুর, ঢাকা', points: 755, tasks: 29 },
+    ];
+
+    function renderTasks() {
+      const container = document.getElementById('volunteerTasksList');
+      container.innerHTML = volunteerTasks.map(t => `
+        <div class="task-card">
+          <span class="task-icon">${t.icon}</span>
+          <div style="flex:1;">
+            <div class="task-title">${t.icon.replace(t.icon,'')} ${t.title} ${t.urgent ? '<span class="badge" style="background:var(--danger-bg);color:var(--danger);font-size:0.72rem;">জরুরি</span>' : ''}</div>
+            <div class="task-meta">📍 ${t.area} · 🗓️ ${t.date} · 👥 ${t.slots} জায়গা বাকি</div>
+          </div>
+          <div class="task-points">
+            <div class="task-points-val">+${t.points}</div>
+            <div class="task-points-label">পয়েন্ট</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="acceptTask(this, '${t.title}')">গ্রহণ করুন</button>
+        </div>
+      `).join('');
+    }
+
+    function renderLeaderboard() {
+      const list = document.getElementById('leaderboardList');
+      list.innerHTML = leaderboardData.map(v => `
+        <li class="leaderboard-item">
+          <div class="rank-badge rank-${v.rank <= 3 ? v.rank : 'other'}">${v.rank <= 3 ? ['🥇','🥈','🥉'][v.rank-1] : v.rank}</div>
+          <div>
+            <div class="vol-name">${v.name}</div>
+            <div class="vol-area">📍 ${v.area} · ${v.tasks}টি কাজ সম্পন্ন</div>
+          </div>
+          <div class="vol-score">⭐ ${v.points}</div>
+        </li>
+      `).join('');
+    }
+
+    function acceptTask(btn, taskTitle) {
+      btn.textContent = '✅ গৃহীত';
+      btn.disabled = true;
+      btn.style.background = 'var(--success-bg)';
+      btn.style.color = 'var(--success)';
+      showToast && showToast(`"${taskTitle}" কাজটি গ্রহণ করা হয়েছে! বিস্তারিত SMS-এ আসবে।`, 'success');
+    }
+
+    function handleVolunteerSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('volunteerSubmitBtn');
+      btn.textContent = 'আবেদন জমা হচ্ছে...';
+      btn.disabled = true;
+      setTimeout(() => {
+        showToast && showToast('আবেদন সফলভাবে জমা হয়েছে! ২৪ ঘণ্টার মধ্যে যোগাযোগ করা হবে। 🎉', 'success');
+        btn.textContent = '✅ আবেদন জমা হয়েছে';
+      }, 1200);
+    }
+
+    renderTasks();
+    renderLeaderboard();
+  </script>
+</body>
+</html>

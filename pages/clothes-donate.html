@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পোশাক দান করুন — বস্ত্র সেতু | সেতু</title>
+  <meta name="description" content="আপনার কাছে থাকা বাড়তি বা অপ্রয়োজনীয় কিন্তু ব্যবহারযোগ্য কাপড় দান করুন।">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">পোশাক পোস্ট করুন</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link active">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-pill">২</span>
+          </a>
+
+          <div class="auth-buttons" style="display: flex; gap: 0.5rem;">
+            <a href="login.html" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+          </div>
+
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div>
+          <span class="badge badge-info" style="margin-bottom:0.5rem;">👕 বস্ত্র দান ফর্ম</span>
+          <h1 class="page-hero-title">ব্যবহারযোগ্য পোশাক দান করুন</h1>
+          <p class="page-hero-desc">
+            আলমারিতে পড়ে থাকা অপ্রয়োজনীয় কিন্তু ভালো পোশাকটি দিয়ে অন্য কারও শীত বা লজ্জা নিবারণে সহায়তা করুন।
+          </p>
+        </div>
+        <a href="clothes.html" class="btn btn-outline">← ফিরে যান</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donation Form Container -->
+  <main class="container container-narrow" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    <div class="form-card">
+      <form id="clothesDonateForm">
+
+        <div class="form-grid">
+          <!-- Title -->
+          <div class="form-group form-grid-full">
+            <label class="form-label" for="clothesTitle">পোশাকের নাম <span class="required">*</span></label>
+            <input type="text" id="clothesTitle" class="form-control" placeholder="উদা: শীতের উষ্ণ জ্যাকেট / স্কুল ড্রেস" required>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label class="form-label" for="clothesCat">পোশাকের ধরন <span class="required">*</span></label>
+            <select id="clothesCat" class="form-select" required>
+              <option value="">নির্বাচন করুন</option>
+              <option value="শীতের পোশাক" selected>শীতের পোশাক (জ্যাকেট/সোয়েটার/কম্বল)</option>
+              <option value="সাধারণ পোশাক">সাধারণ পোশাক (শার্ট/প্যান্ট/টি-শার্ট)</option>
+              <option value="স্কুল/কলেজের পোশাক">স্কুল/কলেজের পোশাক</option>
+              <option value="ঐতিহ্যবাহী পোশাক">ঐতিহ্যবাহী পোশাক (শাড়ি/পাঞ্জাবি)</option>
+              <option value="অন্যান্য">অন্যান্য</option>
+            </select>
+          </div>
+
+          <!-- Target -->
+          <div class="form-group">
+            <label class="form-label" for="clothesFor">কার জন্য উপযুক্ত? <span class="required">*</span></label>
+            <select id="clothesFor" class="form-select" required>
+              <option value="শিশু">শিশু</option>
+              <option value="পুরুষ">পুরুষ</option>
+              <option value="নারী">নারী</option>
+              <option value="সাধারণ" selected>সাধারণ (যেকোনো)</option>
+            </select>
+          </div>
+
+          <!-- Age -->
+          <div class="form-group">
+            <label class="form-label" for="clothesAge">বয়স সীমা</label>
+            <input type="text" id="clothesAge" class="form-control" placeholder="উদা: ৮-১২ বছর / প্রাপ্তবয়স্ক">
+          </div>
+
+          <!-- Size -->
+          <div class="form-group">
+            <label class="form-label" for="clothesSize">সাইজ <span class="required">*</span></label>
+            <select id="clothesSize" class="form-select" required>
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M" selected>M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+              <option value="ফ্রি সাইজ">ফ্রি সাইজ</option>
+            </select>
+          </div>
+
+          <!-- Condition -->
+          <div class="form-group">
+            <label class="form-label" for="clothesCondition">পোশাকের অবস্থা <span class="required">*</span></label>
+            <select id="clothesCondition" class="form-select" required>
+              <option value="নতুন">নতুন (ব্যবহার করা হয়নি)</option>
+              <option value="ভালো" selected>ভালো (পরিষ্কার ও পরিপাটি)</option>
+              <option value="মোটামুটি ভালো">মোটামুটি ভালো (ছেঁড়া বা দাগ নেই)</option>
+            </select>
+          </div>
+
+          <!-- Quantity -->
+          <div class="form-group">
+            <label class="form-label" for="clothesQuantity">পরিমাণ <span class="required">*</span></label>
+            <input type="text" id="clothesQuantity" class="form-control" placeholder="উদা: ১ টি / ৩ জোড়া" required>
+          </div>
+
+          <!-- Image Upload Box -->
+          <div class="form-group form-grid-full">
+            <label class="form-label">পোশাকের ছবি</label>
+            <div class="file-upload-box" onclick="document.getElementById('clothesImgInput').click()">
+              <input type="file" id="clothesImgInput" accept="image/*" style="display: none;">
+              <span style="font-size: 2.25rem; display:block; margin-bottom: 0.5rem;">👕</span>
+              <strong style="color: var(--clothes-color);">পোশাকের পরিচ্ছন্ন ছবি আপলোড করুন</strong>
+              <p style="font-size: 0.85rem; color: var(--text-subtle); margin-top: 0.25rem;">
+                ধোয়া ও পরিষ্কার কাপড়ের ছবি দিলে মানুষের গ্রহণ করা সহজ হয়।
+              </p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group form-grid-full">
+            <label class="form-label" for="clothesDesc">বিবরণ</label>
+            <textarea id="clothesDesc" class="form-textarea" rows="3" placeholder="পোশাকটির কোনো বিশেষ মাপ বা তথ্য থাকলে লিখুন..."></textarea>
+          </div>
+
+          <!-- Location -->
+          <div class="form-group form-grid-full">
+            <label class="form-label" for="clothesLocation">সংগ্রহের স্থান / সম্পূর্ণ ঠিকানা <span class="required">*</span></label>
+            <input type="text" id="clothesLocation" class="form-control" placeholder="উদা: বনশ্রী ব্লক সি, রোড #২, ঢাকা" required>
+          </div>
+
+          <!-- Delivery Method Selection -->
+          <div class="form-group form-grid-full">
+            <label class="form-label">সংগ্রহ / ডেলিভারি পদ্ধতি <span class="required">*</span></label>
+            <div class="delivery-options-group">
+              <label class="delivery-radio-card active">
+                <input type="radio" name="clothesDeliveryMethod" value="pickup" checked>
+                <div class="delivery-card-icon">🚶</div>
+                <div class="delivery-card-title">নিজে সংগ্রহ</div>
+                <div class="delivery-card-desc">গ্রহীতা নিজে এসে নির্দিষ্ট স্থান থেকে সংগ্রহ করবেন।</div>
+              </label>
+
+              <label class="delivery-radio-card">
+                <input type="radio" name="clothesDeliveryMethod" value="volunteer">
+                <div class="delivery-card-icon">🤝</div>
+                <div class="delivery-card-title">স্বেচ্ছাসেবকের মাধ্যমে</div>
+                <div class="delivery-card-desc">কাছাকাছি কোনো স্বেচ্ছাসেবক সংগ্রহ করে পৌঁছে দেবেন।</div>
+              </label>
+
+              <label class="delivery-radio-card">
+                <input type="radio" name="clothesDeliveryMethod" value="paid">
+                <div class="delivery-card-icon">🚚</div>
+                <div class="delivery-card-title">পেইড ডেলিভারি</div>
+                <div class="delivery-card-desc">কুরিয়ার বা ডেলিভারি সার্ভিসের মাধ্যমে পাঠানো হবে।</div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 1rem;">
+          <a href="clothes.html" class="btn btn-outline">বাতিল</a>
+          <button type="submit" class="btn btn-primary btn-lg" style="background-color: var(--clothes-color); border-color: var(--clothes-color);">
+            👕 কাপড় দান করুন
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>বস্ত্র সেতু — মানুষের পাশে মানুষের স্নেহস্পর্শ।</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/clothes.js"></script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আমাদের সম্পর্কে — সেতু | সামাজিক সেতুবন্ধন</title>
+  <meta name="description" content="সেতু প্ল্যাটফর্মের লক্ষ্য, মিশন, দল ও যোগাযোগের তথ্য জানুন।">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    .about-hero {
+      background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary) 60%, var(--secondary-dark) 100%);
+      color: #fff;
+      padding: 5rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 60px;
+      background: var(--bg-page);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .about-hero h1 { font-size: 3rem; font-weight: 800; margin: 0 0 1rem; }
+    .about-hero p { font-size: 1.15rem; opacity: 0.9; max-width: 650px; margin: 0 auto; line-height: 1.7; }
+    .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+    .mission-text h2 { font-size: 2rem; font-weight: 800; color: var(--text-main); margin: 0 0 1.25rem; }
+    .mission-text p { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 1rem; }
+    .mission-visual {
+      background: linear-gradient(135deg, var(--primary-surface), var(--secondary-subtle));
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      text-align: center;
+      border: 1px solid var(--border-light);
+    }
+    .mission-visual-icon { font-size: 5rem; margin-bottom: 1rem; }
+    .mission-visual-text { font-size: 1.25rem; font-weight: 700; color: var(--text-main); }
+    .mission-visual-sub { font-size: 0.875rem; color: var(--text-subtle); margin-top: 0.5rem; }
+    .values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .value-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .value-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .value-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+    .value-title { font-weight: 700; font-size: 1rem; color: var(--text-main); margin-bottom: 0.4rem; }
+    .value-desc { font-size: 0.845rem; color: var(--text-subtle); line-height: 1.6; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
+    .team-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem 1.25rem;
+      border: 1px solid var(--border-light);
+      text-align: center;
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .team-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; font-weight: 800; color: #fff;
+      margin: 0 auto 0.85rem;
+    }
+    .team-name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
+    .team-role { font-size: 0.8rem; color: var(--text-subtle); }
+    .impact-section { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; padding: 4rem 0; }
+    .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; text-align: center; }
+    .impact-num { font-size: 2.5rem; font-weight: 800; display: block; margin-bottom: 0.25rem; }
+    .impact-label { font-size: 0.875rem; opacity: 0.85; }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 0.75rem; top: 0; bottom: 0; width: 2px; background: var(--border-light); }
+    .timeline-item { position: relative; margin-bottom: 2rem; }
+    .timeline-dot {
+      position: absolute;
+      left: -1.85rem;
+      top: 0.25rem;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid var(--bg-surface);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .timeline-year { font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+    .timeline-title { font-weight: 700; color: var(--text-main); margin-bottom: 0.3rem; }
+    .timeline-desc { font-size: 0.875rem; color: var(--text-subtle); line-height: 1.6; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .contact-info-card { background: var(--bg-surface); border-radius: var(--radius-xl); padding: 2rem; border: 1px solid var(--border-light); }
+    .contact-item { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 1.25rem; }
+    .contact-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .contact-label { font-weight: 600; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.15rem; }
+    .contact-value { font-size: 0.925rem; color: var(--text-main); }
+    .contact-form-card { background: var(--bg-surface); border-radius: var(--radius-xl); padding: 2rem; border: 1px solid var(--border-light); }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.35rem; }
+    .form-input { width: 100%; padding: 0.7rem 1rem; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.925rem; font-family: inherit; color: var(--text-main); box-sizing: border-box; transition: border-color 0.2s; }
+    .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+    @media (max-width: 768px) {
+      .about-hero h1 { font-size: 1.9rem; }
+      .mission-grid, .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <a href="../index.html" class="brand-logo">
+          <div class="brand-icon">🌉</div>
+          <div><span>সেতু</span><span class="brand-tagline">আমাদের সম্পর্কে</span></div>
+        </a>
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="../index.html" class="nav-link">হোম</a></li>
+          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="books.html" class="nav-link">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="about.html" class="nav-link active">আমাদের সম্পর্কে</a></li>
+        </ul>
+        <div class="nav-actions">
+          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="notification-pill">২</span>
+          </a>
+          <div class="auth-buttons" style="display:flex;gap:0.5rem;">
+            <a href="login.html" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+          </div>
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="primaryNav">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="container">
+      <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.15); padding:0.4rem 1rem; border-radius:20px; font-size:0.85rem; margin-bottom:1.5rem; backdrop-filter:blur(8px);">
+        🇧🇩 বাংলাদেশ-কেন্দ্রিক সামাজিক উদ্যোগ
+      </div>
+      <h1>🌉 সেতু</h1>
+      <p>"অপ্রয়োজনীয় তুলে দিন অন্য হাতে, অপচয় রুখি একসাথে।"</p>
+    </div>
+  </section>
+
+  <main style="padding-top:1rem;">
+
+    <!-- Mission & Vision -->
+    <section style="padding:4rem 0; background:var(--bg-page);">
+      <div class="container">
+        <div class="mission-grid">
+          <div class="mission-text">
+            <h2>আমাদের লক্ষ্য ও উদ্দেশ্য</h2>
+            <p>"সেতু" একটি বাংলাদেশ-কেন্দ্রিক সামাজিক প্রভাবভিত্তিক প্ল্যাটফর্ম। আমাদের উদ্দেশ্য হলো মানুষের কাছে থাকা অতিরিক্ত বা অব্যবহৃত কিন্তু ব্যবহারযোগ্য সম্পদ — বিশেষ করে খাবার, কাপড় ও বই — প্রয়োজন আছে এমন মানুষের কাছে পৌঁছে দেওয়া।</p>
+            <p>বাংলাদেশে প্রতিদিন বিপুল পরিমাণ খাদ্য অপচয় হয়, হাজারো ব্যবহারযোগ্য পোশাক ফেলে দেওয়া হয়, এবং বই বালির তলায় পড়ে থাকে — অথচ অনেকের এগুলোর জরুরি প্রয়োজন। সেতু এই ব্যবধান ঘুচিয়ে দিতে চায়।</p>
+            <div style="display:flex; gap:1rem; margin-top:1.5rem; flex-wrap:wrap;">
+              <a href="register.html" class="btn btn-primary">যোগ দিন</a>
+              <a href="volunteers.html" class="btn btn-outline">স্বেচ্ছাসেবক হন</a>
+            </div>
+          </div>
+          <div class="mission-visual">
+            <div class="mission-visual-icon">🌉</div>
+            <div class="mission-visual-text">সম্পদ থেকে অভাব পূরণে সেতুবন্ধন</div>
+            <div class="mission-visual-sub">
+              <div style="margin:1.5rem 0; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; font-size:0.85rem;">
+                <div style="text-align:center;"><div style="font-size:1.75rem;">🏠</div><div>সচ্ছল পরিবার</div></div>
+                <div style="font-size:1.5rem; color:var(--primary);">→🌉→</div>
+                <div style="text-align:center;"><div style="font-size:1.75rem;">🏚️</div><div>প্রয়োজনী পরিবার</div></div>
+              </div>
+              <div style="background:rgba(22,163,74,0.1); padding:0.75rem; border-radius:var(--radius-md); font-size:0.825rem; color:var(--primary-dark);">
+                স্বেচ্ছাসেবকরা মাঝখানে সেতু হিসেবে কাজ করে
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values -->
+    <section style="padding:4rem 0; background:#fff;">
+      <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size:1.75rem; font-weight:800; color:var(--text-main); margin:0 0 0.5rem;">আমাদের মূল্যবোধ</h2>
+          <p style="color:var(--text-subtle); max-width:500px; margin:0 auto; font-size:0.9rem;">এই নীতিগুলো আমাদের প্রতিটি কাজের ভিত্তি</p>
+        </div>
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">🤝</div>
+            <div class="value-title">মানবিকতা</div>
+            <div class="value-desc">প্রতিটি মানুষের মর্যাদা রক্ষা করে সহযোগিতা করা আমাদের প্রধান নীতি।</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🔒</div>
+            <div class="value-title">নিরাপত্তা ও বিশ্বাস</div>
+            <div class="value-desc">যাচাইকৃত ব্যবহারকারী, রেটিং সিস্টেম ও স্বেচ্ছাসেবক নেটওয়ার্ক।</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">⚡</div>
+            <div class="value-title">গতি ও দক্ষতা</div>
+            <div class="value-desc">খাবারের মতো ক্ষণস্থায়ী সম্পদ দ্রুত পৌঁছে দেওয়াই আমাদের লক্ষ্য।</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🌿</div>
+            <div class="value-title">পরিবেশ সচেতনতা</div>
+            <div class="value-desc">অপচয় কমিয়ে পরিবেশ রক্ষায় অবদান রাখা আমাদের দায়িত্ব।</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🏘️</div>
+            <div class="value-title">সম্প্রদায়</div>
+            <div class="value-desc">স্থানীয় প্রতিষ্ঠান ও স্বেচ্ছাসেবকদের সাথে মিলে কাজ করা।</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">📊</div>
+            <div class="value-title">স্বচ্ছতা</div>
+            <div class="value-desc">প্রতিটি লেনদেনের তথ্য উন্মুক্ত ও যাচাইযোগ্য রাখা।</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Numbers -->
+    <section class="impact-section">
+      <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size:1.75rem; font-weight:800; margin:0 0 0.5rem;">আমাদের প্রভাব</h2>
+          <p style="opacity:0.85; font-size:0.9rem;">সেতুর মাধ্যমে এখন পর্যন্ত যা অর্জিত হয়েছে</p>
+        </div>
+        <div class="impact-grid">
+          <div><span class="impact-num">৪৮,৩০০+</span><span class="impact-label">খাবার বিতরণ</span></div>
+          <div><span class="impact-num">১২,৮০০+</span><span class="impact-label">পোশাক বিতরণ</span></div>
+          <div><span class="impact-num">৮,৬০০+</span><span class="impact-label">বই শেয়ার</span></div>
+          <div><span class="impact-num">৩,২০০+</span><span class="impact-label">সক্রিয় স্বেচ্ছাসেবক</span></div>
+          <div><span class="impact-num">৮৫,০০০+</span><span class="impact-label">উপকৃত পরিবার</span></div>
+          <div><span class="impact-num">৬৪ জেলা</span><span class="impact-label">সারাদেশে</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section style="padding:4rem 0; background:var(--bg-page);">
+      <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size:1.75rem; font-weight:800; color:var(--text-main); margin:0 0 0.5rem;">আমাদের দল</h2>
+          <p style="color:var(--text-subtle); font-size:0.9rem;">যারা সেতু তৈরি করেছেন</p>
+        </div>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-avatar" style="background:linear-gradient(135deg,var(--primary),var(--primary-light));">ত</div>
+            <div class="team-name">তানভীর আহমেদ</div>
+            <div class="team-role">প্রতিষ্ঠাতা ও CEO</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background:linear-gradient(135deg,var(--clothes-color),#38bdf8);">ন</div>
+            <div class="team-name">নাফিসা রহমান</div>
+            <div class="team-role">সহ-প্রতিষ্ঠাতা, CTO</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background:linear-gradient(135deg,var(--books-color),#a78bfa);">স</div>
+            <div class="team-name">সাবিনা ইসলাম</div>
+            <div class="team-role">কমিউনিটি ম্যানেজার</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background:linear-gradient(135deg,var(--secondary),var(--secondary-light));">র</div>
+            <div class="team-name">রাকিব হোসেন</div>
+            <div class="team-role">লজিস্টিক্স প্রধান</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background:linear-gradient(135deg,#0891b2,#06b6d4);">ম</div>
+            <div class="team-name">মাহফুজ আলম</div>
+            <div class="team-role">ডিজাইন লিড</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);">জ</div>
+            <div class="team-name">জাহানারা বেগম</div>
+            <div class="team-role">ফিল্ড কোঅর্ডিনেটর</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Journey Timeline -->
+    <section style="padding:4rem 0; background:#fff;">
+      <div class="container" style="max-width:700px;">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size:1.75rem; font-weight:800; color:var(--text-main); margin:0 0 0.5rem;">আমাদের যাত্রা</h2>
+          <p style="color:var(--text-subtle); font-size:0.9rem;">কীভাবে সেতু তৈরি হয়েছে</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">২০২৩ · জানুয়ারি</div>
+            <div class="timeline-title">💡 ধারণার জন্ম</div>
+            <div class="timeline-desc">কোভিড পরবর্তী বাংলাদেশে খাদ্য অপচয় দেখে তানভীর আহমেদের মাথায় সেতুর ধারণা আসে।</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">২০২৩ · জুলাই</div>
+            <div class="timeline-title">🚀 পাইলট লঞ্চ</div>
+            <div class="timeline-desc">ঢাকার মিরপুরে ১০০ জন স্বেচ্ছাসেবক নিয়ে পাইলট প্রকল্প শুরু হয়। প্রথম মাসেই ৫০০ পরিবার উপকৃত।</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">২০২৪ · মার্চ</div>
+            <div class="timeline-title">📱 অ্যাপ ও প্ল্যাটফর্ম</div>
+            <div class="timeline-desc">ওয়েব প্ল্যাটফর্ম ও মোবাইল অ্যাপ লঞ্চ। পোশাক ও বই বিভাগ যুক্ত হয়।</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">২০২৪ · ডিসেম্বর</div>
+            <div class="timeline-title">🏆 জাতীয় স্বীকৃতি</div>
+            <div class="timeline-desc">সেরা সামাজিক উদ্যোগ পুরস্কার অর্জন। ৩২ জেলায় সম্প্রসারণ।</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">২০২৫ · বর্তমান</div>
+            <div class="timeline-title">🌍 সারাদেশে বিস্তার</div>
+            <div class="timeline-desc">৬৪ জেলায় ৩,২০০+ স্বেচ্ছাসেবক। ৮৫,০০০+ পরিবারের কাছে পৌঁছেছে সেতু।</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section style="padding:4rem 0; background:var(--bg-page);" id="contact">
+      <div class="container">
+        <div style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size:1.75rem; font-weight:800; color:var(--text-main); margin:0 0 0.5rem;">📞 যোগাযোগ করুন</h2>
+          <p style="color:var(--text-subtle); font-size:0.9rem;">আমরা সবসময় আপনার পাশে আছি</p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-info-card">
+            <h3 style="font-size:1rem; font-weight:700; color:var(--text-main); margin:0 0 1.25rem;">যোগাযোগের তথ্য</h3>
+            <div class="contact-item">
+              <span class="contact-icon">📍</span>
+              <div><div class="contact-label">ঠিকানা</div><div class="contact-value">১২৩, মিরপুর রোড, ঢাকা-১২১৬, বাংলাদেশ</div></div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📞</span>
+              <div><div class="contact-label">ফোন</div><div class="contact-value">০২-৪৮১১-৫৫৬৬</div></div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📱</span>
+              <div><div class="contact-label">হেল্পলাইন</div><div class="contact-value">16900 (সকাল ৮ — রাত ১০)</div></div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📧</span>
+              <div><div class="contact-label">ইমেইল</div><div class="contact-value">info@shetu.bd</div></div>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">🌐</span>
+              <div><div class="contact-label">ওয়েবসাইট</div><div class="contact-value">www.shetu.bd</div></div>
+            </div>
+            <div style="margin-top:1.25rem; padding-top:1.25rem; border-top:1px solid var(--border-light);">
+              <div style="font-weight:600; font-size:0.875rem; color:var(--text-muted); margin-bottom:0.75rem;">সোশ্যাল মিডিয়া</div>
+              <div style="display:flex; gap:0.75rem;">
+                <a href="#" style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; background:var(--primary-subtle); color:var(--primary); text-decoration:none; font-size:1.1rem;">f</a>
+                <a href="#" style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; background:#e8f4fd; color:#1da1f2; text-decoration:none; font-size:1.1rem;">t</a>
+                <a href="#" style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; background:#fce8f3; color:#e1306c; text-decoration:none; font-size:1.1rem;">ig</a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-form-card">
+            <h3 style="font-size:1rem; font-weight:700; color:var(--text-main); margin:0 0 1.25rem;">বার্তা পাঠান</h3>
+            <form onsubmit="sendMessage(event)">
+              <div class="form-group">
+                <label class="form-label">আপনার নাম *</label>
+                <input type="text" class="form-input" placeholder="পুরো নাম" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ইমেইল *</label>
+                <input type="email" class="form-input" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">বিষয়</label>
+                <select class="form-input">
+                  <option>সাধারণ জিজ্ঞাসা</option>
+                  <option>স্বেচ্ছাসেবক আগ্রহ</option>
+                  <option>সমস্যার অভিযোগ</option>
+                  <option>অংশীদারিত্বের প্রস্তাব</option>
+                  <option>মিডিয়া ও প্রেস</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">বার্তা *</label>
+                <textarea class="form-input" rows="4" placeholder="আপনার বার্তা লিখুন..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">বার্তা পাঠান →</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>অপচয়মুক্ত মানবিক বাংলাদেশের প্রত্যয়ে 🇧🇩</div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function sendMessage(e) {
+      e.preventDefault();
+      showToast && showToast('আপনার বার্তা পাঠানো হয়েছে। ২৪ ঘণ্টার মধ্যে উত্তর দেওয়া হবে। 🎉', 'success');
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সেতু (Shetu) — অপ্রয়োজনীয় তুলে দিন অন্য হাতে, অপচয় রুখি একসাথে</title>
+  <meta name="description" content="সেতু একটি বাংলাদেশ-কেন্দ্রিক সামাজিক প্রভাবভিত্তিক প্ল্যাটফর্ম। অতিরিক্ত খাবার, ব্যবহারযোগ্য কাপড় ও বই প্রয়োজনীয় মানুষের কাছে পৌঁছে দেওয়ার সেতুবন্ধন।">
+
+ <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+<body>
+
+  <!-- Site Header & Navigation -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="প্রধান নেভিগেশন">
+        <!-- Brand Logo -->
+        <a href="index.html" class="brand-logo" aria-label="সেতু হোমপেজ">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span>সেতু</span>
+            <span class="brand-tagline">সামাজিক সেতুবন্ধন</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <ul class="nav-links" id="primaryNav">
+          <li><a href="index.html" class="nav-link active">হোম</a></li>
+          <li><a href="pages/food.html" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="pages/clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="pages/books.html" class="nav-link">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="#how-it-works" class="nav-link">কীভাবে কাজ করে</a></li>
+          <li><a href="pages/volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="pages/about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+        </ul>
+
+        <!-- Nav Right Controls -->
+        <div class="nav-actions">
+          <!-- Notification Icon with Badge -->
+          <a href="pages/notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি দেখুন">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-pill">২</span>
+          </a>
+
+          <!-- Auth Actions (Demo Guest State) -->
+          <div class="auth-buttons" style="display: flex; align-items: center; gap: 0.65rem;">
+            <a href="pages/login.html" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="pages/register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+          </div>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="mobile-menu-btn" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="primaryNav">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="mainContent">
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="badge-lead">
+              <span>🇧🇩</span>
+              <span>অপচয়মুক্ত মানবিক বাংলাদেশের প্রত্যয়</span>
+            </div>
+            <h1 class="hero-title">
+              “অপ্রয়োজনীয় তুলে দিন <span>অন্য হাতে”</span>
+            </h1>
+            <p class="hero-subtitle">
+              খাবার, কাপড় ও বই—আপনার অতিরিক্ত জিনিস পৌঁছে দিন এমন কারও কাছে, যার সত্যিই প্রয়োজন। অপচয় রুখি একসাথে, গড়ি সহানুভূতির সমাজ।
+            </p>
+            <div class="hero-actions">
+              <button class="btn btn-primary btn-lg" onclick="openDonateChoiceModal()">
+                🎁 দান করুন
+              </button>
+              <a href="#exploreCategories" class="btn btn-outline btn-lg">
+                🔍 কাছাকাছি খুঁজুন
+              </a>
+              <button class="btn btn-outline-primary btn-lg" data-support-trigger>
+                💚 সেতুকে সহায়তা করুন
+              </button>
+            </div>
+
+            <!-- Mini Live Stat Pills -->
+            <div class="hero-stats-mini">
+              <div class="hero-stat-item">
+                <span class="hero-stat-number">১,২৫০+</span>
+                <span class="hero-stat-label">সফল দান সম্পন্ন</span>
+              </div>
+              <div class="hero-stat-item">
+                <span class="hero-stat-number">৩২০+</span>
+                <span class="hero-stat-label">সক্রিয় স্বেচ্ছাসেবক</span>
+              </div>
+              <div class="hero-stat-item">
+                <span class="hero-stat-number">১০০%</span>
+                <span class="hero-stat-label">অলাভজনক উদ্যোগ</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Right Visual -->
+          <div class="hero-image-wrapper">
+            <div class="hero-card-visual">
+              <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&auto=format&fit=crop&q=80" alt="খাবার ও সামগ্রী বিতরণ কমিউনিটি" class="hero-main-img">
+              
+              <!-- Floating Notification Pills -->
+              <div class="floating-pill floating-pill-1">
+                <span style="font-size: 1.5rem;">🍱</span>
+                <div>
+                  <strong style="font-size: 0.9rem; display:block; color:var(--text-main);">১০ জনের খাবার বিতরণ</strong>
+                  <span style="font-size: 0.75rem; color:var(--primary-dark);">ধানমন্ডি • ৫ মিনিট আগে</span>
+                </div>
+              </div>
+
+              <div class="floating-pill floating-pill-2">
+                <span style="font-size: 1.5rem;">🤝</span>
+                <div>
+                  <strong style="font-size: 0.9rem; display:block; color:var(--text-main);">স্বেচ্ছাসেবক যুক্ত হয়েছেন</strong>
+                  <span style="font-size: 0.75rem; color:var(--text-subtle);">কুমিল্লা সদর • ৩৪০ পয়েন্ট অর্জিত</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 Main Pillars / Categories Section -->
+    <section class="categories-section" id="exploreCategories">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">সেতুর প্রধান ৩টি স্তম্ভ</span>
+          <h2 class="section-title">যেখানে প্রয়োজন, সেখানেই সেতুবন্ধন</h2>
+          <p class="section-desc">আপনার কাছে যা উদ্বৃত্ত, অন্যের কাছে তা অমূল্য সম্পদ। বেছে নিন আপনার পছন্দের ক্ষেত্রটি:</p>
+        </div>
+
+        <div class="categories-grid">
+          <!-- 1. আহার সেতু -->
+          <article class="category-card cat-food">
+            <div class="cat-icon-box">🍱</div>
+            <h3 class="cat-title">আহার সেতু</h3>
+            <p class="cat-desc">
+              অতিরিক্ত রান্না করা বা প্যাকেটজাত খাবার দ্রুত প্রয়োজনীয় মানুষের কাছে পৌঁছে দিন। খাবার অপচয় রোধে আমরা সবসময় সতর্ক।
+            </p>
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.5rem; font-size:0.88rem; color:var(--text-muted);">
+              <div>✓ রিয়েল-টাইম মেয়াদ কাউন্টডাউন</div>
+              <div>✓ নিরাপদ প্যাকেজিং ও দ্রুত ডেলিভারি</div>
+              <div>✓ কমিউনিটি ও রেস্টুরেন্ট সংযুক্তকরণ</div>
+            </div>
+            <a href="pages/food.html" class="btn btn-primary btn-block">
+              খাবার খুঁজুন →
+            </a>
+          </article>
+
+          <!-- 2. বস্ত্র সেতু -->
+          <article class="category-card cat-clothes">
+            <div class="cat-icon-box">👕</div>
+            <h3 class="cat-title">বস্ত্র সেতু</h3>
+            <p class="cat-desc">
+              ব্যবহারযোগ্য অতিরিক্ত পোশাক অন্য কারও প্রয়োজন মেটাতে দিন। শীতবস্ত্র, বাচ্চাদের কাপড় কিংবা স্কুল ইউনিফর্ম ভাগাভাগি করুন।
+            </p>
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.5rem; font-size:0.88rem; color:var(--text-muted);">
+              <div>✓ শিশু, পুরুষ ও নারীদের আলাদা শ্রেণিবিভাগ</div>
+              <div>✓ সাইজ ও অবস্থার সুনির্দিষ্ট বিবরণ</div>
+              <div>✓ শীতকালীন বিশেষ সহায়তা কার্যক্রম</div>
+            </div>
+            <a href="pages/clothes.html" class="btn btn-outline-primary btn-block" style="border-color: var(--clothes-color); color: var(--clothes-color);">
+              কাপড় খুঁজুন →
+            </a>
+          </article>
+
+          <!-- 3. গ্রন্থ সেতু -->
+          <article class="category-card cat-books">
+            <div class="cat-icon-box">📚</div>
+            <h3 class="cat-title">গ্রন্থ সেতু</h3>
+            <p class="cat-desc">
+              বই দান করুন, ধার নিন অথবা অন্য বইয়ের সঙ্গে বিনিময় করুন। জ্ঞান ছড়িয়ে পড়ুক সবার মাঝে কোনো আর্থিক বাধা ছাড়াই।
+            </p>
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.5rem; font-size:0.88rem; color:var(--text-muted);">
+              <div>✓ ১৫ বা ৩০ দিনের জন্য বই ধার নেওয়ার সুবিধা</div>
+              <div>✓ পারস্পরিক বই বিনিময় (Book Exchange)</div>
+              <div>✓ একাডেমিক ও সাহিত্য গ্রন্থ সংকলন</div>
+            </div>
+            <a href="pages/books.html" class="btn btn-outline-primary btn-block" style="border-color: var(--books-color); color: var(--books-color);">
+              বই খুঁজুন →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works (সেতু কীভাবে কাজ করে) -->
+    <section class="how-it-works-section" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">সহজ ৪টি ধাপ</span>
+          <h2 class="section-title">সেতু কীভাবে কাজ করে?</h2>
+          <p class="section-desc">মাত্র কয়েকটি ক্লিকের মাধ্যমে আপনার উদ্বৃত্ত জিনিসপত্র পৌঁছে দিন সঠিক মানুষের কাছে।</p>
+        </div>
+
+        <div class="steps-grid">
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-number-badge">১</div>
+            <h3 class="step-title">পোস্ট করুন</h3>
+            <p class="step-desc">
+              আপনার অতিরিক্ত খাবার, কাপড় বা বইয়ের তথ্য, ছবি ও অবস্থান দিয়ে একটি সহজ পোস্ট তৈরি করুন।
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card">
+            <div class="step-number-badge">২</div>
+            <h3 class="step-title">সংযোগ তৈরি করুন</h3>
+            <p class="step-desc">
+              কাছাকাছি অবস্থানরত প্রয়োজনীয় মানুষ কিংবা বিশ্বস্ত স্বেচ্ছাসেবকের সঙ্গে স্বয়ংক্রিয় সংযোগ তৈরি হবে।
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-number-badge">৩</div>
+            <h3 class="step-title">পদ্ধতি বেছে নিন</h3>
+            <p class="step-desc">
+              নিজে এসে সংগ্রহ করুন, স্বেচ্ছাসেবকের সাহায্য নিন অথবা পেইড ডেলিভারি সার্ভিস ব্যবহার করুন।
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card">
+            <div class="step-number-badge">৪</div>
+            <h3 class="step-title">পৌঁছে দিন</h3>
+            <p class="step-desc">
+              আপনার দেওয়া উপহারটি কোনো মুখে হাসি ফোটাবে এবং সমাজ থেকে অপচয় রোধে ভূমিকা রাখবে।
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Urgent Food Spotlight (Countdown Demonstration) -->
+    <section style="padding: 4.5rem 0;">
+      <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 2rem; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <span class="badge badge-warning" style="margin-bottom:0.5rem;">⏱️ দ্রুত গ্রহণ করুন</span>
+            <h2 style="font-size: 1.85rem; font-weight: 700; color: var(--text-main);">কাছাকাছি খাবার—মেয়াদ শেষের আগেই পৌঁছে যাক</h2>
+          </div>
+          <a href="pages/food.html" class="btn btn-outline-primary btn-sm">সব খাবার দেখুন →</a>
+        </div>
+
+        <div class="categories-grid" style="grid-template-columns: repeat(3, 1fr);" id="homeFeaturedFoodGrid">
+          <!-- Populated dynamically by home script with live countdowns -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Statistics -->
+    <section class="impact-section">
+      <div class="container">
+        <div class="section-header" style="color: #fff; margin-bottom: 2.5rem;">
+          <span style="color: #86efac; font-weight: 600; text-transform: uppercase;">সামাজিক অর্জন</span>
+          <h2 style="color: #fff; font-size: 2.15rem; font-weight: 700;">আমাদের যৌথ প্রভাব</h2>
+          <p style="color: rgba(255, 255, 255, 0.85);">সাধারণ মানুষের সদিচ্ছা আর স্বেচ্ছাসেবকদের পরিশ্রমে সেতু আজ একটি ভালোবাসার আন্দোলন।</p>
+        </div>
+
+        <div class="impact-grid">
+          <div class="impact-card">
+            <div class="impact-icon">🍱</div>
+            <div class="impact-number">১,২৫০+</div>
+            <div class="impact-label">মোট খাদ্য ও সামগ্রী দান</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-icon">🤝</div>
+            <div class="impact-number">৮৫০+</div>
+            <div class="impact-label">সফল সংযোগ ও বিতরণ</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-icon">🚴</div>
+            <div class="impact-number">৩২০+</div>
+            <div class="impact-label">নিবেদিত স্বেচ্ছাসেবক</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-icon">📚</div>
+            <div class="impact-number">২,৪০০+</div>
+            <div class="impact-label">বই ও পোশাক ভাগাভাগি</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verified Social Donor Spotlight -->
+    <section class="verified-donor-section">
+      <div class="container">
+        <div class="verified-donor-card">
+          <div>
+            <span class="badge-verified-social">🏅 যাচাইকৃত সামাজিক দাতা</span>
+            <h2 style="font-size: 1.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.85rem;">
+              কমিউনিটি ও রেস্টুরেন্ট পার্টনারশিপ
+            </h2>
+            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem;">
+              সুলতান’স ডাইন, আনন্দ বেকারি, হোয়াইট প্যালেসসহ বিভিন্ন দায়িত্বশীল প্রতিষ্ঠান তাদের উদ্বৃত্ত খাদ্য সেতু প্ল্যাটফর্মের মাধ্যমে বিলিয়ে দিচ্ছেন। আপনার রেস্টুরেন্ট বা ক্যাটারিং সার্ভিসকেও যাচাইকৃত দাতা হিসেবে যুক্ত করুন।
+            </p>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+              <a href="pages/register.html?type=donor" class="btn btn-primary">দাতা হিসেবে যুক্ত হন</a>
+              <a href="pages/about.html" class="btn btn-outline">আরও জানুন</a>
+            </div>
+          </div>
+          <div style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md);">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80" alt="রেস্টুরেন্ট খাবার প্যাকেজিং" style="width: 100%; height: 280px; object-fit: cover;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform Sustainability Section -->
+    <section class="sustainability-section">
+      <div class="container">
+        <div class="sustainability-box">
+          <div class="sustainability-text">
+            <h3>🌱 সেতুকে সচল রাখতে সাহায্য করুন</h3>
+            <p>
+              আপনার ইচ্ছায় ছোট একটি অনুদান সেতুর প্রযুক্তিগত রক্ষণাবেক্ষণ, সার্ভার খরচ ও সামাজিক কার্যক্রম নিরবচ্ছিন্ন রাখতে সাহায্য করবে।
+            </p>
+          </div>
+          <div>
+            <button class="btn btn-primary btn-lg" data-support-trigger>
+              💚 সেতুকে সহায়তা করুন
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Choice Modal for Donation -->
+  <div class="modal-backdrop" id="donateChoiceModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">🎁 আপনি কী দান করতে চান?</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="color:var(--text-muted); margin-bottom:1.5rem;">
+          অনুগ্রহ করে নির্বাচন করুন আপনি কোন বিভাগে আপনার উদ্বৃত্ত সম্পদ তুলে দিতে চান:
+        </p>
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+          <a href="pages/food-donate.html" class="btn btn-outline" style="justify-content: flex-start; padding: 1.1rem; border-color: var(--primary);">
+            <span style="font-size: 1.5rem;">🍱</span>
+            <div style="text-align: left; margin-left: 0.5rem;">
+              <strong style="display:block; color:var(--text-main);">খাবার দান করুন (আহার সেতু)</strong>
+              <span style="font-size:0.85rem; color:var(--text-subtle);">রান্না করা খাবার, রুটি, ফলমূল বা প্যাকেট খাবার</span>
+            </div>
+          </a>
+
+          <a href="pages/clothes-donate.html" class="btn btn-outline" style="justify-content: flex-start; padding: 1.1rem; border-color: var(--clothes-color);">
+            <span style="font-size: 1.5rem;">👕</span>
+            <div style="text-align: left; margin-left: 0.5rem;">
+              <strong style="display:block; color:var(--text-main);">পোশাক দান করুন (বস্ত্র সেতু)</strong>
+              <span style="font-size:0.85rem; color:var(--text-subtle);">শীতবস্ত্র, বাচ্চাদের জামা, স্কুল ড্রেস ইত্যাদি</span>
+            </div>
+          </a>
+
+          <a href="pages/book-donate.html" class="btn btn-outline" style="justify-content: flex-start; padding: 1.1rem; border-color: var(--books-color);">
+            <span style="font-size: 1.5rem;">📚</span>
+            <div style="text-align: left; margin-left: 0.5rem;">
+              <strong style="display:block; color:var(--text-main);">বই দান / ধার / বিনিময় করুন (গ্রন্থ সেতু)</strong>
+              <span style="font-size:0.85rem; color:var(--text-subtle);">পাঠ্যবই, সাহিত্য, প্রোগ্রামিং বা অলিম্পিয়াড গাইড</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">🌉</div>
+            <span>সেতু</span>
+          </div>
+          <p class="footer-desc">
+            “অপ্রয়োজনীয় তুলে দিন অন্য হাতে, অপচয় রুখি একসাথে।” সেতু একটি অলাভজনক প্ল্যাটফর্ম যা অভাব ও প্রাচুর্যের মাঝে মানবিক সংযোগ গড়ে তোলে।
+          </p>
+          <div class="footer-social-links">
+            <a href="#" class="footer-social-link" aria-label="Facebook">f</a>
+            <a href="#" class="footer-social-link" aria-label="Twitter">t</a>
+            <a href="#" class="footer-social-link" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">সেবা সমূহ</h4>
+          <ul class="footer-links">
+            <li><a href="pages/food.html" class="footer-link">🍱 আহার সেতু</a></li>
+            <li><a href="pages/clothes.html" class="footer-link">👕 বস্ত্র সেতু</a></li>
+            <li><a href="pages/books.html" class="footer-link">📚 গ্রন্থ সেতু</a></li>
+            <li><a href="pages/volunteers.html" class="footer-link">🤝 স্বেচ্ছাসেবক কার্যক্রম</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">গুরুত্বপূর্ণ লিংক</h4>
+          <ul class="footer-links">
+            <li><a href="pages/about.html" class="footer-link">আমাদের সম্পর্কে</a></li>
+            <li><a href="#how-it-works" class="footer-link">কীভাবে কাজ করে</a></li>
+            <li><a href="pages/notifications.html" class="footer-link">বিজ্ঞপ্তি কেন্দ্র</a></li>
+            <li><a href="pages/admin.html" class="footer-link">অ্যাডমিন ড্যাশবোর্ড</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">যোগাযোগ ও সহায়তা</h4>
+          <ul class="footer-links">
+            <li style="color: #94a3b8; font-size: 0.92rem;">📍 ঢাকা, কুমিল্লা, চট্টগ্রাম ও সারা বাংলাদেশ</li>
+            <li style="color: #94a3b8; font-size: 0.92rem;">📞 হটলাইন: ০১৯০০-০০০০০০</li>
+            <li style="color: #94a3b8; font-size: 0.92rem;">✉️ help@shetu.org.bd</li>
+            <li><button class="btn btn-outline-primary btn-sm" style="margin-top:0.5rem;" data-support-trigger>অনুদানে সাহায্য করুন</button></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© ২০২৬ সেতু। সর্বস্বত্ব সংরক্ষিত।</div>
+        <div>সহানুভূতির সেতুবন্ধনে গঠিত একটি বাংলাদেশ-কেন্দ্রিক উদ্যোগ।</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/countdown.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script>
+    // Home featured food items
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('homeFeaturedFoodGrid');
+      if (container && window.ShetuData) {
+        const top3 = window.ShetuData.foodListings.slice(0, 3);
+        container.innerHTML = top3.map(item => `
+          <article class="item-card food-card" data-id="${item.id}">
+            <div class="card-media-wrapper">
+              <img src="${item.image}" alt="${item.title}" class="card-media-img" loading="lazy">
+              <div class="card-badge-top-left">
+                <span class="status-pill pill-available">${item.statusBangla}</span>
+              </div>
+              <div class="card-badge-top-right" data-expiry-time="${item.expiryTimestamp}"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-meta-top">
+                <span>🏷️ ${item.category}</span>
+                <span>👥 ${item.servingsText}</span>
+              </div>
+              <h3 class="card-title">${item.title}</h3>
+              <p class="card-desc">${item.description}</p>
+              <div class="card-footer">
+                <div class="card-distance">
+                  <span>📍 ${item.distanceText}</span>
+                </div>
+                <a href="pages/food-details.html?id=${item.id}" class="btn btn-primary btn-sm">বিস্তারিত দেখুন</a>
+              </div>
+            </div>
+          </article>
+        `).join('');
+
+        if (window.initCountdowns) {
+          window.initCountdowns();
+        }
+      }
+    });
+
+    function openDonateChoiceModal() {
+      openModal('donateChoiceModal');
+    }
+  </script>
+</body>
+</html>

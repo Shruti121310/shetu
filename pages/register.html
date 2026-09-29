@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>নিবন্ধন — সেতু | সামাজিক সেতুবন্ধন</title>
+  <meta name="description" content="সেতু প্ল্যাটফর্মে নতুন অ্যাকাউন্ট তৈরি করুন। বিনামূল্যে যোগ দিন এবং সমাজের পাশে দাঁড়ান।">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary-surface) 0%, #fff 50%, var(--secondary-subtle) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .auth-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 500px;
+      padding: 2.5rem;
+      border: 1px solid var(--border-light);
+    }
+    .auth-brand {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+    .auth-brand-icon { font-size: 2.5rem; display: block; margin-bottom: 0.4rem; }
+    .auth-brand h1 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.25rem; }
+    .auth-brand p { color: var(--text-subtle); font-size: 0.875rem; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label { display: block; font-weight: 600; font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .form-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-md);
+      font-size: 0.925rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background: var(--bg-surface);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+    }
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.8rem center;
+    }
+    .role-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .role-card {
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .role-card:hover { border-color: var(--primary); background: var(--primary-surface); }
+    .role-card.selected { border-color: var(--primary); background: var(--primary-surface); box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+    .role-card input[type="radio"] { display: none; }
+    .role-icon { font-size: 1.75rem; display: block; margin-bottom: 0.3rem; }
+    .role-label { font-size: 0.875rem; font-weight: 600; color: var(--text-main); display: block; }
+    .role-desc { font-size: 0.775rem; color: var(--text-subtle); }
+    .password-strength { height: 4px; border-radius: 2px; background: var(--border-light); margin-top: 0.4rem; overflow: hidden; }
+    .password-strength-bar { height: 100%; border-radius: 2px; transition: width 0.3s, background 0.3s; width: 0; }
+    .strength-text { font-size: 0.775rem; color: var(--text-subtle); margin-top: 0.3rem; }
+    .terms-check { display: flex; gap: 0.5rem; align-items: flex-start; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .terms-check a { color: var(--primary); }
+    .auth-footer-text { text-align: center; margin-top: 1.25rem; font-size: 0.875rem; color: var(--text-subtle); }
+    .auth-footer-text a { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .home-nav-link { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-subtle); text-decoration: none; margin-bottom: 1rem; width: fit-content; }
+    .home-nav-link:hover { color: var(--primary); }
+    .section-subtitle { font-size: 0.8rem; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; margin-top: 0.5rem; }
+    @media (max-width: 480px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .role-cards { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-page">
+    <div class="auth-card">
+      <a href="../index.html" class="home-nav-link">← হোমপেজে ফিরুন</a>
+
+      <div class="auth-brand">
+        <span class="auth-brand-icon">🌉</span>
+        <h1>নতুন অ্যাকাউন্ট তৈরি</h1>
+        <p>বিনামূল্যে যোগ দিন এবং পরিবর্তনের অংশ হন</p>
+      </div>
+
+      <form id="registerForm" onsubmit="handleRegister(event)">
+
+        <!-- Role Selection -->
+        <div class="section-subtitle">আপনি কীভাবে অংশ নিতে চান?</div>
+        <div class="role-cards">
+          <label class="role-card selected" id="roleCard-donor" onclick="selectRole('donor')">
+            <input type="radio" name="role" value="donor" checked>
+            <span class="role-icon">🤝</span>
+            <span class="role-label">দাতা</span>
+            <span class="role-desc">সম্পদ শেয়ার করি</span>
+          </label>
+          <label class="role-card" id="roleCard-receiver" onclick="selectRole('receiver')">
+            <input type="radio" name="role" value="receiver">
+            <span class="role-icon">🙏</span>
+            <span class="role-label">গ্রহীতা</span>
+            <span class="role-desc">প্রয়োজনে নিই</span>
+          </label>
+          <label class="role-card" id="roleCard-volunteer" onclick="selectRole('volunteer')">
+            <input type="radio" name="role" value="volunteer">
+            <span class="role-icon">⭐</span>
+            <span class="role-label">স্বেচ্ছাসেবক</span>
+            <span class="role-desc">সংযোগ করি</span>
+          </label>
+          <label class="role-card" id="roleCard-both" onclick="selectRole('both')">
+            <input type="radio" name="role" value="both">
+            <span class="role-icon">💚</span>
+            <span class="role-label">উভয়ই</span>
+            <span class="role-desc">দিই ও নিই</span>
+          </label>
+        </div>
+
+        <!-- Personal Info -->
+        <div class="section-subtitle">ব্যক্তিগত তথ্য</div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="firstName">প্রথম নাম *</label>
+            <input type="text" id="firstName" class="form-input" placeholder="মো." required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lastName">পরিবারের নাম *</label>
+            <input type="text" id="lastName" class="form-input" placeholder="রহিম" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regPhone">মোবাইল নম্বর *</label>
+          <input type="tel" id="regPhone" class="form-input" placeholder="০১XXXXXXXXX" required pattern="01[3-9][0-9]{8}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regEmail">ইমেইল ঠিকানা *</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="example@gmail.com" required autocomplete="email">
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="division">বিভাগ</label>
+            <select id="division" class="form-input form-select">
+              <option value="">বিভাগ নির্বাচন</option>
+              <option>ঢাকা</option>
+              <option>চট্টগ্রাম</option>
+              <option>রাজশাহী</option>
+              <option>খুলনা</option>
+              <option>বরিশাল</option>
+              <option>সিলেট</option>
+              <option>রংপুর</option>
+              <option>ময়মনসিংহ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="area">এলাকা</label>
+            <input type="text" id="area" class="form-input" placeholder="থানা / উপজেলা">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="section-subtitle">নিরাপত্তা</div>
+        <div class="form-group">
+          <label class="form-label" for="regPassword">পাসওয়ার্ড *</label>
+          <input type="password" id="regPassword" class="form-input" placeholder="কমপক্ষে ৮ অক্ষর" required minlength="8" oninput="checkPasswordStrength(this.value)">
+          <div class="password-strength"><div class="password-strength-bar" id="strengthBar"></div></div>
+          <div class="strength-text" id="strengthText">পাসওয়ার্ড লিখুন</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirmPassword">পাসওয়ার্ড নিশ্চিত করুন *</label>
+          <input type="password" id="confirmPassword" class="form-input" placeholder="পুনরায় পাসওয়ার্ড লিখুন" required>
+        </div>
+
+        <!-- Terms -->
+        <label class="terms-check">
+          <input type="checkbox" id="termsCheck" required style="margin-top: 2px; flex-shrink: 0;">
+          <span>আমি সেতুর <a href="#">ব্যবহারের শর্তাবলী</a> এবং <a href="#">গোপনীয়তা নীতি</a> পড়েছি এবং সম্মত আছি।</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; font-size:1rem; padding:0.8rem;" id="registerBtn">
+          বিনামূল্যে নিবন্ধন করুন 🌉
+        </button>
+      </form>
+
+      <div class="auth-footer-text">
+        ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="login.html">লগইন করুন</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function selectRole(role) {
+      document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('roleCard-' + role).classList.add('selected');
+    }
+
+    function checkPasswordStrength(val) {
+      const bar = document.getElementById('strengthBar');
+      const text = document.getElementById('strengthText');
+      let strength = 0;
+      if (val.length >= 8) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+      const levels = [
+        { w: '0%', c: 'transparent', t: 'পাসওয়ার্ড লিখুন' },
+        { w: '25%', c: '#dc2626', t: '😟 খুব দুর্বল' },
+        { w: '50%', c: '#d97706', t: '😐 দুর্বল' },
+        { w: '75%', c: '#16a34a', t: '😊 মোটামুটি' },
+        { w: '100%', c: '#15803d', t: '💪 শক্তিশালী' },
+      ];
+      bar.style.width = levels[strength].w;
+      bar.style.background = levels[strength].c;
+      text.textContent = levels[strength].t;
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const pass = document.getElementById('regPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
+      if (pass !== confirm) {
+        showToast && showToast('পাসওয়ার্ড দুটি মিলছে না!', 'error');
+        return;
+      }
+      const btn = document.getElementById('registerBtn');
+      btn.textContent = 'নিবন্ধন হচ্ছে...';
+      btn.disabled = true;
+      setTimeout(() => {
+        showToast && showToast('নিবন্ধন সফল! স্বাগতম সেতু পরিবারে 🎉', 'success');
+        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1800);
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

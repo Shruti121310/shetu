@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>অ্যাডমিন ড্যাশবোর্ড — সেতু</title>
+  <meta name="description" content="সেতু অ্যাডমিন প্যানেল। ব্যবহারকারী, তালিকা ও অভিযোগ পরিচালনা করুন।">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: calc(100vh - 64px);
+    }
+    .admin-sidebar {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    .admin-brand {
+      padding: 0 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 1rem;
+    }
+    .admin-brand-title { font-weight: 800; font-size: 1.1rem; color: #fff; }
+    .admin-brand-sub { font-size: 0.75rem; color: #64748b; }
+    .admin-nav-label { padding: 0.4rem 1.25rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #475569; margin-top: 0.5rem; }
+    .admin-nav-link {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.65rem 1.25rem;
+      font-size: 0.875rem; font-weight: 500;
+      color: #94a3b8;
+      text-decoration: none;
+      transition: all 0.15s;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+    }
+    .admin-nav-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .admin-nav-link.active { color: #fff; background: rgba(22,163,74,0.2); border-left-color: #16a34a; }
+    .admin-content { padding: 2rem; background: var(--bg-page); }
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+    .admin-stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .admin-stat-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-xs);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .admin-stat-icon { font-size: 2rem; flex-shrink: 0; }
+    .admin-stat-val { font-size: 1.75rem; font-weight: 800; color: var(--text-main); line-height: 1; }
+    .admin-stat-label { font-size: 0.775rem; color: var(--text-subtle); font-weight: 500; margin-top: 0.15rem; }
+    .admin-stat-trend { font-size: 0.75rem; font-weight: 600; }
+    .trend-up { color: var(--success); }
+    .trend-down { color: var(--danger); }
+    .data-table-wrap { background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-light); overflow: hidden; box-shadow: var(--shadow-xs); margin-bottom: 2rem; }
+    .data-table-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-light); flex-wrap: wrap; gap: 0.75rem; }
+    .data-table-title { font-weight: 700; font-size: 1rem; color: var(--text-main); }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th { background: var(--bg-subtle); padding: 0.7rem 1rem; text-align: left; font-size: 0.75rem; font-weight: 700; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.05em; }
+    .data-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-light); font-size: 0.875rem; color: var(--text-muted); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--bg-subtle); }
+    .table-action-btns { display: flex; gap: 0.4rem; }
+    .action-btn { padding: 0.3rem 0.65rem; border: 1px solid var(--border-light); background: var(--bg-surface); border-radius: var(--radius-sm); font-size: 0.75rem; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+    .action-btn:hover { background: var(--bg-subtle); }
+    .action-btn.danger { color: var(--danger); border-color: var(--danger-bg); }
+    .action-btn.danger:hover { background: var(--danger-bg); }
+    .action-btn.success { color: var(--success); border-color: var(--success-bg); }
+    .action-btn.success:hover { background: var(--success-bg); }
+    .user-cell { display: flex; align-items: center; gap: 0.65rem; }
+    .user-mini-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .search-input-admin { padding: 0.45rem 0.85rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.85rem; font-family: inherit; color: var(--text-main); min-width: 200px; }
+    .search-input-admin:focus { outline: none; border-color: var(--primary); }
+    .page-header-admin { margin-bottom: 1.75rem; }
+    .page-header-admin h2 { font-size: 1.5rem; font-weight: 700; color: var(--text-main); margin: 0 0 0.2rem; }
+    .page-header-admin p { color: var(--text-subtle); margin: 0; font-size: 0.875rem; }
+    .report-severity { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .sev-high { background: var(--danger-bg); color: var(--danger); }
+    .sev-medium { background: var(--warning-bg); color: var(--warning); }
+    .sev-low { background: var(--info-bg); color: var(--info); }
+    .chart-placeholder {
+      background: linear-gradient(135deg, var(--primary-surface), #fff);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 1px solid var(--border-light);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: flex-end; gap: 0.5rem;
+      height: 180px;
+      overflow: hidden;
+    }
+    .chart-bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      min-height: 20px;
+      background: linear-gradient(180deg, var(--primary-light), var(--primary));
+      transition: height 0.3s ease;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 0.3rem;
+      font-size: 0.65rem; color: #fff; font-weight: 700;
+    }
+    @media (max-width: 768px) {
+      .admin-layout { grid-template-columns: 1fr; }
+      .admin-sidebar { position: static; height: auto; }
+      .admin-content { padding: 1.25rem; }
+      .data-table-wrap { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header" style="background:#0f172a; border-bottom-color: rgba(255,255,255,0.1);">
+    <div class="container">
+      <nav class="navbar">
+        <a href="../index.html" class="brand-logo" style="color:#fff;">
+          <div class="brand-icon">🌉</div>
+          <div>
+            <span style="color:#fff;">সেতু</span>
+            <span class="brand-tagline" style="color:#64748b;">অ্যাডমিন প্যানেল</span>
+          </div>
+        </a>
+        <div class="nav-actions">
+          <span style="font-size:0.8rem; color:#64748b; padding:0.3rem 0.75rem; background:rgba(255,255,255,0.07); border-radius:20px;">🛡️ সুপার অ্যাডমিন</span>
+          <a href="dashboard.html" class="btn btn-outline btn-sm" style="color:#94a3b8; border-color:#334155;">ড্যাশবোর্ড</a>
+          <a href="login.html" class="btn btn-sm" style="background:#dc2626; color:#fff;">লগআউট</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <div class="admin-brand-title">🛡️ অ্যাডমিন</div>
+        <div class="admin-brand-sub">admin@shetu.bd</div>
+      </div>
+
+      <div class="admin-nav-label">প্রধান</div>
+      <a class="admin-nav-link active" onclick="showAdminPanel('overview', this)">📊 সারসংক্ষেপ</a>
+      <a class="admin-nav-link" onclick="showAdminPanel('users', this)">👥 ব্যবহারকারী</a>
+      <a class="admin-nav-link" onclick="showAdminPanel('listings', this)">📋 তালিকা পর্যালোচনা</a>
+      <a class="admin-nav-link" onclick="showAdminPanel('reports', this)">🚩 অভিযোগ</a>
+
+      <div class="admin-nav-label">বিশ্লেষণ</div>
+      <a class="admin-nav-link" onclick="showAdminPanel('analytics', this)">📈 পরিসংখ্যান</a>
+      <a class="admin-nav-link" onclick="showAdminPanel('volunteers_admin', this)">⭐ স্বেচ্ছাসেবক</a>
+
+      <div class="admin-nav-label">সিস্টেম</div>
+      <a class="admin-nav-link" onclick="showAdminPanel('settings_admin', this)">⚙️ সেটিংস</a>
+      <a class="admin-nav-link" style="color:#f87171;" href="../index.html" target="_self">🌐 সাইট দেখুন</a>
+    </aside>
+
+    <!-- Admin Content -->
+    <main class="admin-content">
+
+      <!-- Overview -->
+      <div class="admin-panel active" id="adminPanel-overview">
+        <div class="page-header-admin">
+          <h2>📊 অ্যাডমিন ড্যাশবোর্ড</h2>
+          <p>সেতু প্ল্যাটফর্মের সামগ্রিক চিত্র</p>
+        </div>
+
+        <div class="admin-stat-grid">
+          <div class="admin-stat-card">
+            <span class="admin-stat-icon">👥</span>
+            <div><div class="admin-stat-val">১২,৪৫৭</div><div class="admin-stat-label">মোট ব্যবহারকারী</div><div class="admin-stat-trend trend-up">↑ ১৮% এই মাসে</div></div>
+          </div>
+          <div class="admin-stat-card">
+            <span class="admin-stat-icon">📋</span>
+            <div><div class="admin-stat-val">৩,৮৪২</div><div class="admin-stat-label">সক্রিয় তালিকা</div><div class="admin-stat-trend trend-up">↑ ২৩%</div></div>
+          </div>
+          <div class="admin-stat-card">
+            <span class="admin-stat-icon">✅</span>
+            <div><div class="admin-stat-val">৬৯,৭৫০</div><div class="admin-stat-label">সম্পন্ন বিতরণ</div><div class="admin-stat-trend trend-up">↑ ৩১%</div></div>
+          </div>
+          <div class="admin-stat-card">
+            <span class="admin-stat-icon">🚩</span>
+            <div><div class="admin-stat-val">২৩</div><div class="admin-stat-label">অমীমাংসিত রিপোর্ট</div><div class="admin-stat-trend trend-down">↓ ৫%</div></div>
+          </div>
+          <div class="admin-stat-card">
+            <span class="admin-stat-icon">⭐</span>
+            <div><div class="admin-stat-val">৩,২০০</div><div class="admin-stat-label">সক্রিয় স্বেচ্ছাসেবক</div><div class="admin-stat-trend trend-up">↑ ১২%</div></div>
+          </div>
+          <div class="admin-stat-card">
+            <span class="admin-stat-icon">💚</span>
+            <div><div class="admin-stat-val">৮৫,০০০</div><div class="admin-stat-label">উপকৃত পরিবার</div><div class="admin-stat-trend trend-up">↑ ২৫%</div></div>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light); margin-bottom:1.5rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="font-size:1rem; font-weight:700; color:var(--text-main); margin:0;">মাসিক বিতরণ পরিসংখ্যান</h3>
+            <select style="padding:0.3rem 0.6rem; border:1px solid var(--border-light); border-radius:var(--radius-sm); font-size:0.8rem; font-family:inherit;">
+              <option>২০২৫</option><option>২০২৪</option>
+            </select>
+          </div>
+          <div class="chart-placeholder">
+            <div class="chart-bar" style="height:55%">জান</div>
+            <div class="chart-bar" style="height:65%">ফেব</div>
+            <div class="chart-bar" style="height:48%">মার্চ</div>
+            <div class="chart-bar" style="height:72%">এপ্রিল</div>
+            <div class="chart-bar" style="height:88%">মে</div>
+            <div class="chart-bar" style="height:95%">জুন</div>
+            <div class="chart-bar" style="height:80%;background:linear-gradient(180deg,#fbbf24,#d97706)">জুল</div>
+            <div class="chart-bar" style="height:70%">আগস্ট</div>
+            <div class="chart-bar" style="height:85%">সেপ্ট</div>
+            <div class="chart-bar" style="height:60%;opacity:0.5">অক্টো</div>
+            <div class="chart-bar" style="height:40%;opacity:0.5">নভে</div>
+            <div class="chart-bar" style="height:20%;opacity:0.5">ডিসে</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="data-table-wrap">
+          <div class="data-table-header">
+            <div class="data-table-title">🕐 সাম্প্রতিক কার্যক্রম লগ</div>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>সময়</th><th>ধরন</th><th>বিবরণ</th><th>ব্যবহারকারী</th><th>অবস্থা</th></tr></thead>
+            <tbody id="activityLogTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Users Panel -->
+      <div class="admin-panel" id="adminPanel-users">
+        <div class="page-header-admin">
+          <h2>👥 ব্যবহারকারী ব্যবস্থাপনা</h2>
+          <p>সব নিবন্ধিত ব্যবহারকারী পরিচালনা করুন</p>
+        </div>
+        <div class="data-table-wrap">
+          <div class="data-table-header">
+            <div class="data-table-title">ব্যবহারকারীর তালিকা</div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <input type="search" class="search-input-admin" placeholder="🔍 ব্যবহারকারী খুঁজুন...">
+              <select style="padding:0.45rem 0.75rem; border:1px solid var(--border-light); border-radius:var(--radius-md); font-size:0.85rem; font-family:inherit;">
+                <option>সব ভূমিকা</option><option>দাতা</option><option>গ্রহীতা</option><option>স্বেচ্ছাসেবক</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>ব্যবহারকারী</th><th>ভূমিকা</th><th>এলাকা</th><th>দান</th><th>যোগদান</th><th>অবস্থা</th><th>কার্যক্রম</th></tr></thead>
+              <tbody id="usersTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listings Panel -->
+      <div class="admin-panel" id="adminPanel-listings">
+        <div class="page-header-admin">
+          <h2>📋 তালিকা পর্যালোচনা</h2>
+          <p>পেন্ডিং ও সক্রিয় তালিকাগুলো অনুমোদন বা প্রত্যাখ্যান করুন</p>
+        </div>
+        <div class="data-table-wrap">
+          <div class="data-table-header">
+            <div class="data-table-title">পেন্ডিং তালিকা</div>
+            <div style="display:flex; gap:0.5rem;">
+              <select style="padding:0.45rem 0.75rem; border:1px solid var(--border-light); border-radius:var(--radius-md); font-size:0.85rem; font-family:inherit;">
+                <option>সব বিভাগ</option><option>খাবার</option><option>পোশাক</option><option>বই</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>তালিকা</th><th>বিভাগ</th><th>দাতা</th><th>এলাকা</th><th>জমার তারিখ</th><th>কার্যক্রম</th></tr></thead>
+              <tbody id="listingsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports Panel -->
+      <div class="admin-panel" id="adminPanel-reports">
+        <div class="page-header-admin">
+          <h2>🚩 অভিযোগ ব্যবস্থাপনা</h2>
+          <p>ব্যবহারকারীদের অভিযোগ পর্যালোচনা ও সমাধান করুন</p>
+        </div>
+        <div class="data-table-wrap">
+          <div class="data-table-header">
+            <div class="data-table-title">অমীমাংসিত অভিযোগ</div>
+            <span class="badge badge-danger">২৩টি পেন্ডিং</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>অভিযোগকারী</th><th>কারণ</th><th>বিরুদ্ধে</th><th>গুরুত্ব</th><th>তারিখ</th><th>কার্যক্রম</th></tr></thead>
+              <tbody id="reportsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics -->
+      <div class="admin-panel" id="adminPanel-analytics">
+        <div class="page-header-admin">
+          <h2>📈 বিস্তারিত পরিসংখ্যান</h2>
+          <p>প্ল্যাটফর্মের কার্যক্ষমতা ও প্রভাব পরিমাপ</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 style="font-size:0.95rem; font-weight:700; margin:0 0 1rem; color:var(--text-main);">🍱 আহার সেতু</h3>
+            <div style="display:grid; gap:0.75rem;">
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">মোট তালিকা</span><strong>২,৪৫০</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">সম্পন্ন বিতরণ</span><strong>৪৮,৩০০</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">গড় মেয়াদ (মিনিট)</span><strong>১৮৫</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">সফলতার হার</span><strong style="color:var(--success);">৯২%</strong></div>
+            </div>
+          </div>
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 style="font-size:0.95rem; font-weight:700; margin:0 0 1rem; color:var(--text-main);">👕 বস্ত্র সেতু</h3>
+            <div style="display:grid; gap:0.75rem;">
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">মোট তালিকা</span><strong>৮৬০</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">বিতরণ সম্পন্ন</span><strong>১২,৮০০</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">সবচেয়ে বেশি: বিভাগ</span><strong>শীতবস্ত্র</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">সফলতার হার</span><strong style="color:var(--success);">88%</strong></div>
+            </div>
+          </div>
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 style="font-size:0.95rem; font-weight:700; margin:0 0 1rem; color:var(--text-main);">📚 গ্রন্থ সেতু</h3>
+            <div style="display:grid; gap:0.75rem;">
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">মোট তালিকা</span><strong>৫৩২</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">বিতরণ/ধার</span><strong>৮,৬৫০</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">ধার ফেরত হার</span><strong style="color:var(--success);">৯৫%</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span style="font-size:0.875rem; color:var(--text-muted);">সফলতার হার</span><strong style="color:var(--success);">৯৫%</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Volunteers Admin -->
+      <div class="admin-panel" id="adminPanel-volunteers_admin">
+        <div class="page-header-admin">
+          <h2>⭐ স্বেচ্ছাসেবক ব্যবস্থাপনা</h2>
+          <p>স্বেচ্ছাসেবকদের অনুরোধ পর্যালোচনা ও পয়েন্ট পরিচালনা</p>
+        </div>
+        <div class="data-table-wrap">
+          <div class="data-table-header">
+            <div class="data-table-title">নতুন স্বেচ্ছাসেবক আবেদন</div>
+            <span class="badge badge-warning">৮টি অপেক্ষায়</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>নাম</th><th>এলাকা</th><th>কাজের ধরন</th><th>উপলব্ধ সময়</th><th>আবেদনের তারিখ</th><th>কার্যক্রম</th></tr></thead>
+              <tbody id="volunteersAdminTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Admin -->
+      <div class="admin-panel" id="adminPanel-settings_admin">
+        <div class="page-header-admin">
+          <h2>⚙️ সিস্টেম সেটিংস</h2>
+          <p>প্ল্যাটফর্মের বৈশ্বিক কনফিগারেশন</p>
+        </div>
+        <div style="display:grid; gap:1.25rem; max-width:700px;">
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 style="font-size:0.95rem; font-weight:700; margin:0 0 1rem; color:var(--text-main);">সাধারণ সেটিং</h3>
+            <div style="display:grid; gap:1rem;">
+              <label style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; cursor:pointer;">
+                <span>নতুন নিবন্ধন অনুমতি</span>
+                <input type="checkbox" checked style="width:18px; height:18px; accent-color:var(--primary);">
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; cursor:pointer;">
+                <span>তালিকা স্বয়ংক্রিয় অনুমোদন</span>
+                <input type="checkbox" style="width:18px; height:18px; accent-color:var(--primary);">
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; cursor:pointer;">
+                <span>SMS বিজ্ঞপ্তি সক্রিয়</span>
+                <input type="checkbox" checked style="width:18px; height:18px; accent-color:var(--primary);">
+              </label>
+              <label style="display:flex; justify-content:space-between; align-items:center; font-size:0.9rem; cursor:pointer;">
+                <span>রক্ষণাবেক্ষণ মোড</span>
+                <input type="checkbox" style="width:18px; height:18px; accent-color:var(--primary);">
+              </label>
+            </div>
+          </div>
+          <div style="background:var(--bg-surface); border-radius:var(--radius-lg); padding:1.5rem; border:1px solid var(--border-light);">
+            <h3 style="font-size:0.95rem; font-weight:700; margin:0 0 1rem; color:var(--text-main);">পয়েন্ট সিস্টেম</h3>
+            <div style="display:grid; gap:0.85rem;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.875rem; color:var(--text-muted);">খাবার দানে পয়েন্ট</span>
+                <input type="number" value="25" style="width:80px; padding:0.3rem 0.5rem; border:1px solid var(--border-light); border-radius:6px; text-align:right; font-family:inherit;">
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.875rem; color:var(--text-muted);">পোশাক দানে পয়েন্ট</span>
+                <input type="number" value="20" style="width:80px; padding:0.3rem 0.5rem; border:1px solid var(--border-light); border-radius:6px; text-align:right; font-family:inherit;">
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.875rem; color:var(--text-muted);">বই দানে পয়েন্ট</span>
+                <input type="number" value="15" style="width:80px; padding:0.3rem 0.5rem; border:1px solid var(--border-light); border-radius:6px; text-align:right; font-family:inherit;">
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm" style="margin-top:1rem;" onclick="showToast('সেটিং সংরক্ষিত হয়েছে!', 'success')">সেটিং সংরক্ষণ করুন</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    function showAdminPanel(panelId, linkEl) {
+      document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.admin-nav-link').forEach(l => l.classList.remove('active'));
+      const panel = document.getElementById('adminPanel-' + panelId);
+      if (panel) panel.classList.add('active');
+      if (linkEl) linkEl.classList.add('active');
+      if (panelId === 'users') renderUsersTable();
+      if (panelId === 'listings') renderListingsTable();
+      if (panelId === 'reports') renderReportsTable();
+      if (panelId === 'volunteers_admin') renderVolunteersAdmin();
+    }
+
+    // Activity Log
+    const activityLog = [
+      { time: '৫ মি. আগে', type: '🍱 খাবার', desc: 'নতুন তালিকা যোগ', user: 'রহিম আলী', status: 'সক্রিয়', statusClass: 'badge-success' },
+      { time: '১৫ মি. আগে', type: '🚩 রিপোর্ট', desc: 'অভিযোগ দায়ের', user: 'করিম উদ্দিন', status: 'পেন্ডিং', statusClass: 'badge-warning' },
+      { time: '৩২ মি. আগে', type: '👥 নিবন্ধন', desc: 'নতুন ব্যবহারকারী', user: 'সাবিনা বেগম', status: 'যাচাই', statusClass: 'badge-info' },
+      { time: '১ ঘণ্টা আগে', type: '✅ বিতরণ', desc: 'সফল বিতরণ সম্পন্ন', user: 'নাফিসা আক্তার', status: 'সম্পন্ন', statusClass: '' },
+      { time: '২ ঘণ্টা আগে', type: '📚 বই', desc: 'বই ধার সম্পন্ন', user: 'রাকিব হোসেন', status: 'ধারে', statusClass: 'badge-info' },
+    ];
+
+    document.getElementById('activityLogTable').innerHTML = activityLog.map(l =>
+      `<tr><td style="color:var(--text-subtle);font-size:0.8rem;">${l.time}</td><td>${l.type}</td><td>${l.desc}</td><td>${l.user}</td><td><span class="badge ${l.statusClass}">${l.status}</span></td></tr>`
+    ).join('');
+
+    // Users
+    const usersData = [
+      { name: 'রহিম আলী', initial: 'র', color: '#16a34a', role: 'দাতা', area: 'মিরপুর', donations: 12, joined: '১২ জানু ২০২৫', status: 'সক্রিয়', statusClass: 'badge-success' },
+      { name: 'সাবিনা বেগম', initial: 'স', color: '#0284c7', role: 'গ্রহীতা', area: 'মোহাম্মদপুর', donations: 0, joined: '৩ মার্চ ২০২৫', status: 'সক্রিয়', statusClass: 'badge-success' },
+      { name: 'করিম উদ্দিন', initial: 'ক', color: '#7c3aed', role: 'স্বেচ্ছাসেবক', area: 'উত্তরা', donations: 8, joined: '১৫ ফেব্রু ২০২৫', status: 'সক্রিয়', statusClass: 'badge-success' },
+      { name: 'জাহানারা খান', initial: 'জ', color: '#ea580c', role: 'দাতা', area: 'চট্টগ্রাম', donations: 5, joined: '২২ এপ্রিল ২০২৫', status: 'সাসপেন্ড', statusClass: 'badge-danger' },
+      { name: 'নাফিসা আক্তার', initial: 'ন', color: '#0891b2', role: 'উভয়ই', area: 'রাজশাহী', donations: 34, joined: '৮ জানু ২০২৫', status: 'সক্রিয়', statusClass: 'badge-success' },
+    ];
+
+    function renderUsersTable() {
+      document.getElementById('usersTable').innerHTML = usersData.map(u => `
+        <tr>
+          <td><div class="user-cell"><div class="user-mini-avatar" style="background:${u.color}">${u.initial}</div><div><div style="font-weight:600;color:var(--text-main)">${u.name}</div><div style="font-size:0.75rem;color:var(--text-subtle)">${u.role}</div></div></div></td>
+          <td><span class="badge" style="font-size:0.75rem;">${u.role}</span></td>
+          <td>${u.area}</td>
+          <td>${u.donations}</td>
+          <td style="color:var(--text-subtle);font-size:0.8rem;">${u.joined}</td>
+          <td><span class="badge ${u.statusClass}">${u.status}</span></td>
+          <td>
+            <div class="table-action-btns">
+              <button class="action-btn" onclick="showToast('${u.name}-এর প্রোফাইল খোলা হচ্ছে...', 'info')">দেখুন</button>
+              <button class="action-btn danger" onclick="suspendUser(this, '${u.name}')">সাসপেন্ড</button>
+            </div>
+          </td>
+        </tr>`).join('');
+    }
+
+    const listingsData = [
+      { title: 'বিরিয়ানি — ১৫ জনের', cat: '🍱 খাবার', donor: 'রহিম আলী', area: 'মিরপুর', date: 'আজ সকাল ৯টা' },
+      { title: 'শীতের কোট (৩টি)', cat: '👕 পোশাক', donor: 'করিম উদ্দিন', area: 'উত্তরা', date: 'আজ সকাল ১০টা' },
+      { title: 'গণিত বই (SSC)', cat: '📚 বই', donor: 'নাফিসা আক্তার', area: 'রাজশাহী', date: 'আজ সকাল ১১টা' },
+      { title: 'দই — ২০ পট', cat: '🍱 খাবার', donor: 'সাবিনা বেগম', area: 'মোহাম্মদপুর', date: 'গতকাল' },
+    ];
+
+    function renderListingsTable() {
+      document.getElementById('listingsTable').innerHTML = listingsData.map(l => `
+        <tr>
+          <td style="font-weight:600;color:var(--text-main);">${l.title}</td>
+          <td>${l.cat}</td>
+          <td>${l.donor}</td>
+          <td>${l.area}</td>
+          <td style="color:var(--text-subtle);font-size:0.8rem;">${l.date}</td>
+          <td>
+            <div class="table-action-btns">
+              <button class="action-btn success" onclick="approveListing(this)">অনুমোদন</button>
+              <button class="action-btn danger" onclick="rejectListing(this)">প্রত্যাখ্যান</button>
+            </div>
+          </td>
+        </tr>`).join('');
+    }
+
+    const reportsData = [
+      { reporter: 'রফিক', reason: 'ভুল তথ্য', against: 'খাবার তালিকা #৪৫২', severity: 'medium', date: '১ ঘণ্টা আগে' },
+      { reporter: 'সালমা', reason: 'অনুপযুক্ত বিষয়বস্তু', against: 'ব্যবহারকারী করিম', severity: 'high', date: '৩ ঘণ্টা আগে' },
+      { reporter: 'জামাল', reason: 'স্প্যাম', against: 'পোশাক তালিকা #৮৯', severity: 'low', date: '৫ ঘণ্টা আগে' },
+    ];
+
+    function renderReportsTable() {
+      document.getElementById('reportsTable').innerHTML = reportsData.map(r => `
+        <tr>
+          <td>${r.reporter}</td>
+          <td>${r.reason}</td>
+          <td style="color:var(--text-muted);">${r.against}</td>
+          <td><span class="report-severity sev-${r.severity}">${r.severity === 'high' ? '🔴 উচ্চ' : r.severity === 'medium' ? '🟡 মাঝারি' : '🔵 কম'}</span></td>
+          <td style="color:var(--text-subtle);font-size:0.8rem;">${r.date}</td>
+          <td>
+            <div class="table-action-btns">
+              <button class="action-btn success" onclick="resolveReport(this)">সমাধান</button>
+              <button class="action-btn danger" onclick="showToast('বিষয়বস্তু সরানো হয়েছে।', 'success')">সরান</button>
+            </div>
+          </td>
+        </tr>`).join('');
+    }
+
+    const volunteersApplicants = [
+      { name: 'শফিকুল ইসলাম', area: 'গাজীপুর', tasks: 'খাবার বিতরণ', time: '৫-১০ ঘণ্টা', date: 'আজ' },
+      { name: 'পারভীন আক্তার', area: 'চট্টগ্রাম', tasks: 'পোশাক সংগ্রহ', time: '২-৫ ঘণ্টা', date: 'গতকাল' },
+      { name: 'মাহবুব হোসেন', area: 'খুলনা', tasks: 'বই ডেলিভারি', time: '১০+ ঘণ্টা', date: '২ দিন আগে' },
+    ];
+
+    function renderVolunteersAdmin() {
+      document.getElementById('volunteersAdminTable').innerHTML = volunteersApplicants.map(v => `
+        <tr>
+          <td style="font-weight:600;color:var(--text-main);">${v.name}</td>
+          <td>${v.area}</td>
+          <td>${v.tasks}</td>
+          <td>${v.time}</td>
+          <td style="color:var(--text-subtle);font-size:0.8rem;">${v.date}</td>
+          <td>
+            <div class="table-action-btns">
+              <button class="action-btn success" onclick="approveVolunteer(this, '${v.name}')">অনুমোদন</button>
+              <button class="action-btn danger" onclick="showToast('আবেদন প্রত্যাখ্যান করা হয়েছে।', 'error')">প্রত্যাখ্যান</button>
+            </div>
+          </td>
+        </tr>`).join('');
+    }
+
+    function suspendUser(btn, name) {
+      const row = btn.closest('tr');
+      const statusCell = row.querySelector('.badge');
+      statusCell.textContent = 'সাসপেন্ড';
+      statusCell.className = 'badge badge-danger';
+      btn.textContent = 'পুনর্বহাল';
+      btn.className = 'action-btn success';
+      btn.onclick = () => {
+        statusCell.textContent = 'সক্রিয়'; statusCell.className = 'badge badge-success';
+        btn.textContent = 'সাসপেন্ড'; btn.className = 'action-btn danger';
+        btn.onclick = () => suspendUser(btn, name);
+        showToast && showToast(`${name}-এর অ্যাকাউন্ট পুনর্বহাল।`, 'success');
+      };
+      showToast && showToast(`${name}-এর অ্যাকাউন্ট সাসপেন্ড করা হয়েছে।`, 'error');
+    }
+
+    function approveListing(btn) {
+      const row = btn.closest('tr');
+      row.style.opacity = '0.5';
+      showToast && showToast('তালিকা অনুমোদিত হয়েছে!', 'success');
+      setTimeout(() => row.remove(), 1000);
+    }
+
+    function rejectListing(btn) {
+      const row = btn.closest('tr');
+      row.style.opacity = '0.5';
+      showToast && showToast('তালিকা প্রত্যাখ্যান করা হয়েছে।', 'error');
+      setTimeout(() => row.remove(), 1000);
+    }
+
+    function resolveReport(btn) {
+      const row = btn.closest('tr');
+      row.style.opacity = '0.5';
+      showToast && showToast('অভিযোগ সমাধান করা হয়েছে।', 'success');
+      setTimeout(() => row.remove(), 1000);
+    }
+
+    function approveVolunteer(btn, name) {
+      const row = btn.closest('tr');
+      row.style.opacity = '0.5';
+      showToast && showToast(`${name}-কে স্বেচ্ছাসেবক হিসেবে অনুমোদন দেওয়া হয়েছে!`, 'success');
+      setTimeout(() => row.remove(), 1000);
+    }
+
+    // Init
+    renderUsersTable();
+  </script>
+</body>
+</html>
