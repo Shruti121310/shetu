@@ -1,13 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+{% load static %}
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>লগইন — সেতু | সামাজিক সেতুবন্ধন</title>
   <meta name="description" content="সেতু প্ল্যাটফর্মে লগইন করুন। খাবার, পোশাক ও বই শেয়ার করতে আজই সংযুক্ত হন।">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
   <style>
     .auth-page {
       min-height: 100vh;
@@ -173,7 +174,7 @@
 
   <div class="auth-page">
     <div class="auth-card">
-      <a href="../index.html" class="home-nav-link">
+      <a href="{% url 'home' %}" class="home-nav-link">
         ← হোমপেজে ফিরুন
       </a>
 
@@ -192,16 +193,16 @@
       <div class="auth-divider">অথবা ইমেইল দিয়ে</div>
 
       <!-- Login Form -->
-      <form id="loginForm" onsubmit="handleLogin(event)">
+      <form id="loginForm" method="POST" action="{% url 'login' %}">
+       {% csrf_token %}
         <div class="form-group">
           <label class="form-label" for="loginEmail">ইমেইল ঠিকানা</label>
-          <input type="email" id="loginEmail" class="form-input" placeholder="আপনার ইমেইল লিখুন" required autocomplete="email">
-        </div>
+        <input type="email" id="loginEmail" name="username" class="form-input" placeholder="আপনার ইমেইল লিখুন" required autocomplete="email">        </div>
 
         <div class="form-group">
           <label class="form-label" for="loginPassword">পাসওয়ার্ড</label>
           <div class="input-group">
-            <input type="password" id="loginPassword" class="form-input" placeholder="পাসওয়ার্ড লিখুন" required autocomplete="current-password" style="padding-right: 2.75rem;">
+            <input type="password" id="loginPassword" name="password" class="form-input" placeholder="পাসওয়ার্ড লিখুন" required autocomplete="current-password" style="padding-right: 2.75rem;">
             <button type="button" class="input-eye-btn" onclick="togglePassword('loginPassword', this)" aria-label="পাসওয়ার্ড দেখুন">
               👁
             </button>
@@ -221,7 +222,7 @@
       </form>
 
       <div class="auth-footer-text">
-        নতুন ব্যবহারকারী? <a href="register.html">এখনই নিবন্ধন করুন</a>
+        নতুন ব্যবহারকারী? <a href="{% url 'register' %}">এখনই নিবন্ধন করুন</a>
       </div>
 
       <!-- Demo hint -->
@@ -236,8 +237,8 @@
   <!-- Toast Notification -->
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
   <script>
     function togglePassword(inputId, btn) {
       const input = document.getElementById(inputId);
@@ -254,26 +255,7 @@
       showToast && showToast(msg, 'info');
     }
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      const btn = document.getElementById('loginBtn');
-
-      btn.textContent = 'যাচাই হচ্ছে...';
-      btn.disabled = true;
-
-      setTimeout(() => {
-        if (email === 'demo@shetu.bd' && password === 'shetu2026') {
-          showToast && showToast('সফলভাবে লগইন হয়েছে! ড্যাশবোর্ডে নিয়ে যাচ্ছে...', 'success');
-          setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
-        } else {
-          showToast && showToast('ইমেইল বা পাসওয়ার্ড ভুল। ডেমো তথ্য ব্যবহার করুন।', 'error');
-          btn.textContent = 'লগইন করুন';
-          btn.disabled = false;
-        }
-      }, 1000);
-    }
+    
   </script>
 </body>
 </html>

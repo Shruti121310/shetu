@@ -85,7 +85,7 @@ function initFoodListingPage() {
               </div>
               <div style="display:flex; gap:0.5rem; align-items:center;">
                 <button class="btn btn-outline btn-sm" data-report-trigger data-item-name="${item.title}" title="রিপোর্ট করুন">🚨</button>
-                <a href="food-details.html?id=${item.id}" class="btn btn-primary btn-sm">বিস্তারিত দেখুন</a>
+                <a href="/food/details/${item.id}/" class="btn btn-primary btn-sm">বিস্তারিত দেখুন</a>
               </div>
             </div>
           </div>
@@ -142,11 +142,30 @@ function initFoodListingPage() {
 // Food Details Page Logic
 function initFoodDetailsPage() {
   const container = document.getElementById('foodDetailsContainer');
-  const urlParams = new URLSearchParams(window.location.search);
-  const foodId = parseInt(urlParams.get('id') || '1', 10);
 
-  const item = (window.ShetuData?.foodListings || []).find(f => f.id === foodId) || window.ShetuData?.foodListings[0];
-
+const item = {
+  id: window.djangoFoodDonation.id,
+  title: window.djangoFoodDonation.title,
+  description: window.djangoFoodDonation.description,
+  servingsText: window.djangoFoodDonation.quantity + " servings",
+  location: window.djangoFoodDonation.location,
+  category: "Food",
+  status: "available",
+  statusBangla: "উপলব্ধ",
+  expiryHours: 999,
+  expiryTimestamp: "",
+  image: "{% static 'images/food-placeholder.jpg' %}",
+  cookedTime: "সময় উল্লেখ করা হয়নি",
+  distanceText: "দূরত্ব উল্লেখ করা হয়নি",
+  deliveryMethodText: "যোগাযোগ করে জানুন",
+  donor: {
+    name: window.djangoFoodDonation.donorName,
+    isVerified: false,
+    type: "ব্যক্তিগত দাতা",
+    rating: "৫.০",
+    phone: "অনুরোধের পর দৃশ্যমান"
+  }
+};
   if (!item) {
     container.innerHTML = `
       <div class="error-state-card">
@@ -369,12 +388,13 @@ function openFoodRequestModal(item) {
 
 // Food Donation Form Logic
 function initFoodDonateForm() {
+
   const form = document.getElementById('foodDonateForm');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
+
+  form?.addEventListener('submit', () => {
+
     showToast('ধন্যবাদ! আপনার খাবার দানের পোস্টটি সফলভাবে প্রকাশিত হয়েছে। নিকটস্থ মানুষের কাছে বিজ্ঞপ্তি পৌঁছে গেছে।', 'success');
-    setTimeout(() => {
-      window.location.href = 'food.html';
-    }, 1200);
+
   });
+
 }

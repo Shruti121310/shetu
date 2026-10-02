@@ -1,6 +1,69 @@
 from django.urls import path
-from .views import home
+
+from .views import (
+    home,
+    register,
+    login_view,
+    dashboard,
+    logout_view,
+    food,
+    clothes,
+    books,
+    volunteers,
+    about,
+    food_details,
+    clothes_details,
+    book_details,
+    food_donate,
+    clothes_donate,
+    book_donate,
+    book_borrow,
+    book_exchange,
+    notifications,
+    admin_dashboard,
+)
+
 
 urlpatterns = [
+
     path('', home, name='home'),
+
+    path('register/', register, name='register'),
+
+    path('login/', login_view, name='login'),
+
+    path('dashboard/', dashboard, name='dashboard'),
+
+    path('logout/', logout_view, name='logout'),
+
+    path('food/', food, name='food'),
+
+    path('clothes/', clothes, name='clothes'),
+
+    path('books/', books, name='books'),
+
+    path('volunteers/', volunteers, name='volunteers'),
+
+    path('about/', about, name='about'),
+
+    path('food/details/<int:id>/', food_details, name='food_details'),
+    
+    path('clothes/details/', clothes_details, name='clothes_details'),
+
+    path('books/details/', book_details, name='book_details'),
+
+    path('food/donate/', food_donate, name='food_donate'),
+
+    path('clothes/donate/', clothes_donate, name='clothes_donate'),
+
+    path('books/donate/', book_donate, name='book_donate'),
+
+    path('books/borrow/', book_borrow, name='book_borrow'),
+
+    path('books/exchange/', book_exchange, name='book_exchange'),
+
+    path('notifications/', notifications, name='notifications'),
+
+    path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
+
 ]

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>নিবন্ধন — সেতু | সামাজিক সেতুবন্ধন</title>
   <meta name="description" content="সেতু প্ল্যাটফর্মে নতুন অ্যাকাউন্ট তৈরি করুন। বিনামূল্যে যোগ দিন এবং সমাজের পাশে দাঁড়ান।">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
   <style>
     .auth-page {
       min-height: 100vh;
@@ -94,7 +95,7 @@
 
   <div class="auth-page">
     <div class="auth-card">
-      <a href="../index.html" class="home-nav-link">← হোমপেজে ফিরুন</a>
+      <a href="{% url 'home' %}" class="home-nav-link">← হোমপেজে ফিরুন</a>
 
       <div class="auth-brand">
         <span class="auth-brand-icon">🌉</span>
@@ -102,8 +103,8 @@
         <p>বিনামূল্যে যোগ দিন এবং পরিবর্তনের অংশ হন</p>
       </div>
 
-      <form id="registerForm" onsubmit="handleRegister(event)">
-
+      <form id="registerForm" method="POST" action="{% url 'register' %}">
+       {% csrf_token %}
         <!-- Role Selection -->
         <div class="section-subtitle">আপনি কীভাবে অংশ নিতে চান?</div>
         <div class="role-cards">
@@ -135,61 +136,102 @@
 
         <!-- Personal Info -->
         <div class="section-subtitle">ব্যক্তিগত তথ্য</div>
-        <div class="form-grid-2">
-          <div class="form-group">
-            <label class="form-label" for="firstName">প্রথম নাম *</label>
-            <input type="text" id="firstName" class="form-input" placeholder="মো." required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="lastName">পরিবারের নাম *</label>
-            <input type="text" id="lastName" class="form-input" placeholder="রহিম" required>
-          </div>
-        </div>
+       <div class="form-group">
+  <label class="form-label" for="username">নাম *</label>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    class="form-input"
+    placeholder="আপনার নাম"
+    required
+  >
+</div>
 
         <div class="form-group">
-          <label class="form-label" for="regPhone">মোবাইল নম্বর *</label>
-          <input type="tel" id="regPhone" class="form-input" placeholder="০১XXXXXXXXX" required pattern="01[3-9][0-9]{8}">
-        </div>
+  <label class="form-label" for="regPhone">মোবাইল নম্বর *</label>
+  <input
+    type="tel"
+    id="regPhone"
+    class="form-input"
+    placeholder="০১XXXXXXXXX"
+    required
+    pattern="01[3-9][0-9]{8}"
+  >
+</div>
 
-        <div class="form-group">
-          <label class="form-label" for="regEmail">ইমেইল ঠিকানা *</label>
-          <input type="email" id="regEmail" class="form-input" placeholder="example@gmail.com" required autocomplete="email">
-        </div>
+<div class="form-group">
+  <label class="form-label" for="regEmail">ইমেইল ঠিকানা *</label>
+  <input
+    type="email"
+    id="regEmail"
+    name="email"
+    class="form-input"
+    placeholder="example@gmail.com"
+    required
+    autocomplete="email"
+  >
+</div>
 
-        <div class="form-grid-2">
-          <div class="form-group">
-            <label class="form-label" for="division">বিভাগ</label>
-            <select id="division" class="form-input form-select">
-              <option value="">বিভাগ নির্বাচন</option>
-              <option>ঢাকা</option>
-              <option>চট্টগ্রাম</option>
-              <option>রাজশাহী</option>
-              <option>খুলনা</option>
-              <option>বরিশাল</option>
-              <option>সিলেট</option>
-              <option>রংপুর</option>
-              <option>ময়মনসিংহ</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="area">এলাকা</label>
-            <input type="text" id="area" class="form-input" placeholder="থানা / উপজেলা">
-          </div>
-        </div>
+<div class="form-grid-2">
+  <div class="form-group">
+    <label class="form-label" for="division">বিভাগ</label>
+    <select id="division" class="form-input form-select">
+      <option value="">বিভাগ নির্বাচন</option>
+      <option>ঢাকা</option>
+      <option>চট্টগ্রাম</option>
+      <option>রাজশাহী</option>
+      <option>খুলনা</option>
+      <option>বরিশাল</option>
+      <option>সিলেট</option>
+      <option>রংপুর</option>
+      <option>ময়মনসিংহ</option>
+    </select>
+  </div>
 
-        <!-- Password -->
-        <div class="section-subtitle">নিরাপত্তা</div>
-        <div class="form-group">
-          <label class="form-label" for="regPassword">পাসওয়ার্ড *</label>
-          <input type="password" id="regPassword" class="form-input" placeholder="কমপক্ষে ৮ অক্ষর" required minlength="8" oninput="checkPasswordStrength(this.value)">
-          <div class="password-strength"><div class="password-strength-bar" id="strengthBar"></div></div>
-          <div class="strength-text" id="strengthText">পাসওয়ার্ড লিখুন</div>
-        </div>
+  <div class="form-group">
+    <label class="form-label" for="area">এলাকা</label>
+    <input
+      type="text"
+      id="area"
+      class="form-input"
+      placeholder="থানা / উপজেলা"
+    >
+  </div>
+</div>
 
-        <div class="form-group">
-          <label class="form-label" for="confirmPassword">পাসওয়ার্ড নিশ্চিত করুন *</label>
-          <input type="password" id="confirmPassword" class="form-input" placeholder="পুনরায় পাসওয়ার্ড লিখুন" required>
-        </div>
+<!-- Password -->
+<div class="section-subtitle">নিরাপত্তা</div>
+
+<div class="form-group">
+  <label class="form-label" for="regPassword">পাসওয়ার্ড *</label>
+  <input
+    type="password"
+    id="regPassword"
+    name="password"
+    class="form-input"
+    placeholder="কমপক্ষে ৮ অক্ষর"
+    required
+    minlength="8"
+    oninput="checkPasswordStrength(this.value)"
+  >
+  <div class="password-strength">
+    <div class="password-strength-bar" id="strengthBar"></div>
+  </div>
+  <div class="strength-text" id="strengthText">পাসওয়ার্ড লিখুন</div>
+</div>
+
+<div class="form-group">
+  <label class="form-label" for="confirmPassword">পাসওয়ার্ড নিশ্চিত করুন *</label>
+  <input
+    type="password"
+    id="confirmPassword"
+    name="confirm_password"
+    class="form-input"
+    placeholder="পুনরায় পাসওয়ার্ড লিখুন"
+    required
+  >
+</div>
 
         <!-- Terms -->
         <label class="terms-check">
@@ -203,15 +245,15 @@
       </form>
 
       <div class="auth-footer-text">
-        ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="login.html">লগইন করুন</a>
+        ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="{% url 'login' %}">লগইন করুন</a>
       </div>
     </div>
   </div>
 
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
   <script>
     function selectRole(role) {
       document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
@@ -239,22 +281,7 @@
       text.textContent = levels[strength].t;
     }
 
-    function handleRegister(e) {
-      e.preventDefault();
-      const pass = document.getElementById('regPassword').value;
-      const confirm = document.getElementById('confirmPassword').value;
-      if (pass !== confirm) {
-        showToast && showToast('পাসওয়ার্ড দুটি মিলছে না!', 'error');
-        return;
-      }
-      const btn = document.getElementById('registerBtn');
-      btn.textContent = 'নিবন্ধন হচ্ছে...';
-      btn.disabled = true;
-      setTimeout(() => {
-        showToast && showToast('নিবন্ধন সফল! স্বাগতম সেতু পরিবারে 🎉', 'success');
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1800);
-      }, 1200);
-    }
+    
   </script>
 </body>
 </html>

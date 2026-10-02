@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
@@ -6,9 +7,9 @@
   <title>বই যুক্ত করুন — গ্রন্থ সেতু | সেতু</title>
   <meta name="description" content="বই দান, ধার অথবা বিনিময়ের জন্য লিস্টিং তৈরি করুন।">
 
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 </head>
 <body>
 
@@ -16,7 +17,7 @@
   <header class="site-header">
     <div class="container">
       <nav class="navbar" aria-label="প্রধান নেভিগেশন">
-        <a href="../index.html" class="brand-logo">
+        <a href="{% url 'home' %}" class="brand-logo">
           <div class="brand-icon">🌉</div>
           <div>
             <span>সেতু</span>
@@ -25,16 +26,16 @@
         </a>
 
         <ul class="nav-links">
-          <li><a href="../index.html" class="nav-link">হোম</a></li>
-          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
-          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
-          <li><a href="books.html" class="nav-link active">📚 গ্রন্থ সেতু</a></li>
-          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
-          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+          <li><a href="{% url 'home' %}" class="nav-link">হোম</a></li>
+          <li><a href="{% url 'food' %}" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="{% url 'clothes' %}" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="{% url 'books' %}" class="nav-link active">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="{% url 'volunteers' %}" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="{% url 'about' %}" class="nav-link">আমাদের সম্পর্কে</a></li>
         </ul>
 
         <div class="nav-actions">
-          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+          <a href="{% url 'notifications' %}" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -43,8 +44,8 @@
           </a>
 
           <div class="auth-buttons" style="display: flex; gap: 0.5rem;">
-            <a href="login.html" class="btn btn-outline btn-sm">লগইন</a>
-            <a href="register.html" class="btn btn-primary btn-sm">নিবন্ধন</a>
+            <a href="{% url 'login' %}" class="btn btn-outline btn-sm">লগইন</a>
+            <a href="{% url 'register' %}" class="btn btn-primary btn-sm">নিবন্ধন</a>
           </div>
 
           <button class="mobile-menu-btn" aria-label="মেনু খুলুন">
@@ -70,7 +71,7 @@
             বইটি কি দান করতে চান, নির্দিষ্ট মেয়াদে ধার দিতে চান, নাকি পছন্দের অন্য কোনো বইয়ের সঙ্গে বিনিময় করতে চান?
           </p>
         </div>
-        <a href="books.html" class="btn btn-outline">← ফিরে যান</a>
+        <a href="{% url 'books' %}" class="btn btn-outline">← ফিরে যান</a>
       </div>
     </div>
   </section>
@@ -185,7 +186,7 @@
         </div>
 
         <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 1rem;">
-          <a href="books.html" class="btn btn-outline">বাতিল</a>
+          <a href="{% url 'books' %}" class="btn btn-outline">বাতিল</a>
           <button type="submit" class="btn btn-primary btn-lg" style="background-color: var(--books-color); border-color: var(--books-color);">
             📚 বই লিস্টিং প্রকাশ করুন
           </button>
@@ -206,9 +207,9 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/books.js"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/books.js' %}"></script>
   <script>
     function toggleBookModeFields() {
       const mode = document.querySelector('input[name="bookMode"]:checked')?.value;

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>অ্যাডমিন ড্যাশবোর্ড — সেতু</title>
   <meta name="description" content="সেতু অ্যাডমিন প্যানেল। ব্যবহারকারী, তালিকা ও অভিযোগ পরিচালনা করুন।">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
   <style>
     .admin-layout {
       display: grid;
@@ -120,7 +121,7 @@
   <header class="site-header" style="background:#0f172a; border-bottom-color: rgba(255,255,255,0.1);">
     <div class="container">
       <nav class="navbar">
-        <a href="../index.html" class="brand-logo" style="color:#fff;">
+        <a href="{% url 'home' %}" class="brand-logo" style="color:#fff;">
           <div class="brand-icon">🌉</div>
           <div>
             <span style="color:#fff;">সেতু</span>
@@ -129,8 +130,8 @@
         </a>
         <div class="nav-actions">
           <span style="font-size:0.8rem; color:#64748b; padding:0.3rem 0.75rem; background:rgba(255,255,255,0.07); border-radius:20px;">🛡️ সুপার অ্যাডমিন</span>
-          <a href="dashboard.html" class="btn btn-outline btn-sm" style="color:#94a3b8; border-color:#334155;">ড্যাশবোর্ড</a>
-          <a href="login.html" class="btn btn-sm" style="background:#dc2626; color:#fff;">লগআউট</a>
+          <a href="{% url 'dashboard' %}" class="btn btn-outline btn-sm" style="color:#94a3b8; border-color:#334155;">ড্যাশবোর্ড</a>
+          <a href="{% url 'login' %}" class="btn btn-sm" style="background:#dc2626; color:#fff;">লগআউট</a>
         </div>
       </nav>
     </div>
@@ -157,7 +158,7 @@
 
       <div class="admin-nav-label">সিস্টেম</div>
       <a class="admin-nav-link" onclick="showAdminPanel('settings_admin', this)">⚙️ সেটিংস</a>
-      <a class="admin-nav-link" style="color:#f87171;" href="../index.html" target="_self">🌐 সাইট দেখুন</a>
+      <a class="admin-nav-link" style="color:#f87171;" href="{% url 'home' %}" target="_self">🌐 সাইট দেখুন</a>
     </aside>
 
     <!-- Admin Content -->
@@ -413,9 +414,9 @@
 
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/admin.js"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/admin.js' %}"></script>
   <script>
     function showAdminPanel(panelId, linkEl) {
       document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));

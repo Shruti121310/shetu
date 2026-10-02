@@ -1,13 +1,14 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ড্যাশবোর্ড — সেতু | ব্যবহারকারী প্যানেল</title>
   <meta name="description" content="আপনার সেতু ড্যাশবোর্ড। দান, অনুরোধ ও প্রোফাইল পরিচালনা করুন।">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
   <style>
     .dashboard-layout {
       display: grid;
@@ -110,7 +111,7 @@
   <header class="site-header">
     <div class="container">
       <nav class="navbar" aria-label="প্রধান নেভিগেশন">
-        <a href="../index.html" class="brand-logo">
+        <a href="{% url 'home' %}" class="brand-logo">
           <div class="brand-icon">🌉</div>
           <div>
             <span>সেতু</span>
@@ -118,20 +119,20 @@
           </div>
         </a>
         <ul class="nav-links" id="primaryNav">
-          <li><a href="../index.html" class="nav-link">হোম</a></li>
-          <li><a href="food.html" class="nav-link">🍱 আহার সেতু</a></li>
-          <li><a href="clothes.html" class="nav-link">👕 বস্ত্র সেতু</a></li>
-          <li><a href="books.html" class="nav-link">📚 গ্রন্থ সেতু</a></li>
-          <li><a href="volunteers.html" class="nav-link">স্বেচ্ছাসেবক</a></li>
-          <li><a href="about.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+          <li><a href="{% url 'home' %}" class="nav-link">হোম</a></li>
+          <li><a href="{% url 'food' %}" class="nav-link">🍱 আহার সেতু</a></li>
+          <li><a href="{% url 'clothes' %}" class="nav-link">👕 বস্ত্র সেতু</a></li>
+          <li><a href="{% url 'books' %}" class="nav-link">📚 গ্রন্থ সেতু</a></li>
+          <li><a href="{% url 'volunteers' %}" class="nav-link">স্বেচ্ছাসেবক</a></li>
+          <li><a href="{% url 'about' %}" class="nav-link">আমাদের সম্পর্কে</a></li>
         </ul>
         <div class="nav-actions">
-          <a href="notifications.html" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
+          <a href="{% url 'notifications' %}" class="nav-notification-btn" aria-label="বিজ্ঞপ্তি">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
             <span class="notification-pill">২</span>
           </a>
           <div class="auth-buttons" style="display:flex;gap:0.5rem;">
-            <a href="login.html" class="btn btn-outline btn-sm">লগআউট</a>
+            <a href="{% url 'logout' %}" class="btn btn-outline btn-sm">লগআউট</a>
           </div>
           <button class="mobile-menu-btn" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="primaryNav">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -186,11 +187,10 @@
 
       <div class="sidebar-section-label">দ্রুত লিঙ্ক</div>
       <ul class="sidebar-nav">
-        <li><a class="sidebar-nav-link" href="food-donate.html">🍱 খাবার দান</a></li>
-        <li><a class="sidebar-nav-link" href="clothes-donate.html">👕 পোশাক দান</a></li>
-        <li><a class="sidebar-nav-link" href="book-donate.html">📚 বই দান</a></li>
-        <li><a class="sidebar-nav-link" href="volunteers.html">⭐ স্বেচ্ছাসেবক</a></li>
-        <li><a class="sidebar-nav-link" href="admin.html" style="color:var(--danger);">🛡️ অ্যাডমিন প্যানেল</a></li>
+        <li><a class="sidebar-nav-link" href="{% url 'food_donate' %}">🍱 খাবার দান</a></li>
+        <li><a class="sidebar-nav-link" href="{% url 'clothes_donate' %}">👕 পোশাক দান</a></li>
+<li><a class="sidebar-nav-link" href="{% url 'book_donate' %}">📚 বই দান</a></li>        <li><a class="sidebar-nav-link" href="{% url 'volunteers' %}">⭐ স্বেচ্ছাসেবক</a></li>
+        <li><a class="sidebar-nav-link" href="{% url 'admin_dashboard' %}" style="color:var(--danger);">🛡️ অ্যাডমিন প্যানেল</a></li>
       </ul>
     </aside>
 
@@ -204,7 +204,7 @@
           <p>আজ আপনার কার্যক্রমের সারসংক্ষেপ</p>
         </div>
 
-        <div class="stat-grid">
+        <div class="stat-grihref="{% url 'book_donate' %}"d">
           <div class="stat-card">
             <div class="stat-icon">🍱</div>
             <div class="stat-value">১২</div>
@@ -308,9 +308,9 @@
           <p>আপনি যা শেয়ার করেছেন তার সম্পূর্ণ রেকর্ড</p>
         </div>
         <div style="display:flex; gap:0.75rem; margin-bottom:1.25rem; flex-wrap:wrap;">
-          <a href="food-donate.html" class="btn btn-primary btn-sm">+ খাবার যোগ করুন</a>
-          <a href="clothes-donate.html" class="btn btn-outline btn-sm">+ পোশাক যোগ করুন</a>
-          <a href="book-donate.html" class="btn btn-outline btn-sm">+ বই যোগ করুন</a>
+          <a href="{% url 'food_donate' %}"href="{% url 'food_donate' %}" class="btn btn-primary btn-sm">+ খাবার যোগ করুন</a>
+          <a href="{% url 'clothes_donate' %}" class="btn btn-outline btn-sm">+ পোশাক যোগ করুন</a>
+          <a href="{% url 'book_donate' %}" class="btn btn-outline btn-sm">+ বই যোগ করুন</a>
         </div>
         <ul class="activity-list" id="donationsList"></ul>
       </div>
@@ -489,9 +489,9 @@
 
   <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/dashboard.js"></script>
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/dashboard.js' %}"></script>
   <script>
     function showPanel(panelId, linkEl) {
       document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
