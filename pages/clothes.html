@@ -207,8 +207,20 @@
 
   <!-- Scripts -->
   <script src="{% static 'js/data.js' %}"></script>
-  <script src="{% static 'js/countdown.js' %}"></script>
-  <script src="{% static 'js/main.js' %}"></script>
-  <script src="{% static 'js/clothes.js' %}"></script>
+<script src="{% static 'js/countdown.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+{{ clothes_data|json_script:"django-clothes-data" }}
+
+
+<script>
+    window.djangoClothesDonations = JSON.parse(
+        document.getElementById("django-clothes-data").textContent
+    );
+
+    console.log("DJANGO CLOTHES:", window.djangoClothesDonations);
+</script>
+
+<script src="{% static 'js/clothes.js' %}"></script>
 </body>
 </html>

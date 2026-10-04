@@ -24,6 +24,31 @@ function initClothesListingPage() {
   const conditionFilter = document.getElementById('clothesConditionFilter');
   const distanceFilter = document.getElementById('clothesDistanceFilter');
   const resetBtn = document.getElementById('resetClothesFiltersBtn');
+    const djangoClothesListings = Array.isArray(window.djangoClothesDonations)
+  ? window.djangoClothesDonations.map(donation => ({
+      id: donation.id,
+      title: donation.title,
+      category: donation.category,
+      description: donation.description || 'কোনো বিবরণ দেওয়া হয়নি।',
+      quantity: donation.quantity,
+      location: donation.location,
+      target: 'সাধারণ',
+      age: 'প্রাপ্তবয়স্ক',
+      size: 'ফ্রি সাইজ',
+      condition: 'ভালো',
+      conditionBadge: 'ভালো',
+      statusBangla: 'উপলব্ধ',
+      image: "/static/images/clothes-placeholder.jpg",
+      distance: 999,
+      distanceText: 'দূরত্ব নির্ধারণ করা হয়নি',
+      donor: {
+        name: donation.donor,
+        isVerified: false,
+        type: 'দাতা',
+        phone: ''
+      }
+    }))
+  : [];
 
   function render(items) {
     if (!items || items.length === 0) {
@@ -79,8 +104,7 @@ function initClothesListingPage() {
             </div>
             <div style="display:flex; gap:0.5rem; align-items:center;">
               <button class="btn btn-outline btn-sm" data-report-trigger data-item-name="${item.title}" title="রিপোর্ট করুন">🚨</button>
-              <a href="clothes-details.html?id=${item.id}" class="btn btn-primary btn-sm">বিস্তারিত দেখুন</a>
-            </div>
+            <a href="/clothes/details/?id=${item.id}" class="btn btn-primary btn-sm">বিস্তারিত দেখুন</a>            </div>
           </div>
         </div>
       </article>
@@ -88,26 +112,34 @@ function initClothesListingPage() {
   }
 
   function applyFilters() {
-    const q = (searchInput?.value || '').trim().toLowerCase();
-    const cat = categoryFilter?.value || '';
-    const target = targetFilter?.value || '';
-    const size = sizeFilter?.value || '';
-    const cond = conditionFilter?.value || '';
-    const maxDist = parseFloat(distanceFilter?.value || '999');
+  const q = (searchInput?.value || '').trim().toLowerCase();
+  const cat = categoryFilter?.value || '';
+  const target = targetFilter?.value || '';
+  const size = sizeFilter?.value || '';
+  const cond = conditionFilter?.value || '';
+  const maxDist = parseFloat(distanceFilter?.value || '999');
 
-    const filtered = (window.ShetuData?.clothesListings || []).filter(item => {
-      const matchQ = !q || item.title.toLowerCase().includes(q) || item.location.toLowerCase().includes(q) || item.category.toLowerCase().includes(q);
-      const matchCat = !cat || item.category === cat;
-      const matchTarget = !target || item.target === target;
-      const matchSize = !size || item.size === size;
-      const matchCond = !cond || item.condition === cond;
-      const matchDist = item.distance <= maxDist;
+  console.log("LISTINGS:", djangoClothesListings);
+  console.log("FILTER VALUES:", cat, target, size, cond, maxDist);
 
-      return matchQ && matchCat && matchTarget && matchSize && matchCond && matchDist;
-    });
+  const filtered = djangoClothesListings.filter(item => {
+    const matchQ =
+      !q ||
+      item.title.toLowerCase().includes(q) ||
+      item.location.toLowerCase().includes(q) ||
+      item.category.toLowerCase().includes(q);
 
-    render(filtered);
-  }
+    const matchCat = !cat || item.category === cat;
+    const matchTarget = !target || item.target === target;
+    const matchSize = !size || item.size === size;
+    const matchCond = !cond || item.condition === cond;
+    const matchDist = item.distance <= maxDist;
+
+    return matchQ && matchCat && matchTarget && matchSize && matchCond && matchDist;
+  });
+
+  render(filtered);
+}
 
   function resetFilters() {
     if (searchInput) searchInput.value = '';
@@ -116,6 +148,7 @@ function initClothesListingPage() {
     if (sizeFilter) sizeFilter.value = '';
     if (conditionFilter) conditionFilter.value = '';
     if (distanceFilter) distanceFilter.value = '999';
+    console.log("FINAL CLOTHES DATA:", djangoClothesListings);
     applyFilters();
   }
 
@@ -135,7 +168,30 @@ function initClothesDetailsPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const clothesId = parseInt(urlParams.get('id') || '101', 10);
 
-  const item = (window.ShetuData?.clothesListings || []).find(c => c.id === clothesId) || window.ShetuData?.clothesListings[0];
+const djangoItem = window.djangoClothesItem;
+const item = djangoItem ? {
+    id: djangoItem.id,
+    title: djangoItem.title,
+    category: djangoItem.category,
+    description: djangoItem.description || 'কোনো বিবরণ দেওয়া হয়নি।',
+    quantity: djangoItem.quantity,
+    location: djangoItem.location,
+    target: 'সাধারণ',
+    age: 'প্রাপ্তবয়স্ক',
+    size: 'ফ্রি সাইজ',
+    condition: 'ভালো',
+    conditionBadge: 'ভালো',
+    statusBangla: 'উপলব্ধ',
+    image: "/static/images/clothes-placeholder.jpg",
+    distance: 999,
+    distanceText: 'দূরত্ব নির্ধারণ করা হয়নি',
+    donor: {
+        name: djangoItem.donor,
+        isVerified: false,
+        type: 'দাতা',
+        phone: ''
+    }
+} : ((window.ShetuData?.clothesListings || []).find(c => c.id === clothesId) || window.ShetuData?.clothesListings[0]);
 
   if (!item) {
     container.innerHTML = `
@@ -261,7 +317,8 @@ function openClothesRequestModal(item) {
         <h3 class="modal-title">👕 পোশাকের অনুরোধ ফর্ম</h3>
         <button class="modal-close">&times;</button>
       </div>
-      <form id="clothesRequestSubmitForm">
+            <form id="clothesRequestSubmitForm" method="POST" action="/clothes/request/${item.id}/">
+        <input type="hidden" name="csrfmiddlewaretoken" value="${window.djangoCsrfToken || ''}">
         <div class="modal-body">
           <div style="background: var(--clothes-bg); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;">
             <strong>${item.title}</strong> (সাইজ: ${item.size})<br>
@@ -270,12 +327,11 @@ function openClothesRequestModal(item) {
 
           <div class="form-group" style="margin-bottom: 1rem;">
             <label class="form-label">আপনার নাম <span class="required">*</span></label>
-            <input type="text" class="form-control" required placeholder="আপনার পূর্ণ নাম">
-          </div>
+            <input type="text" name="requester_name" class="form-control" required placeholder="আপনার পূর্ণ নাম">          </div>
 
           <div class="form-group" style="margin-bottom: 1rem;">
             <label class="form-label">মোবাইল নম্বর <span class="required">*</span></label>
-            <input type="tel" class="form-control" required placeholder="০১৭১২-XXXXXX">
+            <input type="tel" name="mobile" class="form-control" required placeholder="০১৭১২-XXXXXX">
           </div>
 
           <div class="form-group" style="margin-bottom: 1rem;">
@@ -312,20 +368,10 @@ function openClothesRequestModal(item) {
 
   openModal('clothesRequestModal');
 
-  modal.querySelector('#clothesRequestSubmitForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    closeModal(modal);
-    showToast('আপনার পোশাকের অনুরোধটি সফলভাবে পাঠানো হয়েছে! দাতার সম্মতির পর ডেলিভারি সমন্বয় হবে।', 'success');
-  });
+  
 }
 
 function initClothesDonateForm() {
   const form = document.getElementById('clothesDonateForm');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    showToast('ধন্যবাদ! আপনার কাপড় দানের পোস্টটি সফলভাবে তৈরি হয়েছে।', 'success');
-    setTimeout(() => {
-      window.location.href = 'clothes.html';
-    }, 1200);
-  });
 }
+

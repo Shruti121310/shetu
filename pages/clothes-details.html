@@ -96,8 +96,14 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="{% static 'js/data.js' %}"></script>
-  <script src="{% static 'js/main.js' %}"></script>
-  <script src="{% static 'js/clothes.js' %}"></script>
+  <!-- Scripts -->
+<script src="{% static 'js/data.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{{ clothes_item|json_script:"django-clothes-item" }}
+<script>
+    window.djangoClothesItem = JSON.parse(document.getElementById("django-clothes-item").textContent);
+    window.djangoCsrfToken = "{{ csrf_token }}";
+</script>
+<script src="{% static 'js/clothes.js' %}"></script>
 </body>
 </html>

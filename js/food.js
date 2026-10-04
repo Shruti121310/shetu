@@ -3,6 +3,25 @@
  * Renders food cards, filters, food details, distance matching & request modals
  */
 
+function getCookie(name) {
+  let cookieValue = null;
+
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+
+  return cookieValue;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('foodCardsContainer')) {
     initFoodListingPage();
@@ -97,6 +116,15 @@ function initFoodListingPage() {
     if (window.initCountdowns) {
       window.initCountdowns();
     }
+
+    const requestBtn = document.getElementById('openFoodRequestModalBtn');
+
+    requestBtn?.addEventListener('click', () => {
+     openFoodRequestModal(item);
+});
+if (window.initCountdowns) {
+  window.initCountdowns();
+}
   }
 
   function applyFilters() {
@@ -148,13 +176,14 @@ const item = {
   title: window.djangoFoodDonation.title,
   description: window.djangoFoodDonation.description,
   servingsText: window.djangoFoodDonation.quantity + " servings",
+  servings: window.djangoFoodDonation.quantity,
   location: window.djangoFoodDonation.location,
   category: "Food",
   status: "available",
   statusBangla: "উপলব্ধ",
   expiryHours: 999,
   expiryTimestamp: "",
-  image: "{% static 'images/food-placeholder.jpg' %}",
+  image: "/static/images/food-placeholder.jpg",
   cookedTime: "সময় উল্লেখ করা হয়নি",
   distanceText: "দূরত্ব উল্লেখ করা হয়নি",
   deliveryMethodText: "যোগাযোগ করে জানুন",
@@ -287,15 +316,18 @@ const item = {
     </div>
   `;
 
+    const requestBtn = document.getElementById('openFoodRequestModalBtn');
+
+  requestBtn?.addEventListener('click', () => {
+    openFoodRequestModal(item);
+  });
+
   // Initialize countdown
   if (window.initCountdowns) {
     window.initCountdowns();
   }
 
-  // Request modal event
-  document.getElementById('openFoodRequestModalBtn')?.addEventListener('click', () => {
-    openFoodRequestModal(item);
-  });
+  
 }
 
 // Request Modal for Food
@@ -314,8 +346,9 @@ function openFoodRequestModal(item) {
         <h3 class="modal-title">🍱 খাবার অনুরোধের ফর্ম</h3>
         <button class="modal-close">&times;</button>
       </div>
-      <form id="foodRequestSubmitForm">
-        <div class="modal-body">
+      <form id="foodRequestSubmitForm" method="POST" action="/food/request/${item.id}/">
+        <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
+          <div class="modal-body">
           <div style="background: var(--primary-surface); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;">
             <strong>${item.title}</strong> (${item.servingsText})<br>
             <span style="font-size:0.85rem; color:var(--text-muted);">দাতার অবস্থান: ${item.location} (${item.distanceText})</span>
@@ -328,13 +361,11 @@ function openFoodRequestModal(item) {
 
           <div class="form-group" style="margin-bottom: 1rem;">
             <label class="form-label">মোবাইল নম্বর <span class="required">*</span></label>
-            <input type="tel" class="form-control" required placeholder="০১৭১২-XXXXXX">
-          </div>
+              <input type="tel" name="mobile" class="form-control" required placeholder="...">          </div>
 
           <div class="form-group" style="margin-bottom: 1rem;">
             <label class="form-label">কতজনের জন্য খাবার প্রয়োজন? <span class="required">*</span></label>
-            <input type="number" class="form-control" max="${item.servings}" value="${item.servings}" required>
-            <span class="form-hint">সর্বোচ্চ ${item.servings} জনের খাবার গ্রহণ করতে পারবেন।</span>
+              <input type="number" name="quantity" class="form-control" max="${item.servings}" value="${item.servings}" required>            <span class="form-hint">সর্বোচ্চ ${item.servings} জনের খাবার গ্রহণ করতে পারবেন।</span>
           </div>
 
           <div class="form-group" style="margin-bottom: 1rem;">
@@ -342,21 +373,21 @@ function openFoodRequestModal(item) {
             
             <div class="delivery-options-group" style="grid-template-columns: 1fr; gap: 0.65rem;">
               <label class="delivery-radio-card active">
-                <input type="radio" name="requestDelivery" value="pickup" checked>
+                <input type="radio" name="delivery_method" value="pickup" checked>
                 <div class="delivery-card-icon">🚶</div>
                 <div class="delivery-card-title">নিজে এসে সংগ্রহ</div>
                 <div class="delivery-card-desc">গ্রহীতা নিজে এসে নির্দিষ্ট সময়ে খাবারটি সংগ্রহ করবেন।</div>
               </label>
 
               <label class="delivery-radio-card">
-                <input type="radio" name="requestDelivery" value="volunteer">
+                <input type="radio" name="delivery_method" value="volunteer">
                 <div class="delivery-card-icon">🤝</div>
                 <div class="delivery-card-title">স্বেচ্ছাসেবকের সাহায্য</div>
                 <div class="delivery-card-desc">কাছাকাছি কোনো স্বেচ্ছাসেবক খাবারটি আপনার কাছে পৌঁছে দেবেন।</div>
               </label>
 
               <label class="delivery-radio-card">
-                <input type="radio" name="requestDelivery" value="paid">
+                <input type="radio" name="delivery_method" value="paid">
                 <div class="delivery-card-icon">🚚</div>
                 <div class="delivery-card-title">পেইড ডেলিভারি</div>
                 <div class="delivery-card-desc">রাইডার বা ডেলিভারি সার্ভিসের মাধ্যমে ডেলিভারি খরচ পরিশোধ সাপেক্ষে।</div>
@@ -366,7 +397,7 @@ function openFoodRequestModal(item) {
 
           <div class="form-group">
             <label class="form-label">বিশেষ কোনো বার্তা (ঐচ্ছিক)</label>
-            <textarea class="form-textarea" rows="2" placeholder="প্রয়োজনীয় কোনো বিশেষ নির্দেশনা..."></textarea>
+            <textarea name="notes" class="form-textarea" rows="2" placeholder="..."></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -380,10 +411,8 @@ function openFoodRequestModal(item) {
   openModal('foodRequestModal');
 
   modal.querySelector('#foodRequestSubmitForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    closeModal(modal);
-    showToast('আপনার অনুরোধ সফলভাবে পাঠানো হয়েছে! দাতা ও নিকটস্থ স্বেচ্ছাসেবক নোটিফিকেশন পেয়েছেন।', 'success');
-  });
+  // Allow normal form submission to Django
+});
 }
 
 // Food Donation Form Logic

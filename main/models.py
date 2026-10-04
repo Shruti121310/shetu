@@ -53,6 +53,8 @@ class Request(models.Model):
         related_name="requests",
     )
     quantity = models.PositiveIntegerField(default=1)
+    mobile = models.CharField(max_length=20, default="")
+    delivery_method = models.CharField(max_length=20, default="pickup")
     notes = models.TextField(blank=True)
     status = models.CharField(
         max_length=20,

@@ -79,13 +79,14 @@
   <!-- Donation Form Container -->
   <main class="container container-narrow" style="padding-top: 2.5rem; padding-bottom: 4rem;">
     <div class="form-card">
-      <form id="clothesDonateForm">
+      <form id="clothesDonateForm" method="POST" action="{% url 'clothes_donate' %}">
+    {% csrf_token %}
 
         <div class="form-grid">
           <!-- Title -->
           <div class="form-group form-grid-full">
             <label class="form-label" for="clothesTitle">পোশাকের নাম <span class="required">*</span></label>
-            <input type="text" id="clothesTitle" class="form-control" placeholder="উদা: শীতের উষ্ণ জ্যাকেট / স্কুল ড্রেস" required>
+            <input type="text" id="clothesTitle" name="title" class="form-control" placeholder="উদা: শীতের উষ্ণ জ্যাকেট / স্কুল ড্রেস" required>
           </div>
 
           <!-- Category -->
@@ -145,7 +146,7 @@
           <!-- Quantity -->
           <div class="form-group">
             <label class="form-label" for="clothesQuantity">পরিমাণ <span class="required">*</span></label>
-            <input type="text" id="clothesQuantity" class="form-control" placeholder="উদা: ১ টি / ৩ জোড়া" required>
+            <input type="text" id="clothesQuantity" name="quantity" class="form-control" placeholder="উদা: ১ টি / ৩ জোড়া" required>
           </div>
 
           <!-- Image Upload Box -->
@@ -164,13 +165,13 @@
           <!-- Description -->
           <div class="form-group form-grid-full">
             <label class="form-label" for="clothesDesc">বিবরণ</label>
-            <textarea id="clothesDesc" class="form-textarea" rows="3" placeholder="পোশাকটির কোনো বিশেষ মাপ বা তথ্য থাকলে লিখুন..."></textarea>
+            <textarea id="clothesDesc" name="description" class="form-textarea" rows="3" placeholder="পোশাকটির কোনো বিশেষ মাপ বা তথ্য থাকলে লিখুন..."></textarea>
           </div>
 
           <!-- Location -->
           <div class="form-group form-grid-full">
             <label class="form-label" for="clothesLocation">সংগ্রহের স্থান / সম্পূর্ণ ঠিকানা <span class="required">*</span></label>
-            <input type="text" id="clothesLocation" class="form-control" placeholder="উদা: বনশ্রী ব্লক সি, রোড #২, ঢাকা" required>
+            <input type="text" id="clothesLocation" name="location" class="form-control" placeholder="উদা: বনশ্রী ব্লক সি, রোড #২, ঢাকা" required>          
           </div>
 
           <!-- Delivery Method Selection -->

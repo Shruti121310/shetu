@@ -148,7 +148,7 @@
     <aside class="dashboard-sidebar" role="navigation" aria-label="ড্যাশবোর্ড মেনু">
       <div class="sidebar-user">
         <div class="user-avatar">ম</div>
-        <div class="user-name">মো. রহিম উদ্দিন</div>
+        <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
         <div class="user-role">দাতা ও গ্রহীতা · ঢাকা</div>
         <div class="user-points">⭐ ১৮৫ পয়েন্ট</div>
       </div>
@@ -200,24 +200,24 @@
       <!-- Overview Panel -->
       <div class="dash-panel active" id="panel-overview">
         <div class="page-header-dash">
-          <h2>👋 স্বাগতম, রহিম ভাই!</h2>
+          <h2>👋 স্বাগতম, {{ request.user.get_full_name|default:request.user.username }}!</h2>
           <p>আজ আপনার কার্যক্রমের সারসংক্ষেপ</p>
         </div>
-
+        <div class="stat-grid">
         <div class="stat-grihref="{% url 'book_donate' %}"d">
           <div class="stat-card">
             <div class="stat-icon">🍱</div>
-            <div class="stat-value">১২</div>
+            <div class="stat-value">{{ food_count }}</div>
             <div class="stat-label">মোট খাবার দান</div>
           </div>
           <div class="stat-card">
             <div class="stat-icon">👕</div>
-            <div class="stat-value">৮</div>
+            <div class="stat-value">{{ clothes_count }}</div>
             <div class="stat-label">পোশাক দান</div>
           </div>
           <div class="stat-card">
             <div class="stat-icon">📚</div>
-            <div class="stat-value">৫</div>
+            <div class="stat-value">{{ books_count }}</div>
             <div class="stat-label">বই শেয়ার</div>
           </div>
           <div class="stat-card">
@@ -227,7 +227,7 @@
           </div>
           <div class="stat-card">
             <div class="stat-icon">🙏</div>
-            <div class="stat-value">৩</div>
+            <div class="stat-value">{{ request_count }}</div>
             <div class="stat-label">চলমান অনুরোধ</div>
           </div>
           <div class="stat-card">
@@ -243,23 +243,23 @@
           <div style="margin-bottom:1rem;">
             <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.875rem;">
               <span>খাবার দান (৫০টি লক্ষ্য)</span>
-              <span style="font-weight:600; color:var(--primary);">১২/৫০</span>
+              <span style="font-weight:600; color:var(--primary);">{{ food_count }}/৫০</span>
             </div>
-            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:24%"></div></div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:{{ food_percent }}%"></div></div>
           </div>
           <div style="margin-bottom:1rem;">
             <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.875rem;">
               <span>পোশাক দান (২০টি লক্ষ্য)</span>
-              <span style="font-weight:600; color:var(--clothes-color);">৮/২০</span>
+              <span style="font-weight:600; color:var(--clothes-color);">{{ clothes_count }}/২০</span>
             </div>
-            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:40%; background:linear-gradient(90deg,var(--clothes-color), #38bdf8)"></div></div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:{{ clothes_percent }}%; background:linear-gradient(90deg,var(--clothes-color), #38bdf8)"></div></div>
           </div>
           <div>
             <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.875rem;">
               <span>বই শেয়ার (১০টি লক্ষ্য)</span>
-              <span style="font-weight:600; color:var(--books-color);">৫/১০</span>
+              <span style="font-weight:600; color:var(--books-color);">{{ books_count }}/১০</span>
             </div>
-            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50%; background:linear-gradient(90deg,var(--books-color), #a78bfa)"></div></div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:{{ books_percent }}%; background:linear-gradient(90deg,var(--books-color), #a78bfa)"></div></div>
           </div>
         </div>
 
@@ -376,8 +376,7 @@
             <div style="display:flex; align-items:center; gap:1.25rem; margin-bottom:1.5rem;">
               <div class="user-avatar" style="width:72px; height:72px; font-size:2rem;">ম</div>
               <div>
-                <div class="user-name" style="font-size:1.1rem;">মো. রহিম উদ্দিন</div>
-                <div class="user-role">ঢাকা · দাতা ও গ্রহীতা</div>
+            <div class="user-name" style="font-size:1.1rem;">{{ request.user.get_full_name|default:request.user.username }}</div>                <div class="user-role">ঢাকা · দাতা ও গ্রহীতা</div>
                 <button type="button" class="btn btn-outline btn-sm" style="margin-top:0.5rem;">ছবি পরিবর্তন</button>
               </div>
             </div>

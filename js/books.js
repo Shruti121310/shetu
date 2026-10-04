@@ -1,4 +1,4 @@
-/**
+﻿/**
  * সেতু (Shetu) - Books (গ্রন্থ সেতু) Module
  * Handles Book listings across 3 tabs (দান, ধার, বিনিময়), Borrow calculations,
  * and Book Exchange interactions.
@@ -99,7 +99,7 @@ function initBooksListingPage() {
               </div>
               <div style="display:flex; gap:0.5rem; align-items:center;">
                 <button class="btn btn-outline btn-sm" data-report-trigger data-item-name="${item.title}" title="রিপোর্ট করুন">🚨</button>
-                <a href="book-details.html?id=${item.id}" class="btn btn-primary btn-sm">বইটি দেখুন</a>
+                <a href="/books/details/?id=${item.id}" class="btn btn-primary btn-sm">বইটি দেখুন</a>
               </div>
             </div>
           </div>
@@ -170,7 +170,7 @@ function initBookDetailsPage() {
       <div class="error-state-card">
         <h3 class="error-state-title">কিছু একটা সমস্যা হয়েছে</h3>
         <p class="error-state-desc">বইটির বিবরণ খুঁজে পাওয়া যায়নি।</p>
-        <a href="books.html" class="btn btn-primary">বইয়ের তালিকায় ফিরে যান</a>
+        <a href="/books/" class="btn btn-primary">বইয়ের তালিকায় ফিরে যান</a>
       </div>
     `;
     return;
@@ -261,7 +261,7 @@ function initBookDetailsPage() {
               <p style="font-size: 0.95rem; color: #78350f; margin-bottom: 1rem;">
                 বইটির মালিক <strong>“${item.exchangeWish || 'অন্য কোনো সমমানের বই'}”</strong> এর সঙ্গে বইটি বিনিময় করতে আগ্রহী।
               </p>
-              <a href="book-exchange.html?targetId=${item.id}" class="btn btn-secondary btn-lg btn-block">
+              <a href="/books/exchange/?targetId=${item.id}" class="btn btn-secondary btn-lg btn-block">
                 🔄 বই বিনিময়ের প্রস্তাব পাঠান
               </a>
             </div>
@@ -279,7 +279,7 @@ function initBookDetailsPage() {
 
           <div style="display:flex; justify-content:space-between; margin-top: 1.25rem;">
             <button class="btn btn-outline btn-sm" data-report-trigger data-item-name="${item.title}">🚨 রিপোর্ট করুন</button>
-            <a href="books.html" class="btn btn-outline btn-sm">← বইয়ের তালিকায় ফেরত যান</a>
+            <a href="/books/" class="btn btn-outline btn-sm">← বইয়ের তালিকায় ফেরত যান</a>
           </div>
         </div>
       </div>
@@ -364,7 +364,7 @@ function initBookDonateForm() {
     e.preventDefault();
     showToast('ধন্যবাদ! আপনার বইয়ের লিস্টিংটি সফলভাবে প্রকাশিত হয়েছে।', 'success');
     setTimeout(() => {
-      window.location.href = 'books.html';
+      window.location.href = '/books/';
     }, 1200);
   });
 }

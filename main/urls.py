@@ -15,6 +15,8 @@ from .views import (
     clothes_details,
     book_details,
     food_donate,
+    food_request,
+    clothes_request,
     clothes_donate,
     book_donate,
     book_borrow,
@@ -65,5 +67,8 @@ urlpatterns = [
     path('notifications/', notifications, name='notifications'),
 
     path('admin-dashboard/', admin_dashboard, name='admin_dashboard'),
+    
+    path("food/request/<int:id>/", food_request, name="food_request"),
 
+    path("clothes/request/<int:id>/", clothes_request, name="clothes_request"),
 ]
