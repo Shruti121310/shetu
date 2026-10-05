@@ -198,7 +198,32 @@ def clothes_donate(request):
     return render(request, "pages/clothes-donate.html")
 
 
+@login_required
 def book_donate(request):
+    if request.method == "POST":
+        title = request.POST.get("title") or "বই"
+        author = request.POST.get("author") or ""
+        mode = request.POST.get("mode") or "donate"
+        description = request.POST.get("description") or ""
+        exchange_wish = request.POST.get("exchange_wish") or ""
+        borrow_days = request.POST.get("borrow_days") or ""
+        extra = ""
+        if mode == "borrow":
+            extra = f" ধারের মেয়াদ: {borrow_days} দিন."
+        elif mode == "exchange":
+            extra = f" চান: {exchange_wish}."
+
+        Donation.objects.create(
+            donor=request.user,
+            donor_name=request.user.get_full_name() or request.user.username,
+            title=title,
+            category="books",
+            description=f"লেখক: {author}. পদ্ধতি: {mode}.{extra} {description}",
+            quantity=1,
+            location=request.POST.get("location") or "",
+        )
+        return redirect("books")
+
     return render(request, "pages/book-donate.html")
 
 

@@ -79,19 +79,20 @@
   <!-- Main Form -->
   <main class="container container-narrow" style="padding-top: 2.5rem; padding-bottom: 4rem;">
     <div class="form-card">
-      <form id="bookDonateForm">
+      <form id="bookDonateForm" method="POST" action="{% url 'book_donate' %}">
+  {% csrf_token %}
 
         <div class="form-grid">
           <!-- Book Title -->
           <div class="form-group form-grid-full">
             <label class="form-label" for="bookTitle">বইয়ের নাম <span class="required">*</span></label>
-            <input type="text" id="bookTitle" class="form-control" placeholder="উদা: Clean Code / সঞ্চয়িতা / এইচএসসি পদার্থবিজ্ঞান" required>
+            <input type="text" id="bookTitle" name="title" class="form-control" placeholder="উদা: Clean Code / সঞ্চয়িতা / এইচএসসি পদার্থবিজ্ঞান" required>
           </div>
 
           <!-- Author -->
           <div class="form-group">
             <label class="form-label" for="bookAuthor">লেখকের নাম <span class="required">*</span></label>
-            <input type="text" id="bookAuthor" class="form-control" placeholder="উদা: Robert C. Martin / রবীন্দ্রনাথ ঠাকুর" required>
+            <input type="text" id="bookAuthor" name="author" class="form-control" placeholder="উদা: Robert C. Martin / রবীন্দ্রনাথ ঠাকুর" required>
           </div>
 
           <!-- Category -->
@@ -113,19 +114,19 @@
             <label class="form-label">শেয়ারের পদ্ধতি নির্বাচন করুন <span class="required">*</span></label>
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
               <label style="border:2px solid var(--border-light); padding:1rem; border-radius:var(--radius-md); cursor:pointer; text-align:center;">
-                <input type="radio" name="bookMode" value="donate" checked onchange="toggleBookModeFields()">
+                <input type="radio" name="mode" value="donate" checked onchange="toggleBookModeFields()">
                 <strong style="display:block; margin-top:0.35rem; color:var(--success);">🎁 সম্পূর্ণ দান</strong>
                 <span style="font-size:0.8rem; color:var(--text-subtle);">বিনামূল্যে স্থায়ী উপহার</span>
               </label>
 
               <label style="border:2px solid var(--border-light); padding:1rem; border-radius:var(--radius-md); cursor:pointer; text-align:center;">
-                <input type="radio" name="bookMode" value="borrow" onchange="toggleBookModeFields()">
+                <input type="radio" name="mode" value="borrow" onchange="toggleBookModeFields()">
                 <strong style="display:block; margin-top:0.35rem; color:var(--info);">⏱️ ধার দেওয়া</strong>
                 <span style="font-size:0.8rem; color:var(--text-subtle);">নির্দিষ্ট সময় পর ফেরত</span>
               </label>
 
               <label style="border:2px solid var(--border-light); padding:1rem; border-radius:var(--radius-md); cursor:pointer; text-align:center;">
-                <input type="radio" name="bookMode" value="exchange" onchange="toggleBookModeFields()">
+                <input type="radio" name="mode" value="exchange" onchange="toggleBookModeFields()">
                 <strong style="display:block; margin-top:0.35rem; color:var(--warning);">🔄 বই বিনিময়</strong>
                 <span style="font-size:0.8rem; color:var(--text-subtle);">অন্য বইয়ের বিনিময়ে</span>
               </label>
@@ -137,10 +138,10 @@
             <label class="form-label">ধার দেওয়ার সময়সীমা নির্বাচন করুন</label>
             <div style="display: flex; gap: 1rem;">
               <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-                <input type="radio" name="bookBorrowDays" value="15" checked> ১৫ দিন
+                <input type="radio" name="borrow_days" value="15" checked> ১৫ দিন
               </label>
               <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-                <input type="radio" name="bookBorrowDays" value="30"> ৩০ দিন
+                <input type="radio" name="borrow_days" value="30"> ৩০ দিন
               </label>
             </div>
             <span class="form-hint" style="margin-top:0.35rem; display:block;">পাঠক নির্দিষ্ট তারিখের আগে বইটি আপনার কাছে ফেরত দিতে বাধ্য থাকবেন।</span>
@@ -149,7 +150,7 @@
           <!-- Exchange Specific Field (Hidden initially) -->
           <div class="form-group form-grid-full" id="exchangeWishField" style="display: none; background: #fffbeb; padding: 1.25rem; border-radius: var(--radius-md); border:1px solid #fef3c7;">
             <label class="form-label" for="exchangeWishInput" style="color: #92400e;">বিনিময়ে আপনি কী বই পেতে চান?</label>
-            <input type="text" id="exchangeWishInput" class="form-control" placeholder="উদা: C++ Programming অথবা Operating Systems Concepts">
+            <input type="text" id="exchangeWishInput" name="exchange_wish" class="form-control" placeholder="উদা: C++ Programming অথবা Operating Systems Concepts">
             <span class="form-hint">কাঙ্ক্ষিত বইটির নাম বা বিষয়ের উল্লেখ করুন।</span>
           </div>
 
@@ -169,13 +170,13 @@
           <!-- Description -->
           <div class="form-group form-grid-full">
             <label class="form-label" for="bookDesc">বইয়ের সংক্ষিপ্ত বিবরণ / যত্ন সংক্রান্ত বার্তা</label>
-            <textarea id="bookDesc" class="form-textarea" rows="3" placeholder="বইটির সংস্করণ, পাতা বা যত্নের কোনো বিশেষ শর্ত থাকলে লিখুন..."></textarea>
+            <textarea id="bookDesc" name="description" class="form-textarea" rows="3" placeholder="বইটির সংস্করণ, পাতা বা যত্নের কোনো বিশেষ শর্ত থাকলে লিখুন..."></textarea>
           </div>
 
           <!-- Location -->
           <div class="form-group">
             <label class="form-label" for="bookLocation">আপনার অবস্থান / এলাকা <span class="required">*</span></label>
-            <input type="text" id="bookLocation" class="form-control" placeholder="উদা: আজিমপুর / নীলক্ষেত, ঢাকা" required>
+            <input type="text" id="bookLocation" name="location" class="form-control" placeholder="উদা: আজিমপুর / নীলক্ষেত, ঢাকা" required>
           </div>
 
           <!-- Contact Phone -->
@@ -212,7 +213,7 @@
   <script src="{% static 'js/books.js' %}"></script>
   <script>
     function toggleBookModeFields() {
-      const mode = document.querySelector('input[name="bookMode"]:checked')?.value;
+      const mode = document.querySelector('input[name="mode"]:checked')?.value;
       const borrowField = document.getElementById('borrowDurationField');
       const exchangeField = document.getElementById('exchangeWishField');
 

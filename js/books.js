@@ -359,14 +359,7 @@ function initBookExchangePage() {
 }
 
 function initBookDonateForm() {
-  const form = document.getElementById('bookDonateForm');
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    showToast('ধন্যবাদ! আপনার বইয়ের লিস্টিংটি সফলভাবে প্রকাশিত হয়েছে।', 'success');
-    setTimeout(() => {
-      window.location.href = '/books/';
-    }, 1200);
-  });
+  // ফর্ম এখন Django-তে সরাসরি POST হয়, তাই এখানে কিছু আটকানো হচ্ছে না。
 }
 
 function toBanglaDigits(str) {
