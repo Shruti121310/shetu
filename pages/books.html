@@ -187,6 +187,10 @@
   <!-- Scripts -->
   <script src="{% static 'js/data.js' %}"></script>
   <script src="{% static 'js/main.js' %}"></script>
+  {{ books_data|json_script:"django-books-data" }}
+<script>
+    window.djangoBooks = JSON.parse(document.getElementById("django-books-data").textContent);
+</script>
   <script src="{% static 'js/books.js' %}"></script>
 </body>
 </html>

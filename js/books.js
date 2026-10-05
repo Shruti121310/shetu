@@ -108,12 +108,40 @@ function initBooksListingPage() {
     }).join('');
   }
 
+    const djangoBookListings = Array.isArray(window.djangoBooks)
+    ? window.djangoBooks.map(book => {
+        const desc = book.description || '';
+        let mode = 'donate';
+        if (desc.includes('পদ্ধতি: borrow')) mode = 'borrow';
+        else if (desc.includes('পদ্ধতি: exchange')) mode = 'exchange';
+
+        const authorMatch = desc.match(/লেখক:\s*([^.]*)\./);
+        const daysMatch = desc.match(/ধারের মেয়াদ:\s*(\d+)/);
+
+        return {
+          id: book.id,
+          title: book.title,
+          author: authorMatch ? authorMatch[1].trim() : 'অজানা লেখক',
+          category: 'অন্যান্য',
+          mode: mode,
+          borrowDays: daysMatch ? parseInt(daysMatch[1], 10) : 15,
+          coverImage: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400'><rect width='300' height='400' fill='%23e8f3ee'/><rect x='70' y='90' width='160' height='220' rx='8' fill='%232e7d5b'/><rect x='85' y='105' width='130' height='190' rx='4' fill='%23ffffff' opacity='0.25'/><text x='150' y='360' font-size='22' text-anchor='middle' fill='%232e7d5b' font-family='sans-serif'>Shetu Book</text></svg>",
+          location: book.location,
+          distance: 999,
+          distanceText: 'দূরত্ব নির্ধারণ করা হয়নি',
+          description: desc,
+          owner: { name: book.donor },
+          status: 'উপলব্ধ'
+        };
+      })
+    : [];
+
   function applyFilters() {
     const q = (searchInput?.value || '').trim().toLowerCase();
     const cat = categoryFilter?.value || '';
     const maxDist = parseFloat(distanceFilter?.value || '999');
 
-    const filtered = (window.ShetuData?.bookListings || []).filter(item => {
+    const filtered = [...djangoBookListings, ...(window.ShetuData?.bookListings || [])].filter(item => {
       const matchQ = !q || item.title.toLowerCase().includes(q) || item.author.toLowerCase().includes(q) || item.category.toLowerCase().includes(q);
       const matchMode = activeMode === 'all' || item.mode === activeMode;
       const matchCat = !cat || item.category === cat;
@@ -163,8 +191,38 @@ function initBookDetailsPage() {
   const urlParams = new URLSearchParams(window.location.search);
   const bookId = parseInt(urlParams.get('id') || '201', 10);
 
-  const item = (window.ShetuData?.bookListings || []).find(b => b.id === bookId) || window.ShetuData?.bookListings[0];
+  let item = null;
 
+  if (window.djangoBooksItem) {
+    const b = window.djangoBooksItem;
+    const desc = b.description || '';
+    let mode = 'donate';
+    if (desc.includes('পদ্ধতি: borrow')) mode = 'borrow';
+    else if (desc.includes('পদ্ধতি: exchange')) mode = 'exchange';
+
+    const authorMatch = desc.match(/লেখক:\s*([^.]*)\./);
+    const wishMatch = desc.match(/চান:\s*([^.]*)\./);
+
+    item = {
+      id: b.id,
+      title: b.title,
+      author: authorMatch ? authorMatch[1].trim() : 'অজানা লেখক',
+      category: 'অন্যান্য',
+      mode: mode,
+      modeBangla: mode === 'borrow' ? 'ধার' : mode === 'exchange' ? 'বিনিময়' : 'দান',
+      statusBangla: 'উপলব্ধ',
+      coverImage: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='400'><rect width='300' height='400' fill='%23e8f3ee'/><rect x='70' y='90' width='160' height='220' rx='8' fill='%232e7d5b'/><rect x='85' y='105' width='130' height='190' rx='4' fill='%23ffffff' opacity='0.25'/><text x='150' y='360' font-size='22' text-anchor='middle' fill='%232e7d5b' font-family='sans-serif'>Shetu Book</text></svg>",
+      location: b.location,
+      distance: 999,
+      distanceText: 'দূরত্ব নির্ধারণ করা হয়নি',
+      description: desc,
+      owner: b.donor,
+      ownerType: 'দাতা',
+      exchangeWish: wishMatch ? wishMatch[1].trim() : ''
+    };
+  } else {
+    item = (window.ShetuData?.bookListings || []).find(b => b.id === bookId) || window.ShetuData?.bookListings[0];
+  }
   if (!item) {
     container.innerHTML = `
       <div class="error-state-card">

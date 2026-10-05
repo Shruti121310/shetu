@@ -59,9 +59,6 @@ def clothes(request):
         }
     )
 
-def books(request):
-    return render(request, "pages/books.html")
-
 def volunteers(request):
     return render(request, "pages/volunteers.html")
 
@@ -117,7 +114,19 @@ def food(request):
 
 
 def books(request):
-    return render(request, "pages/books.html")
+    donations = Donation.objects.filter(category="books").order_by("-created_at")
+
+    books_data = []
+    for donation in donations:
+        books_data.append({
+            "id": donation.id,
+            "title": donation.title,
+            "description": donation.description,
+            "location": donation.location,
+            "donor": donation.donor_name,
+        })
+
+    return render(request, "pages/books.html", {"books_data": books_data})
 
 def volunteers(request):
     return render(request, "pages/volunteers.html")
@@ -159,7 +168,32 @@ def clothes_details(request):
 
 
 def book_details(request):
-    return render(request, "pages/book-details.html")
+    books_item = None
+    donation_id = request.GET.get("id")
+
+    if donation_id and donation_id.isdigit():
+        donation = Donation.objects.filter(
+            id=donation_id,
+            category="books"
+        ).first()
+
+        if donation:
+            books_item = {
+                "id": donation.id,
+                "title": donation.title,
+                "category": donation.category,
+                "description": donation.description,
+                "quantity": donation.quantity,
+                "location": donation.location,
+                "donor": donation.donor_name,
+                "createdAt": donation.created_at.strftime("%Y-%m-%d"),
+            }
+
+    return render(
+        request,
+        "pages/book-details.html",
+        {"books_item": books_item}
+    )
 
 
 @login_required
