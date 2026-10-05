@@ -101,7 +101,8 @@
   {{ books_item|json_script:"django-books-item" }}
 <script>
     window.djangoBooksItem = JSON.parse(document.getElementById("django-books-item").textContent);
-</script>
+    window.djangoCsrfToken = "{{ csrf_token }}";
+  </script>
   <script src="{% static 'js/books.js' %}"></script>
 </body>
 </html>

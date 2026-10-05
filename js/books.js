@@ -237,6 +237,25 @@ function initBookDetailsPage() {
   const isBorrow = item.mode === 'borrow';
   const isExchange = item.mode === 'exchange';
 
+    const requestFields = `
+    <input type="hidden" name="csrfmiddlewaretoken" value="${window.djangoCsrfToken || ''}">
+    <div style="margin-bottom: 1rem;">
+      <label style="font-weight: 600; display: block; margin-bottom: 0.35rem;">মোবাইল নম্বর</label>
+      <input type="tel" name="mobile" required placeholder="01XXXXXXXXX" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-light); border-radius: var(--radius-md);">
+    </div>
+    <div style="margin-bottom: 1rem;">
+      <label style="font-weight: 600; display: block; margin-bottom: 0.35rem;">নেওয়ার পদ্ধতি</label>
+      <select name="delivery_method" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-light); border-radius: var(--radius-md);">
+        <option value="pickup">নিজে গিয়ে নেব</option>
+        <option value="delivery">ডেলিভারি চাই</option>
+      </select>
+    </div>
+    <div style="margin-bottom: 1rem;">
+      <label style="font-weight: 600; display: block; margin-bottom: 0.35rem;">নোট (ঐচ্ছিক)</label>
+      <textarea name="notes" rows="2" style="width: 100%; padding: 0.7rem; border: 1px solid var(--border-light); border-radius: var(--radius-md);"></textarea>
+    </div>
+  `;
+
   container.innerHTML = `
     <div style="display: grid; grid-template-columns: 1fr 1.25fr; gap: 2.5rem; align-items: start;">
       <div>
@@ -309,9 +328,13 @@ function initBookDetailsPage() {
               </div>
             </div>
 
-            <button class="btn btn-primary btn-lg btn-block" id="borrowBookConfirmBtn">
-              📖 বইটি ধার নেওয়ার অনুরোধ করুন
-            </button>
+                        <form id="bookRequestForm" method="POST" action="/books/request/${item.id}/">
+              ${requestFields}
+              <button type="submit" class="btn btn-primary btn-lg btn-block" id="borrowBookConfirmBtn">
+                📖 বইটি ধার নেওয়ার অনুরোধ করুন
+              </button>
+            </form>
+
           ` : isExchange ? `
             <!-- Exchange Request Details -->
             <div style="background: var(--warning-bg); border: 1px solid #fde68a; padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
@@ -330,9 +353,12 @@ function initBookDetailsPage() {
                 🎁 এই বইটি সম্পূর্ণ উপহার/দান হিসেবে দেওয়া হচ্ছে। কোনো ফেরত বা অর্থ প্রদান করতে হবে না।
               </p>
             </div>
-            <button class="btn btn-primary btn-lg btn-block" id="claimDonatedBookBtn">
-              🎁 বইটি পাওয়ার আবেদন করুন
-            </button>
+                        <form id="bookRequestForm" method="POST" action="/books/request/${item.id}/">
+              ${requestFields}
+              <button type="submit" class="btn btn-primary btn-lg btn-block" id="claimDonatedBookBtn">
+                🎁 বইটি পাওয়ার আবেদন করুন
+              </button>
+            </form>
           `}
 
           <div style="display:flex; justify-content:space-between; margin-top: 1.25rem;">
@@ -369,13 +395,35 @@ function initBookDetailsPage() {
     radios.forEach(r => r.addEventListener('change', updateDeadline));
     updateDeadline();
 
-    document.getElementById('borrowBookConfirmBtn')?.addEventListener('click', () => {
-      showToast('বইটি ধার নেওয়ার অনুরোধ মালিকের কাছে পৌঁছে গেছে! সম্মতির পর আপনাকে অবহিত করা হবে।', 'success');
-    });
+    document.getElementById('bookRequestForm')?.addEventListener('submit', (e) => {
+    if (!window.djangoBooksItem) {
+      e.preventDefault();
+      showToast('আপনার অনুরোধটি সফলভাবে জমা হয়েছে!', 'success');
+      return;
+    }
+    if (isBorrow) {
+      const days = document.querySelector('input[name="borrowDuration"]:checked')?.value || '15';
+      const notes = e.target.elements['notes'];
+      notes.value = 'ধারের মেয়াদ: ' + days + ' দিন. ' + notes.value;
+    }
+  });
   }
 
-  document.getElementById('claimDonatedBookBtn')?.addEventListener('click', () => {
-    showToast('আপনার বই দানের আবেদনটি সফলভাবে জমা হয়েছে!', 'success');
+    document.getElementById('claimDonatedBookBtn')?.addEventListener('click', () => {
+    if (window.djangoBooksItem) {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/books/request/' + item.id + '/';
+      const token = document.createElement('input');
+      token.type = 'hidden';
+      token.name = 'csrfmiddlewaretoken';
+      token.value = window.djangoCsrfToken || '';
+      form.appendChild(token);
+      document.body.appendChild(form);
+      form.submit();
+      return;
+    }
+    showToast('আপনার বই দানের আবেদনটি সফলভাবে জমা হয়েছে!', 'success');
   });
 }
 

@@ -149,7 +149,7 @@
       <div class="sidebar-user">
         <div class="user-avatar">ম</div>
         <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
-        <div class="user-role">দাতা ও গ্রহীতা · ঢাকা</div>
+        <div class="user-role">দাতা ও গ্রহীতা</div>
         <div class="user-points">⭐ ১৮৫ পয়েন্ট</div>
       </div>
 
@@ -266,38 +266,21 @@
         <!-- Recent Activity -->
         <h3 class="dash-section-title">🕐 সাম্প্রতিক কার্যক্রম</h3>
         <ul class="activity-list">
+          
+          
+                    {% for d in my_donations %}
           <li class="activity-item">
-            <span class="activity-icon">🍱</span>
+            <span class="activity-icon">{% if d.category == 'food' %}🍱{% elif d.category == 'clothes' %}👕{% else %}📚{% endif %}</span>
             <div>
-              <div class="activity-title">বিরিয়ানি ও রুটি — ৫ জনের</div>
-              <div class="activity-meta">আহার সেতু · মিরপুর, ঢাকা · ২ ঘণ্টা আগে</div>
+              <div class="activity-title">{{ d.title }}</div>
+              <div class="activity-meta">{{ d.location }} · {{ d.created_at|date:"d M Y" }}</div>
             </div>
-            <div class="activity-status"><span class="badge badge-success">সক্রিয়</span></div>
+            <div class="activity-status"><span class="badge badge-success">দান করা</span></div>
           </li>
-          <li class="activity-item">
-            <span class="activity-icon">👕</span>
-            <div>
-              <div class="activity-title">শীতের জ্যাকেট — ৩টি</div>
-              <div class="activity-meta">বস্ত্র সেতু · মোহাম্মদপুর · ১ দিন আগে</div>
-            </div>
-            <div class="activity-status"><span class="badge badge-warning">অনুরোধ আছে</span></div>
-          </li>
-          <li class="activity-item">
-            <span class="activity-icon">📚</span>
-            <div>
-              <div class="activity-title">বাংলা সাহিত্য সংকলন</div>
-              <div class="activity-meta">গ্রন্থ সেতু · ধার · রফিকুল ইসলামকে দেওয়া হয়েছে</div>
-            </div>
-            <div class="activity-status"><span class="badge badge-info">ধারে আছে</span></div>
-          </li>
-          <li class="activity-item">
-            <span class="activity-icon">⭐</span>
-            <div>
-              <div class="activity-title">+২৫ পয়েন্ট অর্জিত</div>
-              <div class="activity-meta">খাবার দানের জন্য পুরস্কার</div>
-            </div>
-            <div class="activity-status"><span class="badge" style="background:var(--warning-bg);color:var(--warning);">পয়েন্ট</span></div>
-          </li>
+          {% empty %}
+          <li class="activity-item"><div><div class="activity-title">এখনো কোনো দান করা হয়নি</div></div></li>
+          {% endfor %}
+          
         </ul>
       </div>
 
@@ -312,7 +295,20 @@
           <a href="{% url 'clothes_donate' %}" class="btn btn-outline btn-sm">+ পোশাক যোগ করুন</a>
           <a href="{% url 'book_donate' %}" class="btn btn-outline btn-sm">+ বই যোগ করুন</a>
         </div>
-        <ul class="activity-list" id="donationsList"></ul>
+        <ul class="activity-list" id="donationsList">
+          {% for d in my_donations %}
+          <li class="activity-item">
+            <span class="activity-icon">{% if d.category == 'food' %}🍱{% elif d.category == 'clothes' %}👕{% else %}📚{% endif %}</span>
+            <div>
+              <div class="activity-title">{{ d.title }}</div>
+              <div class="activity-meta">{{ d.location }} · {{ d.created_at|date:"d M Y" }}</div>
+            </div>
+            <div class="activity-status"><span class="badge badge-success">দান করা</span></div>
+          </li>
+          {% empty %}
+          <li class="activity-item"><div><div class="activity-title">এখনো কোনো দান করা হয়নি</div></div></li>
+          {% endfor %}
+        </ul>
       </div>
 
       <!-- My Requests Panel -->
@@ -321,7 +317,22 @@
           <h2>📩 আমার অনুরোধ সমূহ</h2>
           <p>আপনার পাঠানো এবং গৃহীত অনুরোধ</p>
         </div>
-        <ul class="activity-list" id="requestsList"></ul>
+        <ul class="activity-list" id="requestsList">
+          {% for r in my_requests %}
+          <li class="activity-item">
+            <span class="activity-icon">{% if r.donation.category == 'food' %}🍱{% elif r.donation.category == 'clothes' %}👕{% else %}📚{% endif %}</span>
+            <div>
+              <div class="activity-title">{{ r.donation.title }} — {{ r.quantity }}টি</div>
+              <div class="activity-meta">{{ r.donation.donor_name }}-এর কাছ থেকে · {{ r.created_at|date:"d M Y" }}</div>
+            </div>
+            <div class="activity-status">
+              <span class="badge {% if r.status == 'accepted' or r.status == 'completed' %}badge-success{% elif r.status == 'pending' %}badge-warning{% endif %}">{% if r.status == 'pending' %}অপেক্ষায়{% elif r.status == 'accepted' %}গৃহীত{% elif r.status == 'completed' %}সম্পন্ন{% elif r.status == 'rejected' %}বাতিল হয়েছে{% else %}বাতিল{% endif %}</span>
+            </div>
+          </li>
+          {% empty %}
+          <li class="activity-item"><div><div class="activity-title">এখনো কোনো অনুরোধ পাঠানো হয়নি</div></div></li>
+          {% endfor %}
+        </ul>
       </div>
 
       <!-- My Books Panel -->
@@ -376,14 +387,15 @@
             <div style="display:flex; align-items:center; gap:1.25rem; margin-bottom:1.5rem;">
               <div class="user-avatar" style="width:72px; height:72px; font-size:2rem;">ম</div>
               <div>
-            <div class="user-name" style="font-size:1.1rem;">{{ request.user.get_full_name|default:request.user.username }}</div>                <div class="user-role">ঢাকা · দাতা ও গ্রহীতা</div>
+            <div class="user-name" style="font-size:1.1rem;">{{ request.user.get_full_name|default:request.user.username }}</div>                
+            <div class="user-role">দাতা ও গ্রহীতা</div>
                 <button type="button" class="btn btn-outline btn-sm" style="margin-top:0.5rem;">ছবি পরিবর্তন</button>
               </div>
             </div>
             <div class="form-grid-2">
               <div class="form-group">
                 <label class="form-label">প্রথম নাম</label>
-                <input type="text" class="form-input" value="মো. রহিম">
+                <input type="text" class="form-input" value="{{ request.user.get_full_name|default:request.user.username }}">
               </div>
               <div class="form-group">
                 <label class="form-label">পরিবারের নাম</label>
@@ -501,7 +513,7 @@
 
       // Lazy render panels
       if (panelId === 'myDonations') renderDonations();
-      if (panelId === 'myRequests') renderRequests();
+      // if (panelId === 'myRequests') renderRequests();
       if (panelId === 'myBooks') renderMyBooks();
       if (panelId === 'volunteerTasks') renderVolunteerPanel();
       if (panelId === 'points') renderPointsHistory();
@@ -509,6 +521,7 @@
     }
 
     function renderDonations() {
+      return;
       const list = document.getElementById('donationsList');
       const items = [
         { icon:'🍱', title:'বিরিয়ানি ও রুটি', meta:'আহার সেতু · ২ ঘণ্টা আগে', badge:'সক্রিয়', badgeClass:'badge-success' },
@@ -520,6 +533,7 @@
     }
 
     function renderRequests() {
+      return;
       const list = document.getElementById('requestsList');
       const items = [
         { icon:'🍱', title:'খাবার অনুরোধ — রহিম আলীর কাছ থেকে', meta:'আহার সেতু · ১ ঘণ্টা আগে', badge:'অপেক্ষায়', badgeClass:'badge-warning' },

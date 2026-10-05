@@ -17,6 +17,7 @@ from .views import (
     food_donate,
     food_request,
     clothes_request,
+    book_request,
     clothes_donate,
     book_donate,
     book_borrow,
@@ -71,4 +72,6 @@ urlpatterns = [
     path("food/request/<int:id>/", food_request, name="food_request"),
 
     path("clothes/request/<int:id>/", clothes_request, name="clothes_request"),
+
+    path("books/request/<int:id>/", book_request, name="book_request"),
 ]

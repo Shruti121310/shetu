@@ -23,6 +23,7 @@ def dashboard(request):
         "books_count": my_donations.filter(category="books").count(),
         "request_count": my_requests.count(),
         "my_requests": my_requests[:5],
+        "my_donations": my_donations.order_by("-created_at")[:5],
         "food_percent": min(my_donations.filter(category="food").count() * 100 // 50, 100),
         "clothes_percent": min(my_donations.filter(category="clothes").count() * 100 // 20, 100),
         "books_percent": min(my_donations.filter(category="books").count() * 100 // 10, 100),
@@ -306,6 +307,23 @@ def clothes_request(request, id):
             quantity=request.POST.get("quantity") or 1,
             mobile=request.POST.get("mobile") or "",
             delivery_method=request.POST.get("delivery_method") or "pickup",
+            notes=request.POST.get("notes") or "",
+        )
+
+    return redirect("dashboard")
+
+@login_required
+def book_request(request, id):
+    donation = Donation.objects.get(id=id, category="books")
+
+    if request.method == "POST":
+        Request.objects.create(
+            requester=request.user,
+            requester_name=request.user.get_full_name() or request.user.username,
+            donation=donation,
+            quantity=1,
+            mobile=request.POST.get("mobile") or "",
+            delivery_method="pickup",
             notes=request.POST.get("notes") or "",
         )
 
