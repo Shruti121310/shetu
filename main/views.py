@@ -1,3 +1,4 @@
+from django.http import request
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -6,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm
 from .models import Donation, Request
 import json
+import re
 
 
 def home(request):
@@ -138,8 +140,13 @@ def about(request):
 
 def food_details(request, id):
     donation = Donation.objects.get(id=id)
-    return render(request, "pages/food-details.html", {"donation": donation})
-
+    lat = None
+    lng = None
+    m = re.search(r"\s*\[GPS: ([-\d.]+),([-\d.]+)\]", donation.description or "")
+    if m:
+        lat, lng = m.group(1), m.group(2)
+        donation.description = donation.description.replace(m.group(0), "")
+    return render(request, "pages/food-details.html", {"donation": donation, "lat": lat, "lng": lng})
 def clothes_details(request):
     clothes_item = None
     donation_id = request.GET.get("id")
@@ -201,12 +208,20 @@ def book_details(request):
 @login_required
 def food_donate(request):
     if request.method == "POST":
+        desc = request.POST.get("description") or ""
+        try:
+            lat = float(request.POST.get("lat", ""))
+            lng = float(request.POST.get("lng", ""))
+            desc = desc + " [GPS: %s,%s]" % (lat, lng)
+        except ValueError:
+            pass
+
         Donation.objects.create(
             donor=request.user,
             donor_name=request.user.get_full_name() or request.user.username,
             title=request.POST.get("title"),
             category="food",
-            description=request.POST.get("description"),
+            description=desc,
             quantity=request.POST.get("quantity"),
             location=request.POST.get("location"),
         )
@@ -214,7 +229,6 @@ def food_donate(request):
         return redirect("food")
 
     return render(request, "pages/food-donate.html")
-
 
 @login_required
 def clothes_donate(request):

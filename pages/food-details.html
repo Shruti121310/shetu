@@ -85,6 +85,13 @@
         <div class="skeleton skeleton-text"></div>
       </div>
     </div>
+        {% if lat and lng %}
+    <div style="margin-top:1.5rem;">
+      <h3 style="margin-bottom:0.75rem;">📍 দানের অবস্থান</h3>
+      <div id="donationMap" style="height:300px; border-radius:12px;"></div>
+      <p id="distanceText" style="margin-top:0.5rem; font-weight:600;"></p>
+    </div>
+    {% endif %}
   </main>
 
   <!-- Site Footer -->
@@ -114,5 +121,35 @@
   <script src="{% static 'js/countdown.js' %}"></script>
   <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/food.js' %}"></script>
+    {% if lat and lng %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    var dLat = {{ lat }};
+    var dLng = {{ lng }};
+    var map = L.map('donationMap').setView([dLat, dLng], 15);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    referrerPolicy: 'strict-origin-when-cross-origin'
+}).addTo(map);
+    L.marker([dLat, dLng]).addTo(map);
+
+    function toBn(s) {
+      return String(s).replace(/\d/g, function (d) { return '০১২৩৪৫৬৭৮৯'[d]; });
+    }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (p) {
+        var R = 6371;
+        var r = Math.PI / 180;
+        var a = Math.sin((dLat - p.coords.latitude) * r / 2) ** 2 +
+          Math.cos(p.coords.latitude * r) * Math.cos(dLat * r) *
+          Math.sin((dLng - p.coords.longitude) * r / 2) ** 2;
+        var km = 2 * R * Math.asin(Math.sqrt(a));
+        document.getElementById('distanceText').textContent =
+          '📏 আপনার অবস্থান থেকে দূরত্ব: ' + toBn(km.toFixed(1)) + ' কিমি';
+      });
+    }
+  </script>
+  {% endif %}
 </body>
 </html>
