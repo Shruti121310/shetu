@@ -87,8 +87,10 @@
     </div>
         {% if lat and lng %}
     <div style="margin-top:1.5rem;">
+      {% if show_map %}
       <h3 style="margin-bottom:0.75rem;">📍 দানের অবস্থান</h3>
       <div id="donationMap" style="height:300px; border-radius:12px;"></div>
+      {% endif %}
       <p id="distanceText" style="margin-top:0.5rem; font-weight:600;"></p>
     </div>
     {% endif %}
@@ -105,6 +107,10 @@
   </footer>
 
   <!-- Scripts -->
+  {% if show_map %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  {% endif %}
   <script src="{% static 'js/data.js' %}"></script>
   <script>
   window.djangoFoodDonation = {
@@ -125,14 +131,16 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    var dLat = {{ lat }};
+        var dLat = {{ lat }};
     var dLng = {{ lng }};
+    {% if show_map %}
     var map = L.map('donationMap').setView([dLat, dLng], 15);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
     referrerPolicy: 'strict-origin-when-cross-origin'
 }).addTo(map);
     L.marker([dLat, dLng]).addTo(map);
+    {% endif %}
 
     function toBn(s) {
       return String(s).replace(/\d/g, function (d) { return '০১২৩৪৫৬৭৮৯'[d]; });

@@ -177,6 +177,10 @@
           <div class="form-group">
             <label class="form-label" for="bookLocation">আপনার অবস্থান / এলাকা <span class="required">*</span></label>
             <input type="text" id="bookLocation" name="location" class="form-control" placeholder="উদা: আজিমপুর / নীলক্ষেত, ঢাকা" required>
+            <input type="hidden" id="gpsLat" name="lat">
+            <input type="hidden" id="gpsLng" name="lng">
+            <button type="button" class="btn btn-outline btn-sm" style="margin-top:0.5rem;" onclick="getMyLocation()">📍 আমার অবস্থান নিন</button>
+            <span id="gpsStatus" class="form-hint"></span>
           </div>
 
           <!-- Contact Phone -->
@@ -219,6 +223,20 @@
 
       if (borrowField) borrowField.style.display = mode === 'borrow' ? 'block' : 'none';
       if (exchangeField) exchangeField.style.display = mode === 'exchange' ? 'block' : 'none';
+    }
+  </script>
+  <script>
+    function getMyLocation() {
+      var st = document.getElementById('gpsStatus');
+      if (!navigator.geolocation) { st.textContent = 'আপনার ব্রাউজারে GPS নেই।'; return; }
+      st.textContent = 'অবস্থান খোঁজা হচ্ছে...';
+      navigator.geolocation.getCurrentPosition(function (p) {
+        document.getElementById('gpsLat').value = p.coords.latitude.toFixed(6);
+        document.getElementById('gpsLng').value = p.coords.longitude.toFixed(6);
+        st.textContent = '✅ অবস্থান নেওয়া হয়েছে';
+      }, function () {
+        st.textContent = 'অবস্থান পাওয়া যায়নি। অনুমতি দিন, অথবা ঠিকানা হাতে লিখুন।';
+      });
     }
   </script>
 </body>

@@ -146,9 +146,30 @@ def food_details(request, id):
     if m:
         lat, lng = m.group(1), m.group(2)
         donation.description = donation.description.replace(m.group(0), "")
-    return render(request, "pages/food-details.html", {"donation": donation, "lat": lat, "lng": lng})
+
+    show_map = False
+    if request.user.is_authenticated:
+        if donation.donor == request.user:
+            show_map = True
+        elif Request.objects.filter(
+            donation=donation,
+            requester=request.user,
+            status="accepted"
+        ).exists():
+            show_map = True
+
+    return render(request, "pages/food-details.html", {
+        "donation": donation,
+        "lat": lat,
+        "lng": lng,
+        "show_map": show_map,
+    })
+
 def clothes_details(request):
     clothes_item = None
+    lat = None
+    lng = None
+    show_map = False
     donation_id = request.GET.get("id")
 
     if donation_id and donation_id.isdigit():
@@ -158,11 +179,27 @@ def clothes_details(request):
         ).first()
 
         if donation:
+            desc = donation.description or ""
+            m = re.search(r"\s*\[GPS: ([-\d.]+),([-\d.]+)\]", desc)
+            if m:
+                lat, lng = m.group(1), m.group(2)
+                desc = desc.replace(m.group(0), "")
+
+            if request.user.is_authenticated:
+                if donation.donor == request.user:
+                    show_map = True
+                elif Request.objects.filter(
+                    donation=donation,
+                    requester=request.user,
+                    status="accepted"
+                ).exists():
+                    show_map = True
+
             clothes_item = {
                 "id": donation.id,
                 "title": donation.title,
                 "category": donation.category,
-                "description": donation.description,
+                "description": desc,
                 "quantity": donation.quantity,
                 "location": donation.location,
                 "donor": donation.donor_name,
@@ -172,12 +209,20 @@ def clothes_details(request):
     return render(
         request,
         "pages/clothes-details.html",
-        {"clothes_item": clothes_item}
+        {
+            "clothes_item": clothes_item,
+            "lat": lat,
+            "lng": lng,
+            "show_map": show_map,
+        }
     )
 
 
 def book_details(request):
     books_item = None
+    lat = None
+    lng = None
+    show_map = False
     donation_id = request.GET.get("id")
 
     if donation_id and donation_id.isdigit():
@@ -187,11 +232,27 @@ def book_details(request):
         ).first()
 
         if donation:
+            desc = donation.description or ""
+            m = re.search(r"\s*\[GPS: ([-\d.]+),([-\d.]+)\]", desc)
+            if m:
+                lat, lng = m.group(1), m.group(2)
+                desc = desc.replace(m.group(0), "")
+
+            if request.user.is_authenticated:
+                if donation.donor == request.user:
+                    show_map = True
+                elif Request.objects.filter(
+                    donation=donation,
+                    requester=request.user,
+                    status="accepted"
+                ).exists():
+                    show_map = True
+
             books_item = {
                 "id": donation.id,
                 "title": donation.title,
                 "category": donation.category,
-                "description": donation.description,
+                "description": desc,
                 "quantity": donation.quantity,
                 "location": donation.location,
                 "donor": donation.donor_name,
@@ -201,7 +262,12 @@ def book_details(request):
     return render(
         request,
         "pages/book-details.html",
-        {"books_item": books_item}
+        {
+            "books_item": books_item,
+            "lat": lat,
+            "lng": lng,
+            "show_map": show_map,
+        }
     )
 
 
@@ -233,12 +299,21 @@ def food_donate(request):
 @login_required
 def clothes_donate(request):
     if request.method == "POST":
+        desc = request.POST.get("description") or ""
+
+        try:
+            lat = float(request.POST.get("lat", ""))
+            lng = float(request.POST.get("lng", ""))
+            desc = desc + " [GPS: %s,%s]" % (lat, lng)
+        except ValueError:
+            pass
+
         Donation.objects.create(
             donor=request.user,
             donor_name=request.user.get_full_name() or request.user.username,
             title=request.POST.get("title"),
             category="clothes",
-            description=request.POST.get("description"),
+            description=desc,
             quantity=request.POST.get("quantity"),
             location=request.POST.get("location"),
         )
@@ -246,7 +321,6 @@ def clothes_donate(request):
         return redirect("clothes")
 
     return render(request, "pages/clothes-donate.html")
-
 
 @login_required
 def book_donate(request):
@@ -262,6 +336,14 @@ def book_donate(request):
             extra = f" ধারের মেয়াদ: {borrow_days} দিন."
         elif mode == "exchange":
             extra = f" চান: {exchange_wish}."
+            try:
+                lat = float(request.POST.get("lat", ""))
+                lng = float(request.POST.get("lng", ""))
+                description = description + " [GPS: %s,%s]" % (lat, lng)
+            except ValueError:
+                pass
+
+        
 
         Donation.objects.create(
             donor=request.user,
