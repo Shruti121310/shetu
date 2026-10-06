@@ -204,7 +204,6 @@
           <p>আজ আপনার কার্যক্রমের সারসংক্ষেপ</p>
         </div>
         <div class="stat-grid">
-        <div class="stat-grihref="{% url 'book_donate' %}"d">
           <div class="stat-card">
             <div class="stat-icon">🍱</div>
             <div class="stat-value">{{ food_count }}</div>
@@ -333,9 +332,37 @@
           <li class="activity-item"><div><div class="activity-title">এখনো কোনো অনুরোধ পাঠানো হয়নি</div></div></li>
           {% endfor %}
         </ul>
+                <h3 class="dash-section-title" style="margin-top:2rem;">📥 আমার দানে আসা অনুরোধ</h3>
+        <ul class="activity-list">
+          {% for r in received_requests %}
+          <li class="activity-item">
+            <span class="activity-icon">{% if r.donation.category == 'food' %}🍱{% elif r.donation.category == 'clothes' %}👕{% else %}📚{% endif %}</span>
+            <div>
+              <div class="activity-title">{{ r.donation.title }} — {{ r.requester_name }}</div>
+              <div class="activity-meta">মোবাইল: {{ r.mobile|default:"দেওয়া হয়নি" }} · {{ r.created_at|date:"d M Y" }}{% if r.notes %} · {{ r.notes }}{% endif %}</div>
+            </div>
+            <div class="activity-status">
+              {% if r.status == 'pending' %}
+              <form method="POST" action="{% url 'accept_request' r.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm">গ্রহণ</button>
+              </form>
+              <form method="POST" action="{% url 'reject_request' r.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline btn-sm">বাতিল</button>
+              </form>
+              {% elif r.status == 'accepted' %}
+              <span class="badge badge-success">গৃহীত</span>
+              {% else %}
+              <span class="badge badge-warning">বাতিল হয়েছে</span>
+              {% endif %}
+            </div>
+          </li>
+          {% empty %}
+          <li class="activity-item"><div><div class="activity-title">এখনো কেউ আপনার দানে অনুরোধ করেনি</div></div></li>
+          {% endfor %}
+        </ul>
       </div>
-
-      <!-- My Books Panel -->
       <div class="dash-panel" id="panel-myBooks">
         <div class="page-header-dash">
           <h2>📚 আমার বই ব্যবস্থাপনা</h2>

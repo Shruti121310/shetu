@@ -24,6 +24,8 @@ from .views import (
     book_exchange,
     notifications,
     admin_dashboard,
+    accept_request, 
+    reject_request,
 )
 
 
@@ -74,4 +76,8 @@ urlpatterns = [
     path("clothes/request/<int:id>/", clothes_request, name="clothes_request"),
 
     path("books/request/<int:id>/", book_request, name="book_request"),
+
+    path("requests/<int:id>/accept/", accept_request, name="accept_request"),
+
+    path("requests/<int:id>/reject/", reject_request, name="reject_request"),
 ]
