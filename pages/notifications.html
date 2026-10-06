@@ -94,6 +94,11 @@
 
   <script src="{% static 'js/data.js' %}"></script>
   <script src="{% static 'js/main.js' %}"></script>
+    {{ notifications|json_script:"notifData" }}
+  <script>
+    window.ShetuData = window.ShetuData || {};
+    window.ShetuData.notificationsList = JSON.parse(document.getElementById('notifData').textContent);
+  </script>
   <script src="{% static 'js/notifications.js' %}"></script>
 </body>
 </html>

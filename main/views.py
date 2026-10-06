@@ -271,9 +271,48 @@ def book_exchange(request):
     return render(request, "pages/book-exchange.html")
 
 
+@login_required
 def notifications(request):
-    return render(request, "pages/notifications.html")
+    items = []
 
+    received = Request.objects.filter(
+        donation__donor=request.user, status="pending"
+    ).order_by("-created_at")[:20]
+    for r in received:
+        items.append({
+            "id": r.id,
+            "type": r.donation.category,
+            "category": "নতুন অনুরোধ",
+            "title": "📥 নতুন অনুরোধ এসেছে",
+            "message": "%s আপনার '%s' দানটি চেয়েছেন (%s টি)।" % (r.requester_name, r.donation.title, r.quantity),
+            "distance": "",
+            "timeRemaining": "",
+            "timestamp": r.created_at.strftime("%d/%m/%Y"),
+            "isUnread": True,
+            "link": "/dashboard/",
+            "actionText": "অনুরোধ দেখুন",
+        })
+
+    mine = Request.objects.filter(
+        requester=request.user, status__in=["accepted", "rejected"]
+    ).order_by("-created_at")[:20]
+    for r in mine:
+        ok = r.status == "accepted"
+        items.append({
+            "id": r.id + 100000,
+            "type": r.donation.category,
+            "category": "অনুরোধের অবস্থা",
+            "title": "✅ আপনার অনুরোধ গৃহীত হয়েছে" if ok else "❌ আপনার অনুরোধ বাতিল হয়েছে",
+            "message": "'%s' দানের জন্য আপনার অনুরোধটি %s।" % (r.donation.title, "গ্রহণ করা হয়েছে" if ok else "বাতিল করা হয়েছে"),
+            "distance": "",
+            "timeRemaining": "",
+            "timestamp": r.created_at.strftime("%d/%m/%Y"),
+            "isUnread": False,
+            "link": "/dashboard/",
+            "actionText": "বিস্তারিত দেখুন",
+        })
+
+    return render(request, "pages/notifications.html", {"notifications": items})
 
 def admin_dashboard(request):
     return render(request, "pages/admin.html")
