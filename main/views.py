@@ -12,7 +12,10 @@ from datetime import timedelta
 
 def home(request):
     donations = Donation.objects.filter(category="food").order_by("-created_at")[:3]
-    return render(request, "index.html", {"donations": donations})
+    pending_count = 0
+    if request.user.is_authenticated:
+        pending_count = Request.objects.filter(donation__donor=request.user, status="pending").count()
+    return render(request, "index.html", {"donations": donations, "pending_count": pending_count})
 
 def parse_expiry(donation):
     desc = donation.description or ""
@@ -39,6 +42,7 @@ def dashboard(request):
         "my_requests": my_requests[:5],
         "my_donations": my_donations.order_by("-created_at")[:5],
         "received_requests": Request.objects.filter(donation__donor=request.user).order_by("-created_at")[:10],
+        "pending_count": Request.objects.filter(donation__donor=request.user, status="pending").count(), 
         "food_percent": min(my_donations.filter(category="food").count() * 100 // 50, 100),
         "clothes_percent": min(my_donations.filter(category="clothes").count() * 100 // 20, 100),
         "books_percent": min(my_donations.filter(category="books").count() * 100 // 10, 100),
