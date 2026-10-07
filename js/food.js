@@ -182,7 +182,7 @@ const item = {
   status: "available",
   statusBangla: "উপলব্ধ",
   expiryHours: 999,
-  expiryTimestamp: "",
+  expiryTimestamp: window.djangoFoodDonation.expiryTimestamp,
   image: "/static/images/food-placeholder.jpg",
   cookedTime: "সময় উল্লেখ করা হয়নি",
   distanceText: "দূরত্ব উল্লেখ করা হয়নি",

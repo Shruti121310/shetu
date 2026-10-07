@@ -8,11 +8,23 @@ from .forms import RegistrationForm
 from .models import Donation, Request
 import json
 import re
-
+from datetime import timedelta
 
 def home(request):
     donations = Donation.objects.filter(category="food").order_by("-created_at")[:3]
     return render(request, "index.html", {"donations": donations})
+
+def parse_expiry(donation):
+    desc = donation.description or ""
+    ts = ""
+    m = re.search(r"\s*\[EXPIRY: (\d+)\]", desc)
+    if m:
+        hours = int(m.group(1))
+        ts = int((donation.created_at + timedelta(hours=hours)).timestamp() * 1000)
+        desc = desc.replace(m.group(0), "")
+    desc = re.sub(r"\s*\[GPS: [-\d.]+,[-\d.]+\]", "", desc)
+    donation.description = desc
+    return ts
 
 @login_required
 def dashboard(request):
@@ -113,9 +125,10 @@ def login_view(request):
     return render(request, "pages/login.html")
 
 def food(request):
-    donations = Donation.objects.filter(category="food").order_by("-created_at")
+    donations = list(Donation.objects.filter(category="food").order_by("-created_at"))
+    for d in donations:
+        d.expiry_ts = parse_expiry(d)
     return render(request, "pages/food.html", {"donations": donations})
-
 
 def books(request):
     donations = Donation.objects.filter(category="books").order_by("-created_at")
@@ -147,6 +160,8 @@ def food_details(request, id):
         lat, lng = m.group(1), m.group(2)
         donation.description = donation.description.replace(m.group(0), "")
 
+    expiry_ts = parse_expiry(donation)
+
     show_map = False
     if request.user.is_authenticated:
         if donation.donor == request.user:
@@ -163,6 +178,7 @@ def food_details(request, id):
         "lat": lat,
         "lng": lng,
         "show_map": show_map,
+        "expiry_ts": expiry_ts,
     })
 
 def clothes_details(request):
@@ -281,6 +297,10 @@ def food_donate(request):
             desc = desc + " [GPS: %s,%s]" % (lat, lng)
         except ValueError:
             pass
+
+        hours = request.POST.get("expiry_hours") or ""
+        if hours.isdigit():
+            desc = desc + " [EXPIRY: %s]" % hours
 
         Donation.objects.create(
             donor=request.user,

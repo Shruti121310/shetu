@@ -120,6 +120,7 @@
     quantity: {{ donation.quantity }},
     location: "{{ donation.location|escapejs }}",
     donorName: "{{ donation.donor_name|escapejs }}",
+    expiryTimestamp: "{{ expiry_ts }}",
     createdAt: "{{ donation.created_at|date:'d M Y, h:i A' }}"
   };
   </script>
